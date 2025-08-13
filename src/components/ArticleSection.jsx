@@ -82,7 +82,7 @@ export function ArticleSection() {
 
                 {
                     blogPosts.map((item) =>
-                        <BlogCard image={item.image}
+                        <BlogCard key={item.id} image={item.image}
                             category={item.category} title={item.title} description={item.description} author={item.author} date={item.date}
                         />
                     )
