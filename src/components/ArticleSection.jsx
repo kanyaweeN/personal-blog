@@ -1,5 +1,7 @@
 import { Search, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import BlogCard from "./BlogCard";
+import { blogPosts } from "../data/blogPosts";
 
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
@@ -70,7 +72,21 @@ export function ArticleSection() {
                         />
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     </div>
+
+
                 </div>
+            </div>
+
+            {/* BlogCard */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                {
+                    blogPosts.map((item) =>
+                        <BlogCard image={item.image}
+                            category={item.category} title={item.title} description={item.description} author={item.author} date={item.date}
+                        />
+                    )
+                }
             </div>
         </section>
     );
