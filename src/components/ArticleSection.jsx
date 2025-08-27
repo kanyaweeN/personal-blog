@@ -8,6 +8,17 @@ const categories = ["Highlight", "Cat", "Inspiration", "General"];
 export function ArticleSection() {
     const [activeCategory, setActiveCategory] = useState("Highlight");
 
+    function getBlogPosts() {
+        return blogPosts.filter((item) => {
+            if (activeCategory != categories[0]) {
+                return item.category == activeCategory
+            }
+            else {
+                return item
+            }
+        })
+    }
+
     return (
         <section className="bg-[#f9f8f6] px-6 md:px-10 py-12">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Latest articles</h2>
@@ -52,11 +63,20 @@ export function ArticleSection() {
                         {categories.map((category) => (
                             <button
                                 key={category}
+                                // onClick={() => setActiveCategory(category)}
+                                // className={
+                                //     `text-sm md:text-base px-4 py-2 rounded-lg transition ${activeCategory === category
+                                //         ? "bg-[#d6d3ce] text-gray-900"
+                                //         : "text-gray-500 hover:text-black"
+                                //     }`
+                                // }
+                                className={`${category === activeCategory
+                                    ? "bg-gray-700 text-gray-200" // สีปุ่มเมื่อถูกเลือก
+                                    : "bg-gray-200 hover:bg-gray-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
+                                    } px-4 py-2 rounded
+                                     cursor-pointer`}
+                                disabled={category === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
                                 onClick={() => setActiveCategory(category)}
-                                className={`text-sm md:text-base px-4 py-2 rounded-lg transition ${activeCategory === category
-                                    ? "bg-[#d6d3ce] text-gray-900"
-                                    : "text-gray-500 hover:text-black"
-                                    }`}
                             >
                                 {category}
                             </button>
@@ -79,9 +99,8 @@ export function ArticleSection() {
 
             {/* BlogCard */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
                 {
-                    blogPosts.map((item) =>
+                    getBlogPosts().map((item) =>
                         <BlogCard key={item.id} image={item.image}
                             category={item.category} title={item.title} description={item.description} author={item.author} date={item.date}
                         />
