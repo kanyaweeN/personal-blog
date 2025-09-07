@@ -2,8 +2,8 @@ import { Search, ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
 // import { blogPosts } from "../data/blogPosts";
-import PostService from "../services/blogService";
-import { formatDate } from "../utils/formatDate";
+import PostService from "../../services/blogService";
+import { formatDate } from "../../utils/formatDate";
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {

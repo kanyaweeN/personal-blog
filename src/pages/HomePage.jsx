@@ -1,7 +1,8 @@
-import { NavBar } from "../components/NavBar";
-import { HeroSection } from "../components/HeroSection";
-import { Footer } from "../components/Footer";
-import { ArticleSection } from "../components/ArticleSection";
+import { Footer } from "../components/layouts/Footer";
+import { NavBar } from "../components/layouts/NavBar";
+import { HeroSection } from "../components/blogs/HeroSection";
+import { ArticleSection } from "../components/blogs/ArticleSection";
+
 
 function HomePage() {
     return (

@@ -1,4 +1,4 @@
-import manWithCatImage from "../assets/images/imgherosection.png";
+import manWithCatImage from "../../assets/images/imgherosection.png";
 
 export function HeroSection() {
     return (
