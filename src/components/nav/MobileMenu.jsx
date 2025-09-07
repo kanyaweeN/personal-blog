@@ -1,4 +1,6 @@
-import { NavButton } from "./NavButton";
+import { NavButton } from "./NavButton.jsx";
+
+
 
 export function MobileMenu({ isOpen }) {
     return (

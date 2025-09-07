@@ -1,9 +1,8 @@
 import { Search, ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
-// import { blogPosts } from "../data/blogPosts";
-import PostService from "../../services/blogService";
-import { formatDate } from "../../utils/formatDate";
+import PostService from "../../../services/blogService.js";
+import { formatDate } from "../../../utils/formatDate.js";
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
@@ -21,7 +20,7 @@ export function ArticleSection() {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery());
-            console.log("fetchPosts : ", result);
+            console.log("ArticleSection.fetchPosts : ", result);
 
             if (page === 1) {
                 setblogPosts(result.posts);
@@ -159,6 +158,7 @@ export function ArticleSection() {
                         blogPosts.map((item) =>
                             <BlogCard
                                 key={item.id}
+                                id={item.id}
                                 image={item.image}
                                 category={item.category}
                                 title={item.title}

@@ -1,8 +1,9 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Logo } from "../navBar/Logo";
-import { NavButton } from "../navBar/NavButton";
-import { MobileMenu } from "../navBar/MobileMenu";
+
+import { NavButton } from "../nav/NavButton.jsx";
+import { MobileMenu } from "../nav/MobileMenu.jsx";
+import { Logo } from "../nav/Logo.jsx";
 
 export function NavBar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

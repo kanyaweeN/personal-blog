@@ -1,20 +1,30 @@
+
+import { useNavigate } from "react-router-dom";
+import CategoryTag from "../../common/CategoryTag.jsx";
+
+
 function BlogCard(props) {
-    const { image, category, title, description, author, date } = props;
+    const { id, image, category, title, description, author, date } = props;
+    const navigate = useNavigate();
+
     return (
         <div className="flex flex-col gap-4">
-            <a href="#" className="relative h-[212px] sm:h-[360px]">
+            <div
+                className="relative h-[212px] sm:h-[360px] cursor-pointer"
+                onClick={() => navigate(`/viewpost/${id}`)}
+            >
                 <img className="w-full h-full object-cover rounded-xl " src={image} alt={title} />
-            </a>
-            <div className="flex flex-col">
-                <div className="flex">
-                    <span className="bg-green-100 rounded-full px-3 py-1 text-sm font-semibold text-green-500 mb-2">{category}
-                    </span>
-                </div>
-                <a href="#" >
+            </div>
+            <div>
+                <CategoryTag category={category} />
+                <div
+                    onClick={() => navigate(`/viewpost/${id}`)}
+                    className="cursor-pointer"
+                >
                     <h2 className="text-start font-bold text-xl mb-2 line-clamp-2 hover:underline">
                         {title}
                     </h2>
-                </a>
+                </div>
                 <p className="text-muted-foreground text-sm mb-4 flex-grow line-clamp-3">
                     {description}</p>
                 <div className="flex items-center text-sm">
