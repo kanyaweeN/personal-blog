@@ -1,17 +1,15 @@
 import "./App.css";
-import { NavBar } from "./components/NavBar";
-import { HeroSection } from "./components/HeroSection";
-import { Footer } from "./components/Footer";
-import { ArticleSection } from "./components/ArticleSection";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+
 
 function App() {
   return (
-    <div>
-      <NavBar />
-      <HeroSection />
-      <ArticleSection />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
