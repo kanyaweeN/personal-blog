@@ -1,58 +1,70 @@
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
 // import { blogPosts } from "../data/blogPosts";
 import PostService from "../services/blogService";
 import { formatDate } from "../utils/formatDate";
-
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
     const [activeCategory, setActiveCategory] = useState("Highlight");
     const [blogPosts, setblogPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [isLoading, setLoading] = useState(false);
+    const [iserror, setError] = useState("");
 
-    function getBlogPosts() {
-        console.log("getBlogPosts", blogPosts);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
-        if (blogPosts.rowCount != 0) {
-            const result = blogPosts.filter((item) => {
-                if (activeCategory != categories[0]) {
-                    return item.category == activeCategory
-                }
-                else {
-                    return item
-                }
-            })
-            setblogPosts(result);
-        }
+    const fetchPosts = async () => {
+        setLoading(true);
 
-    }
-
-    const handleCategory = (category) => {
-        let query = category === "Highlight" ? "" : category
-        setActiveCategory(category);
-        // console.log("handleCategory.query : ", query);
-        fetchPosts(`category=${query}`);
-    }
-
-    const fetchPosts = async (query) => {
-        console.log("useEffect : ", query);
+        let result = {};
         try {
-            const data = await PostService.getAllPost(query);
-            console.log("useEffect : ", data);
-            setblogPosts(data);
+            result = await PostService.getAllPost(setQuery());
+            console.log("fetchPosts : ", result);
+
+            if (page === 1) {
+                setblogPosts(result.posts);
+            }
+            else {
+                setblogPosts([...blogPosts, ...result.posts]);
+            }
+
+            if (result.currentPage >= result.totalPages) {
+                setHasMore(false);
+            }
         } catch (err) {
             setError("โหลดข้อมูลไม่สำเร็จ");
         } finally {
             setLoading(false);
         }
+        return result;
     };
 
+    const setQuery = () => {
+        const queries = {
+            page: page,
+            limit: 6,
+            keyword: "",
+            category: activeCategory === "Highlight" ? "" : `${activeCategory}`,
+        }
+
+        console.log("setQuery : ", queries);
+        return queries;
+    }
+
+    const handleCategory = (category) => {
+        setActiveCategory(category);
+        setPage(1);
+    }
+
+    const handleLoadMore = () => {
+        setPage((prevPage) => prevPage + 1); // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
+    }
+
     useEffect(() => {
-        fetchPosts();
-    }, [])
+        fetchPosts()
+    }, [page, activeCategory])
 
     return (
         <section className="bg-[#f9f8f6] px-6 md:px-10 py-12">
@@ -146,6 +158,29 @@ export function ArticleSection() {
                     )
                 }
             </div>
+
+            {/* View more */}
+            {hasMore &&
+                (
+                    <div className="text-center mt-8">
+                        <button
+                            onClick={handleLoadMore}
+                            className="hover:text-muted-foreground font-medium underline"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <><div className="flex flex-col items-center">
+                                    <Loader2 className="h-10 w-10 animate-spin" />
+                                    Loading...</div>
+                                </>
+                            ) : (
+                                "View more"
+                            )}
+                        </button>
+                    </div>
+                )
+            }
+
         </section >
     );
 };

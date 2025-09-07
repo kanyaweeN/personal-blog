@@ -3,14 +3,15 @@ import axios from "axios";
 const url = "https://blog-post-project-api.vercel.app";
 
 const PostService = {
-    getAllPost: async (str) => {
+    getAllPost: async (params) => {
         try {
-            console.log("str :", str);
             let query = "";
-            if (str)
-                query = str.trim() === "" ? "" : `?${str}`;
-            const result = await axios.get(`${url}/posts${query}`)
-            return result.data.posts;
+            const result = await axios.get(`${url}/posts`,
+                {
+                    params: params
+                }
+            )
+            return result.data;
         } catch (e) {
             console.error("PostService.getAllPost : ", e);
             return [];
