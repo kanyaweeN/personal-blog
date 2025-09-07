@@ -93,7 +93,7 @@ export function ArticleSection() {
                             </label>
                             <div className="relative">
                                 <select
-                                    className="w-full p-4 rounded-xl border border-gray-300  text-gray-700 bg-white appearance-none focus:outline-non"
+                                    className="w-full p-4 rounded-xl border border-gray-300  text-gray-800 bg-white appearance-none focus:outline-non"
                                     value={activeCategory}
                                     onChange={(e) =>
                                         handleCategory(e.target.value)
@@ -181,9 +181,11 @@ export function ArticleSection() {
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
-                                    <><div className="flex flex-col items-center">
-                                        <Loader2 className="h-10 w-10 animate-spin" />
-                                        Loading...</div>
+                                    <>
+                                        <div className="flex flex-col items-center">
+                                            <Loader2 className="h-10 w-10 animate-spin" />
+                                            Loading...
+                                        </div>
                                     </>
                                 ) : (
                                     "View more"
