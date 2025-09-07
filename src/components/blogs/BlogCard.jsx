@@ -3,11 +3,11 @@ function BlogCard(props) {
     return (
         <div className="flex flex-col gap-4">
             <a href="#" className="relative h-[212px] sm:h-[360px]">
-                <img className="w-full h-full object-cover rounded-md" src={image} alt={title} />
+                <img className="w-full h-full object-cover rounded-xl " src={image} alt={title} />
             </a>
             <div className="flex flex-col">
                 <div className="flex">
-                    <span className="bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-green-600 mb-2">{category}
+                    <span className="bg-green-100 rounded-full px-3 py-1 text-sm font-semibold text-green-500 mb-2">{category}
                     </span>
                 </div>
                 <a href="#" >
