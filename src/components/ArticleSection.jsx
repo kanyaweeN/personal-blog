@@ -1,23 +1,58 @@
 import { Search, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
-import { blogPosts } from "../data/blogPosts";
+// import { blogPosts } from "../data/blogPosts";
+import PostService from "../services/blogService";
+import { formatDate } from "../utils/formatDate";
 
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
     const [activeCategory, setActiveCategory] = useState("Highlight");
+    const [blogPosts, setblogPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     function getBlogPosts() {
-        return blogPosts.filter((item) => {
-            if (activeCategory != categories[0]) {
-                return item.category == activeCategory
-            }
-            else {
-                return item
-            }
-        })
+        console.log("getBlogPosts", blogPosts);
+
+        if (blogPosts.rowCount != 0) {
+            const result = blogPosts.filter((item) => {
+                if (activeCategory != categories[0]) {
+                    return item.category == activeCategory
+                }
+                else {
+                    return item
+                }
+            })
+            setblogPosts(result);
+        }
+
     }
+
+    const handleCategory = (category) => {
+        let query = category === "Highlight" ? "" : category
+        setActiveCategory(category);
+        // console.log("handleCategory.query : ", query);
+        fetchPosts(`category=${query}`);
+    }
+
+    const fetchPosts = async (query) => {
+        console.log("useEffect : ", query);
+        try {
+            const data = await PostService.getAllPost(query);
+            console.log("useEffect : ", data);
+            setblogPosts(data);
+        } catch (err) {
+            setError("โหลดข้อมูลไม่สำเร็จ");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPosts();
+    }, [])
 
     return (
         <section className="bg-[#f9f8f6] px-6 md:px-10 py-12">
@@ -41,7 +76,9 @@ export function ArticleSection() {
                     <div className="relative">
                         <select
                             value={activeCategory}
-                            onChange={(e) => setActiveCategory(e.target.value)}
+                            onChange={(e) =>
+                                handleCategory(e.target.value)
+                            }
                             className="w-full px-4 py-3 pr-10 rounded-xl border-0 text-gray-700 bg-white shadow-sm appearance-none focus:outline-none focus:ring-0"
                         >
                             {categories.map((category) => (
@@ -76,7 +113,9 @@ export function ArticleSection() {
                                     } px-4 py-2 rounded
                                      cursor-pointer`}
                                 disabled={category === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
-                                onClick={() => setActiveCategory(category)}
+                                onClick={() =>
+                                    handleCategory(category)
+                                }
                             >
                                 {category}
                             </button>
@@ -100,13 +139,13 @@ export function ArticleSection() {
             {/* BlogCard */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {
-                    getBlogPosts().map((item) =>
+                    blogPosts.map((item) =>
                         <BlogCard key={item.id} image={item.image}
-                            category={item.category} title={item.title} description={item.description} author={item.author} date={item.date}
+                            category={item.category} title={item.title} description={item.description} author={item.author} date={formatDate(item.date)}
                         />
                     )
                 }
             </div>
-        </section>
+        </section >
     );
 };
