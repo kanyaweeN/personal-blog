@@ -68,11 +68,11 @@ export function ArticleSection() {
     return (
         <>
             <section  >
-                <h2 className="text-2xl font-semibold text-gray-900 m-6">
+                <h2 className="text-2xl font-semibold m-6">
                     Latest articles
                 </h2>
 
-                <div className="bg-[#f1f0ed] p-4">
+                <div className="bg-brown-200 p-4 rounded-xl ">
                     {/* Mobile Layout */}
                     <div className="md:hidden space-y-4">
                         {/* Search Bar */}
@@ -123,8 +123,8 @@ export function ArticleSection() {
                                     <button
                                         key={category}
                                         className={`${category === activeCategory
-                                            ? "bg-gray-700 text-gray-200" // สีปุ่มเมื่อถูกเลือก
-                                            : "bg-gray-200 hover:bg-gray-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
+                                            ? "bg-brown-300 text-brown-500" // สีปุ่มเมื่อถูกเลือก
+                                            : "text-brown-400 hover:bg-brown-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
                                             } px-4 py-2 rounded
                                      cursor-pointer`}
                                         disabled={category === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
@@ -144,14 +144,14 @@ export function ArticleSection() {
                                     placeholder="Search"
                                     className="w-full px-4 py-2 pr-10 rounded-md border border-gray-300 text-sm focus:outline-none"
                                 />
-                                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-brown-400" size={18} />
                             </div>
                         </div>
                     </div>
                 </div >
             </section >
 
-            <section className="bg-[#f9f8f6] px-6 md:px-10 py-12">
+            <section className="py-12">
                 {/* BlogCard */}
                 < div className="grid grid-cols-1 gap-10 md:grid-cols-2" >
                     {
@@ -177,16 +177,14 @@ export function ArticleSection() {
                         <div className="text-center mt-8">
                             <button
                                 onClick={handleLoadMore}
-                                className="hover:text-muted-foreground font-medium underline"
+                                className="text-brown-600 hover:text-muted-foreground font-medium underline"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
-                                    <>
-                                        <div className="flex flex-col items-center">
-                                            <Loader2 className="h-10 w-10 animate-spin" />
-                                            Loading...
-                                        </div>
-                                    </>
+                                    <div className="flex flex-col items-center ">
+                                        <Loader2 className="h-10 w-10 animate-spin" />
+                                        Loading...
+                                    </div>
                                 ) : (
                                     "View more"
                                 )}
@@ -194,7 +192,6 @@ export function ArticleSection() {
                         </div>
                     )
                 }
-
             </section >
         </>
     );

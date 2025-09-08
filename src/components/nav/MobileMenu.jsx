@@ -1,6 +1,4 @@
-import { NavButton } from "./NavButton.jsx";
-
-
+import { AppButton } from "../../features/common/AppButton.jsx";
 
 export function MobileMenu({ isOpen }) {
     return (
@@ -11,8 +9,8 @@ export function MobileMenu({ isOpen }) {
                 }`}
         >
             <div className="p-4 flex flex-col gap-5">
-                <NavButton>Log in</NavButton>
-                <NavButton primary>Sign up</NavButton>
+                <AppButton>Log in</AppButton>
+                <AppButton primary>Sign up</AppButton>
             </div>
         </div>
     );

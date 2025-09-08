@@ -1,26 +1,35 @@
 import { Github, Linkedin, Mail } from "lucide-react";
+import Github_black from "../../assets/icons/Github_black.png"
+import Google_black from "../../assets/icons/Google_black.png"
+import LinkedIN_black from "../../assets/icons/LinkedIN_black.png"
 
 export function Footer() {
     return (
-        <footer className="bg-[#f1f0ed] px-10 py-8 flex flex-col md:flex-row justify-between items-center text-gray-800 gap-5">
+        <footer className="bg-brown-200 px-10 py-10 flex flex-col md:flex-row justify-between items-center text-gray-800 gap-5">
             <div className=" flex items-center gap-4 ">
-                <span>
+                <span className="text-brown-500">
                     Get in touch
                 </span>
-
                 <div className="flex gap-4">
-                    <a
-                        href="#"
-                        aria-label="LinkedIn"
-                    >
-                        <Linkedin size={20} />
-                    </a>
-                    <a href="#" aria-label="GitHub"><Github size={20} /></a>
-                    <a href="#" aria-label="Email"><Mail size={20} /></a>
+                    <img
+                        src={LinkedIN_black}
+                        alt="Linked In"
+                        className="h-[20px]"
+                    />
+                    <img
+                        src={Github_black}
+                        alt="Github"
+                        className="h-[20px]"
+                    />
+                    <img
+                        src={Google_black}
+                        alt="Google"
+                        className="h-[20px]"
+                    />
                 </div>
             </div>
             <div>
-                <a href="#" className="hover:text-muted-foreground font-medium underline">
+                <a href="#" className="hover:text-muted-foreground font-medium underline text-brown-600">
                     Home page
                 </a>
             </div>

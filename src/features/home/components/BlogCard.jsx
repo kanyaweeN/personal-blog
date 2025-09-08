@@ -21,7 +21,7 @@ function BlogCard(props) {
                     onClick={() => navigate(`/viewpost/${id}`)}
                     className="cursor-pointer"
                 >
-                    <h2 className="text-start font-bold text-xl mb-2 line-clamp-2 hover:underline">
+                    <h2 className="text-start font-bold text-xl mb-2 pt-3 line-clamp-2 hover:underline">
                         {title}
                     </h2>
                 </div>
@@ -29,9 +29,13 @@ function BlogCard(props) {
                     {description}</p>
                 <div className="flex items-center text-sm">
                     <img className="w-8 h-8 rounded-full mr-2" src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg" alt="Tomson P." />
-                    <span>{author}</span>
-                    <span className="mx-2 text-gray-300">|</span>
-                    <span>{date}</span>
+                    <span
+                        className="text-brown-500">
+                        {author}
+                    </span>
+                    <span className="text-brown-400">
+                        {date}
+                    </span>
                 </div>
             </div>
         </div>

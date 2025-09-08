@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
-import { NavButton } from "../nav/NavButton.jsx";
+import { AppButton } from "../../features/common/AppButton.jsx";
 import { MobileMenu } from "../nav/MobileMenu.jsx";
 import { Logo } from "../nav/Logo.jsx";
 
@@ -12,14 +12,14 @@ export function NavBar() {
     return (
         <div className="w-full relative">
             {/* Main Navigation */}
-            <nav className="bg-gray-50 h-16 flex justify-between items-center px-6 border-b border-gray-200">
+            <nav className="bg-brown-100 h-16 flex justify-between items-center px-6 border-b border-gray-200">
                 {/* Logo */}
                 <Logo />
 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 items-center">
-                    <NavButton>Log in</NavButton>
-                    <NavButton primary>Sign up</NavButton>
+                    <AppButton>Log in</AppButton>
+                    <AppButton primary>Sign up</AppButton>
                 </div>
 
                 {/* Hamburger */}
