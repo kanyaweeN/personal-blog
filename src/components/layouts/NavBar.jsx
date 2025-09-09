@@ -19,7 +19,7 @@ export function NavBar() {
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 items-center">
                     <AppButton>Log in</AppButton>
-                    <AppButton primary>Sign up</AppButton>
+                    <AppButton style="dark">Sign up</AppButton>
                 </div>
 
                 {/* Hamburger */}

@@ -63,6 +63,7 @@ export function ArticleSection() {
 
     useEffect(() => {
         fetchPosts()
+        window.scrollTo(0, 0)
     }, [page, activeCategory])
 
     return (
@@ -126,7 +127,7 @@ export function ArticleSection() {
                                             ? "bg-brown-300 text-brown-500" // สีปุ่มเมื่อถูกเลือก
                                             : "text-brown-400 hover:bg-brown-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
                                             } px-4 py-2 rounded
-                                     cursor-pointer`}
+                                     `}
                                         disabled={category === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
                                         onClick={() =>
                                             handleCategory(category)

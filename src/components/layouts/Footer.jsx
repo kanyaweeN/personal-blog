@@ -1,9 +1,12 @@
-import { Github, Linkedin, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import Github_black from "../../assets/icons/Github_black.png"
 import Google_black from "../../assets/icons/Google_black.png"
 import LinkedIN_black from "../../assets/icons/LinkedIN_black.png"
 
 export function Footer() {
+    const navigate = useNavigate();
+
     return (
         <footer className="bg-brown-200 px-10 py-10 flex flex-col md:flex-row justify-between items-center text-gray-800 gap-5">
             <div className=" flex items-center gap-4 ">
@@ -29,9 +32,12 @@ export function Footer() {
                 </div>
             </div>
             <div>
-                <a href="#" className="hover:text-muted-foreground font-medium underline text-brown-600">
+                <button
+                    className="hover:text-muted-foreground font-medium underline text-brown-600"
+                    onClick={() => navigate(`/`)}
+                >
                     Home page
-                </a>
+                </button>
             </div>
         </footer>
     )

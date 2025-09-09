@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { NavBar } from "../../../components/layouts/NavBar.jsx";
 import { Footer } from "../../../components/layouts/Footer.jsx";
-import ArticleContent from "../components/ArticleContent.jsx";
+import ArticleDetail from "../components/ArticleDetail.jsx";
 
 
 function ViewPostPage() {
@@ -10,7 +10,7 @@ function ViewPostPage() {
     return (
         < div >
             <NavBar />
-            <ArticleContent postId={param.postId} />
+            <ArticleDetail postId={param.postId} />
             <Footer />
         </div >
     );

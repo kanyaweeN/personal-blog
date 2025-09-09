@@ -10,7 +10,7 @@ export function MobileMenu({ isOpen }) {
         >
             <div className="p-4 flex flex-col gap-5">
                 <AppButton>Log in</AppButton>
-                <AppButton primary>Sign up</AppButton>
+                <AppButton style="dark">Sign up</AppButton>
             </div>
         </div>
     );

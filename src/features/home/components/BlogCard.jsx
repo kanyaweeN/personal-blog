@@ -1,7 +1,5 @@
-
 import { useNavigate } from "react-router-dom";
 import CategoryTag from "../../common/CategoryTag.jsx";
-
 
 function BlogCard(props) {
     const { id, image, category, title, description, author, date } = props;

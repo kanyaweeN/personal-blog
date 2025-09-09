@@ -302,6 +302,10 @@
   input {
     @apply text-brown-400;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 /* markdown */
