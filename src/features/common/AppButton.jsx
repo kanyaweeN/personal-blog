@@ -7,14 +7,14 @@ export function AppButton({ type, children, style = "white", size = "md", disabl
         "rounded-full transition-colors ";
 
     const styles = {
-        solid: "bg-black text-white hover:bg-gray-800 disabled:bg-gray-400",
+        solid: "bg-black text-white hover:bg-brown-800 disabled:bg-brown-400",
         icon:
-            `flex gap-3 bg-white text-gray-700 border border-gray-400 
-            hover:bg-gray-100 
-            disabled:border-gray-300 disabled:text-gray-400`,
-        ghost: "text-black hover:underline disabled:text-gray-400",
-        dark: "bg-brown-600 text-white border border-gray-700 hover:bg-gray-600",
-        white: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400",
+            `flex gap-3 bg-white text-brown-700 border border-brown-400 
+            hover:bg-brown-100 
+            disabled:border-brown-300 disabled:text-brown-400`,
+        ghost: "text-black hover:underline disabled:text-brown-400",
+        dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-600",
+        white: "bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400",
     };
 
     const sizes = {
