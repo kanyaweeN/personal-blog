@@ -1,5 +1,6 @@
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import debounce from 'lodash.debounce'
 
 import BlogCard from "./BlogCard";
@@ -19,6 +20,8 @@ export function ArticleSection() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [search, setSearch] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const navigate = useNavigate();
 
     const fetchPosts = async (searchTerm = search) => {
         setLoading(true);
@@ -26,13 +29,20 @@ export function ArticleSection() {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery(searchTerm));
-            console.log("ArticleSection.fetchPosts : ", result);
+            // console.log("ArticleSection.fetchPosts : ", result);
 
             if (page === 1) {
                 setblogPosts(result.posts);
             }
             else {
                 setblogPosts([...blogPosts, ...result.posts]);
+            }
+
+            // Update suggestions when searching
+            if (searchTerm && Array.isArray(result.posts)) {
+                setSuggestions(result.posts.slice(0, 8));
+            } else {
+                setSuggestions([]);
             }
 
             if (result.currentPage >= result.totalPages) {
@@ -46,6 +56,31 @@ export function ArticleSection() {
         return result;
     };
 
+    const fetchSuggestions = async (searchTerm) => {
+        setLoading(true);
+
+        let result = {};
+        try {
+            result = await PostService.getPostBykeyword(searchTerm);
+            // console.log("ArticleSection.fetchSuggestions : ", result);
+
+            // Update suggestions when searching
+            if (searchTerm && Array.isArray(result.posts)) {
+                setSuggestions(result.posts.slice(0, 8));
+            } else {
+                setSuggestions([]);
+            }
+
+            if (result.currentPage >= result.totalPages) {
+                setHasMore(false);
+            }
+        } catch (err) {
+            setError("โหลดข้อมูลไม่สำเร็จ");
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    };
 
     const setQuery = (searchTerm) => {
         const queries = {
@@ -71,16 +106,24 @@ export function ArticleSection() {
         setPage(1);
     }
 
+    // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
     const handleLoadMore = () => {
-        setPage((prevPage) => prevPage + 1); // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
+        setPage((prevPage) => prevPage + 1);
     }
 
     const handleSearch = (e) => {
         const value = e.target.value
         setSearch(value)
-        debouncedFetchPosts(value)
-        console.log(value);
 
+        fetchSuggestions(value)
+        debouncedFetchPosts(value)
+    }
+
+    const handleSelectSuggestion = (post) => {
+        // Clear dropdown and go to the post page
+        setSuggestions([]);
+        setSearch("");
+        navigate(`/viewpost/${post.id}`);
     }
 
     useEffect(() => {
@@ -109,6 +152,8 @@ export function ArticleSection() {
                         <InputSearch
                             value={search}
                             onChange={handleSearch}
+                            suggestions={suggestions}
+                            onSelectSuggestion={handleSelectSuggestion}
                         />
 
                         {/* Category Dropdown */}
@@ -166,7 +211,10 @@ export function ArticleSection() {
                             {/* Search */}
                             <div className=" md:w-72">
                                 <InputSearch
-                                    value={search} onChange={handleSearch}
+                                    value={search}
+                                    onChange={handleSearch}
+                                    suggestions={suggestions}
+                                    onSelectSuggestion={handleSelectSuggestion}
                                 />
                             </div>
 

@@ -26,7 +26,7 @@ const PostService = {
         }
     }, getPostBykeyword: async (keyword) => {
         try {
-            const result = await axios.get(`${url}/posts/$?keyword=${keyword}`,
+            const result = await axios.get(`${url}/posts/?keyword=${keyword}`,
             )
             return result.data;
         } catch (e) {
