@@ -24,6 +24,15 @@ const PostService = {
             console.error("PostService.getPostById : ", e);
             return [];
         }
+    }, getPostBykeyword: async (keyword) => {
+        try {
+            const result = await axios.get(`${url}/posts/$?keyword=${keyword}`,
+            )
+            return result.data;
+        } catch (e) {
+            console.error("PostService.getPostBykeyword : ", e);
+            return [];
+        }
     },
 }
 

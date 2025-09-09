@@ -33,6 +33,17 @@ function ArticleDetail(props) {
         return result;
     };
 
+    const handleLike = () => {
+        setisOpenAlert(true);
+
+        // setBlogPosts((prev) => ({
+        //     ...prev,
+        //     likes: (prev.likes || 0) + 1,
+        // }));
+
+        // ถ้าอยากส่งไป backend ด้วย
+        // PostService.likePost(postId);
+    };
     useEffect(() => {
         fetchPosts();
     }, [])
@@ -74,7 +85,8 @@ function ArticleDetail(props) {
 
                             <ArticleActions
                                 likes={blogPosts.likes}
-                                onClick={() => setisOpenAlert(true)} />
+                                onClick=
+                                {handleLike} />
                         </div>
                         <div className="py-10">
                             <CommentSection postId={postId} />

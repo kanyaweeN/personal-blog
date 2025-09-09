@@ -1,8 +1,13 @@
-import { Search, ChevronDown, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronDown, Loader2 } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import debounce from 'lodash.debounce'
+
 import BlogCard from "./BlogCard";
 import PostService from "../../../services/blogService.js";
 import { formatDate } from "../../../utils/formatDate.js";
+import InputSearch from "../common/InputSearch.jsx";
+
+
 const categories = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
@@ -13,13 +18,14 @@ export function ArticleSection() {
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [search, setSearch] = useState("");
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (searchTerm = search) => {
         setLoading(true);
 
         let result = {};
         try {
-            result = await PostService.getAllPost(setQuery());
+            result = await PostService.getAllPost(setQuery(searchTerm));
             console.log("ArticleSection.fetchPosts : ", result);
 
             if (page === 1) {
@@ -40,17 +46,25 @@ export function ArticleSection() {
         return result;
     };
 
-    const setQuery = () => {
+
+    const setQuery = (searchTerm) => {
         const queries = {
             page: page,
             limit: 6,
-            keyword: "",
+            keyword: searchTerm,
             category: activeCategory === "Highlight" ? "" : `${activeCategory}`,
         }
 
-        console.log("setQuery : ", queries);
         return queries;
     }
+
+    // สร้าง debounced function
+    const debouncedFetchPosts = useCallback(
+        debounce((searchTerm) => {
+            fetchPosts(searchTerm)
+        }, 500), // รอ 500ms
+        []
+    )
 
     const handleCategory = (category) => {
         setActiveCategory(category);
@@ -61,10 +75,24 @@ export function ArticleSection() {
         setPage((prevPage) => prevPage + 1); // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
     }
 
+    const handleSearch = (e) => {
+        const value = e.target.value
+        setSearch(value)
+        debouncedFetchPosts(value)
+        console.log(value);
+
+    }
+
     useEffect(() => {
         fetchPosts()
         window.scrollTo(0, 0)
-    }, [page, activeCategory])
+    }, [page, activeCategory], search)
+
+    useEffect(() => {
+        if (search) {
+            setPage(1); // reset page เมื่อมีการ search
+        }
+    }, [search])
 
     return (
         <>
@@ -77,18 +105,15 @@ export function ArticleSection() {
                     {/* Mobile Layout */}
                     <div className="md:hidden space-y-4">
                         {/* Search Bar */}
-                        <div className="relative w-full ">
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                className="w-full p-4 rounded-xl border border-gray-300 text-gray-700 bg-white focus:outline-none"
-                            />
-                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-                        </div>
+
+                        <InputSearch
+                            value={search}
+                            onChange={handleSearch}
+                        />
 
                         {/* Category Dropdown */}
                         <div className="space-y-2">
-                            <label className="text-gray-600 text-sm font-medium">
+                            <label className="text-gray-600 text-sm">
                                 Category
                             </label>
                             <div className="relative">
@@ -139,14 +164,12 @@ export function ArticleSection() {
                             </div>
 
                             {/* Search */}
-                            <div className="relative w-full md:w-72">
-                                <input
-                                    type="text"
-                                    placeholder="Search"
-                                    className="w-full px-4 py-2 pr-10 rounded-md border border-gray-300 text-sm focus:outline-none"
+                            <div className=" md:w-72">
+                                <InputSearch
+                                    value={search} onChange={handleSearch}
                                 />
-                                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-brown-400" size={18} />
                             </div>
+
                         </div>
                     </div>
                 </div >

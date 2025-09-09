@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./features/home/pages/HomePage.jsx";
 import ViewPostPage from "./features/ViewPost/pages/ViewPostPage.jsx";
 
-
-
 function App() {
   return (
     <BrowserRouter>

@@ -6,7 +6,6 @@ import {
     AlertDialogDescription,
     AlertDialogHeader,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import { AppButton } from "./AppButton";
 
 function AlertAuth({ open, onOpenChange }) {
