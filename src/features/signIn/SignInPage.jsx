@@ -2,15 +2,18 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { NavBar } from '../../components/layouts/NavBar.jsx';
 import { AppButton } from '../common/AppButton.jsx';
-import SignUpInput from '../signUp/common/SignUpInput.jsx';
+import InputField from '../common/InputField.jsx';
+import { useAppToast } from '../../hooks/useAppToast.jsx';
 
 function SignInPage() {
     const navigate = useNavigate();
+    const { error } = useAppToast();
+
     const [signIn, setSignIn] = useState({
         email: "",
         password: "",
     });
-    const [error, setError] = useState({
+    const [errorInput, setError] = useState({
         email: "",
         password: "",
     })
@@ -26,8 +29,10 @@ function SignInPage() {
         if (!signIn.password) {
             err.password = "Please enter your password";
         }
-        console.log(err);
 
+        if (Object.keys(err).length !== 0) {
+            error("Your password is incorrect or this email doesn’t exist!", "Please try another password or email");
+        }
         setError(err);
     }
 
@@ -42,7 +47,6 @@ function SignInPage() {
     return (
         <div className="flex flex-col">
             <NavBar />
-
             <main className="flex-1 flex justify-center px-6 py-12">
                 <div className="bg-brown-200 p-10 rounded-xl shadow max-w-xl w-full">
 
@@ -53,25 +57,25 @@ function SignInPage() {
                         <div className="text-brown-400">
                             <form className="flex flex-col gap-5" onSubmit={submitonClick}>
                                 {/* Email */}
-                                <SignUpInput
+                                <InputField
                                     text="Email"
                                     type="text"
                                     name="email"
                                     value={signIn.email}
                                     placeholder="Email"
                                     onChange={handleInputonChange}
-                                    error={error.email}
+                                    error={errorInput.email}
                                 />
 
                                 {/* Password */}
-                                <SignUpInput
+                                <InputField
                                     text="Password"
                                     type="password"
                                     name="password"
                                     value={signIn.password}
                                     placeholder="Password"
                                     onChange={handleInputonChange}
-                                    error={error.password}
+                                    error={errorInput.password}
                                 />
 
                                 {/* Submit button */}

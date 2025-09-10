@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { NavBar } from '../../components/layouts/NavBar.jsx';
 import { AppButton } from '../common/AppButton.jsx';
-import SignUpInput from './common/SignUpInput.jsx';
+import InputField from '../common/InputField.jsx';
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -69,7 +69,7 @@ function SignUpPage() {
                         <div className="text-brown-400">
                             <form className="flex flex-col gap-5" onSubmit={submitonClick}>
                                 {/* Name */}
-                                <SignUpInput
+                                <InputField
                                     text="Name"
                                     type="text"
                                     name="name"
@@ -77,10 +77,11 @@ function SignUpPage() {
                                     placeholder="Full name"
                                     onChange={handleInputonChange}
                                     error={error.name}
+                                    showErrorText={true}
                                 />
 
                                 {/* Username */}
-                                <SignUpInput
+                                <InputField
                                     text="Username"
                                     type="text"
                                     name="username"
@@ -88,10 +89,11 @@ function SignUpPage() {
                                     placeholder="Username"
                                     onChange={handleInputonChange}
                                     error={error.username}
+                                    showErrorText={true}
                                 />
 
                                 {/* Email */}
-                                <SignUpInput
+                                <InputField
                                     text="email"
                                     type="text"
                                     name="email"
@@ -99,10 +101,11 @@ function SignUpPage() {
                                     placeholder="Email"
                                     onChange={handleInputonChange}
                                     error={error.email}
+                                    showErrorText={true}
                                 />
 
                                 {/* Password */}
-                                <SignUpInput
+                                <InputField
                                     text="password"
                                     type="password"
                                     name="password"
@@ -110,6 +113,7 @@ function SignUpPage() {
                                     placeholder="Password"
                                     onChange={handleInputonChange}
                                     error={error.password}
+                                    showErrorText={true}
                                 />
 
 

@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../../features/common/AppButton.jsx";
 
 export function MobileMenu({ isOpen }) {
+    const navigate = useNavigate();
+
     return (
         <div
             className={`md:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50 transition-all duration-300 ${isOpen
@@ -9,8 +12,17 @@ export function MobileMenu({ isOpen }) {
                 }`}
         >
             <div className="p-4 flex flex-col gap-5">
-                <AppButton>Log in</AppButton>
-                <AppButton style="dark">Sign up</AppButton>
+                <AppButton
+                    onClick={() => navigate("/login")}
+                >
+                    Log in
+                </AppButton>
+                <AppButton
+                    style="dark"
+                    onClick={() => navigate("/signup")}
+                >
+                    Sign up
+                </AppButton>
             </div>
         </div>
     );

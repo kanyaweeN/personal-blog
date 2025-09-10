@@ -7,7 +7,7 @@ export function AppButton({ type, children, style = "white", size = "md", disabl
         "rounded-full transition-colors ";
 
     const styles = {
-        solid: "bg-black text-white hover:bg-brown-800 disabled:bg-brown-400",
+        transition: "ext-white hover:bg-brown-800 disabled:bg-brown-400",
         icon:
             `flex gap-3 bg-white text-brown-700 border border-brown-400 
             hover:bg-brown-100 
