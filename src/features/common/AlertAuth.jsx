@@ -28,7 +28,8 @@ function AlertAuth({ open, onOpenChange }) {
                             <AppButton
                                 style="dark"
                                 onClick={() => navigate("/signup")}
-                            >Create account
+                            >
+                                Create account
                             </AppButton>
 
                             <span >
@@ -37,7 +38,7 @@ function AlertAuth({ open, onOpenChange }) {
                                 </span>
                                 <AppButton
                                     style='underline'
-                                    onClick={() => navigate("/")}
+                                    onClick={() => navigate("/login")}
                                 >
                                     Log in
                                 </AppButton>
