@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import { NavBar } from '../../components/layouts/NavBar.jsx';
-import { AppButton } from '../common/AppButton.jsx';
-import InputField from '../common/InputField.jsx';
+import { NavBar } from '../../../components/layouts/NavBar.jsx';
+import { AppButton } from '../../common/AppButton.jsx';
+import InputField from '../../common/InputField.jsx';
 
 function SignUpPage() {
     const navigate = useNavigate();
