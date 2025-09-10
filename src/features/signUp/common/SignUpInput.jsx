@@ -10,7 +10,7 @@ function SignUpInput({ type, text, name, value, placeholder, onChange, error }) 
             <input
                 type={type}
                 name={name}
-                value={value}
+                value={value ?? ""}
                 placeholder={placeholder}
                 onChange={onChange}
                 className={`w-full px-4 py-2 bg-white  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300 ${error ? "border border-red text-red-500" : "border border-gray-300 text-brown-500"}`}
