@@ -1,11 +1,14 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import { AppButton } from "../../features/common/AppButton.jsx";
 import { MobileMenu } from "../nav/MobileMenu.jsx";
 import { Logo } from "../nav/Logo.jsx";
 
 export function NavBar() {
+    const navigate = useNavigate();
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
@@ -19,7 +22,12 @@ export function NavBar() {
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 items-center">
                     <AppButton>Log in</AppButton>
-                    <AppButton style="dark">Sign up</AppButton>
+                    <AppButton
+                        style="dark"
+                        onClick={() => navigate("/signup")}
+                    >
+                        Sign up
+                    </AppButton>
                 </div>
 
                 {/* Hamburger */}

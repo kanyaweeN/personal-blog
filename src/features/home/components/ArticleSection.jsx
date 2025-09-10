@@ -29,7 +29,7 @@ export function ArticleSection() {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery(searchTerm));
-            // console.log("ArticleSection.fetchPosts : ", result);
+            console.log("ArticleSection.fetchPosts : ", result);
 
             if (page === 1) {
                 setblogPosts(result.posts);

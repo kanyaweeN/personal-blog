@@ -1,3 +1,5 @@
+
+import { useNavigate } from 'react-router-dom';
 import {
     AlertDialog,
     AlertDialogTitle,
@@ -9,6 +11,8 @@ import {
 import { AppButton } from "./AppButton";
 
 function AlertAuth({ open, onOpenChange }) {
+    const navigate = useNavigate();
+
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
@@ -23,16 +27,21 @@ function AlertAuth({ open, onOpenChange }) {
                                 Create an account to continue
                             </span>
 
-                            <AppButton style="dark">Create account</AppButton>
+                            <AppButton
+                                style="dark"
+                                onClick={() => navigate("/signup")}
+                            >
+                                Create account
+                            </AppButton>
 
                             <span >
                                 <span className="text-brown-400">Already have an account? </span>
-                                <a
-                                    href="#"
-                                    className="text-brown-600 underline hover:text-brown-400"
+                                <AppButton
+                                    style='underline'
+                                    onClick={() => navigate(`/`)}
                                 >
                                     Log in
-                                </a>
+                                </AppButton>
                             </span>
                         </span>
                     </AlertDialogDescription>
