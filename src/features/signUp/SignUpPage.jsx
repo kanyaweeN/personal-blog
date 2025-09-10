@@ -92,7 +92,7 @@ function SignUpPage() {
 
                                 {/* Email */}
                                 <SignUpInput
-                                    text="Username"
+                                    text="email"
                                     type="text"
                                     name="email"
                                     value={signUp.email}
@@ -103,7 +103,7 @@ function SignUpPage() {
 
                                 {/* Password */}
                                 <SignUpInput
-                                    text="Username"
+                                    text="password"
                                     type="password"
                                     name="password"
                                     value={signUp.password}

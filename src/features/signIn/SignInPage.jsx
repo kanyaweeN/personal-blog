@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { NavBar } from '../../components/layouts/NavBar.jsx';
 import { AppButton } from '../common/AppButton.jsx';
+import SignUpInput from '../signUp/common/SignUpInput.jsx';
 
 function SignInPage() {
     const navigate = useNavigate();
@@ -9,15 +10,31 @@ function SignInPage() {
         email: "",
         password: "",
     });
+    const [error, setError] = useState({
+        email: "",
+        password: "",
+    })
 
     function submitonClick(e) {
         e.preventDefault();
+
+        let err = {}
+        if (!signIn.email) {
+            err.email = "Please enter your email.";
+        }
+
+        if (!signIn.password) {
+            err.password = "Please enter your password";
+        }
+        console.log(err);
+
+        setError(err);
     }
 
     const handleInputonChange = (e) => {
         const { name, value } = e.target;
         setSignIn({
-            ...name,
+            ...signIn,
             [name]: value,
         });
     }
@@ -36,30 +53,26 @@ function SignInPage() {
                         <div className="text-brown-400">
                             <form className="flex flex-col gap-5" onSubmit={submitonClick}>
                                 {/* Email */}
-                                <div>
-                                    <label className="text-sm">Email</label>
-                                    <input
-                                        type="email"
-                                        value={signIn.email}
-                                        placeholder="Email"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Email"
+                                    type="text"
+                                    name="email"
+                                    value={signIn.email}
+                                    placeholder="Email"
+                                    onChange={handleInputonChange}
+                                    error={error.email}
+                                />
 
                                 {/* Password */}
-                                <div>
-                                    <label className="text-sm">Password</label>
-                                    <input
-                                        type="password"
-                                        value={signIn.password}
-                                        placeholder="Password"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Password"
+                                    type="password"
+                                    name="password"
+                                    value={signIn.password}
+                                    placeholder="Password"
+                                    onChange={handleInputonChange}
+                                    error={error.password}
+                                />
 
                                 {/* Submit button */}
                                 <div className="flex justify-center pb-5">
