@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./features/home/pages/HomePage.jsx";
 import ViewPostPage from "./features/ViewPost/pages/ViewPostPage.jsx";
 import NotFoundPage from "./features/notFound/NotFoundPage.jsx";
-import SignUp from "./features/signUp/SignUp.jsx";
+import SignUp from "./features/signUp/SignUpPage.jsx";
 SignUp
 
 function App() {

@@ -99,8 +99,8 @@ function SignUp() {
                                 </div>
                             </form>
 
-                            <p className="text-center text-sm mt-5">
-                                Already have an account?{" "}
+                            <p className="text-center text-brown-400">
+                                Already have an account?
                                 <AppButton
                                     style='underline'
                                     onClick={() => navigate(`/`)}
