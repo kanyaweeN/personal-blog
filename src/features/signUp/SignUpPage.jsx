@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { NavBar } from '../../components/layouts/NavBar.jsx';
 import { AppButton } from '../common/AppButton.jsx';
+import SignUpInput from './common/SignUpInput.jsx';
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -11,17 +12,47 @@ function SignUpPage() {
         email: "",
         password: "",
     });
+    const [error, setError] = useState({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+    })
 
     function submitonClick(e) {
         e.preventDefault();
+
+        let err = {}
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!signUp.name.trim()) {
+            err.name = "Please enter your name.";
+        }
+
+        if (!signUp.username.trim()) {
+            err.username = "Please enter your username.";
+        }
+
+        if (!signUp.email.trim()) {
+            err.email = "Please enter your email.";
+        } else if (!emailRegex.test(signUp.email)) {
+            err.email = "Email must be a valid email";
+        }
+
+        if (!signUp.password || signUp.password.length < 6) {
+            err.password = "Password must be at least 6 characters";
+        }
+        console.log(err);
+
+        setError(err);
     }
 
     const handleInputonChange = (e) => {
         const { name, value } = e.target;
-        setSignUp({
-            ...name,
+        setSignUp((prev) => ({
+            ...prev,
             [name]: value,
-        });
+        }));
     }
 
     return (
@@ -38,61 +69,52 @@ function SignUpPage() {
                         <div className="text-brown-400">
                             <form className="flex flex-col gap-5" onSubmit={submitonClick}>
                                 {/* Name */}
-                                <div>
-                                    <label className="text-sm">
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={signUp.name}
-                                        placeholder="Full name"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Name"
+                                    type="text"
+                                    name="name"
+                                    value={signUp.name}
+                                    placeholder="Full name"
+                                    onChange={handleInputonChange}
+                                    error={error.name}
+                                />
 
                                 {/* Username */}
-                                <div>
-                                    <label className="text-sm">Username</label>
-                                    <input
-                                        type="text"
-                                        value={signUp.username}
-                                        placeholder="Username"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Username"
+                                    type="text"
+                                    name="username"
+                                    value={signUp.username}
+                                    placeholder="Username"
+                                    onChange={handleInputonChange}
+                                    error={error.username}
+                                />
 
                                 {/* Email */}
-                                <div>
-                                    <label className="text-sm">Email</label>
-                                    <input
-                                        type="email"
-                                        value={signUp.email}
-                                        placeholder="Email"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Username"
+                                    type="text"
+                                    name="email"
+                                    value={signUp.email}
+                                    placeholder="Email"
+                                    onChange={handleInputonChange}
+                                    error={error.email}
+                                />
 
                                 {/* Password */}
-                                <div>
-                                    <label className="text-sm">Password</label>
-                                    <input
-                                        type="password"
-                                        value={signUp.password}
-                                        placeholder="Password"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
+                                <SignUpInput
+                                    text="Username"
+                                    type="password"
+                                    name="password"
+                                    value={signUp.password}
+                                    placeholder="Password"
+                                    onChange={handleInputonChange}
+                                    error={error.password}
+                                />
+
 
                                 {/* Submit button */}
-                                <div className="flex justify-center  pb-5">
+                                <div className="flex justify-center  py-5">
                                     <AppButton style="solid" size="md" type="submit">
                                         Sign up
                                     </AppButton>
