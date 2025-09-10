@@ -3,40 +3,18 @@ import facebook from '../../../assets/icons/facebook.png'
 import linkin from '../../../assets/icons/linkin.png'
 import twitter from '../../../assets/icons/twitter.png'
 import { AppButton } from '../../common/AppButton.jsx';
-import { toast } from "sonner"
+import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
 function ArticleActions(props) {
+    const { success, error } = useAppToast();
     const { likes, onClick } = props;
 
     const hanleClipboard = (text) => {
         try {
             navigator.clipboard.writeText(text);
-
-            toast("Copied!", {
-                description: "This article has been copied to your clipboard.",
-                style: {
-                    background: '#12B279', // สีเขียว
-                    color: 'white',
-                    border: 'none'
-                },
-                cancel: {
-                    label: "X",
-                },
-                cancelButtonStyle: {
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'white',
-                    position: 'absolute',
-                    top: '8px',
-                    right: '8px',
-                    fontSize: '18px',
-                    cursor: 'pointer'
-                }
-            })
-
-            // alert('Copy link to clipboard!');
+            success("Copied!", "This article has been copied to your clipboard.");
         } catch {
-            alert('Failed to copy!');
+            error("Failed!", "Could not copy to clipboard.");
         }
     }
     return (

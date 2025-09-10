@@ -5,10 +5,12 @@ import ViewPostPage from "./features/ViewPost/pages/ViewPostPage.jsx";
 import NotFoundPage from "./features/notFound/NotFoundPage.jsx";
 import SignUpPage from "./features/signUp/SignUpPage.jsx";
 import SignInPage from "./features/signIn/signInPage.jsx";
+import { Toaster } from "@/components/ui/sonner"
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<SignInPage />} />
