@@ -3,9 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./features/home/pages/HomePage.jsx";
 import ViewPostPage from "./features/ViewPost/pages/ViewPostPage.jsx";
 import NotFoundPage from "./features/notFound/NotFoundPage.jsx";
-import SignUpPage from "./features/signUp/SignUpPage.jsx";
+import SignUpPage from "./features/signUp/pages/SignUpPage.jsx";
 import SignInPage from "./features/signIn/signInPage.jsx";
 import { Toaster } from "@/components/ui/sonner"
+import RegistrationSuccess from "./features/signUp/pages/RegistrationSuccess.jsx";
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signup/success" element={<RegistrationSuccess />} />
         <Route path="/viewpost/:postId" element={<ViewPostPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
