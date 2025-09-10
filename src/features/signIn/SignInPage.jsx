@@ -3,11 +3,9 @@ import { useState } from "react";
 import { NavBar } from '../../components/layouts/NavBar.jsx';
 import { AppButton } from '../common/AppButton.jsx';
 
-function SignUpPage() {
+function SignInPage() {
     const navigate = useNavigate();
-    const [signUp, setSignUp] = useState({
-        name: "",
-        username: "",
+    const [signIn, setSignIn] = useState({
         email: "",
         password: "",
     });
@@ -18,7 +16,7 @@ function SignUpPage() {
 
     const handleInputonChange = (e) => {
         const { name, value } = e.target;
-        setSignUp({
+        setSignIn({
             ...name,
             [name]: value,
         });
@@ -33,44 +31,16 @@ function SignUpPage() {
 
                     <div className="space-y-2">
                         <h1 className="text-3xl">
-                            Sign up
+                            Log in
                         </h1>
                         <div className="text-brown-400">
                             <form className="flex flex-col gap-5" onSubmit={submitonClick}>
-                                {/* Name */}
-                                <div>
-                                    <label className="text-sm">
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={signUp.name}
-                                        placeholder="Full name"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
-
-                                {/* Username */}
-                                <div>
-                                    <label className="text-sm">Username</label>
-                                    <input
-                                        type="text"
-                                        value={signUp.username}
-                                        placeholder="Username"
-                                        required
-                                        onChange={handleInputonChange}
-                                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-brown-300"
-                                    />
-                                </div>
-
                                 {/* Email */}
                                 <div>
                                     <label className="text-sm">Email</label>
                                     <input
                                         type="email"
-                                        value={signUp.email}
+                                        value={signIn.email}
                                         placeholder="Email"
                                         required
                                         onChange={handleInputonChange}
@@ -83,7 +53,7 @@ function SignUpPage() {
                                     <label className="text-sm">Password</label>
                                     <input
                                         type="password"
-                                        value={signUp.password}
+                                        value={signIn.password}
                                         placeholder="Password"
                                         required
                                         onChange={handleInputonChange}
@@ -92,20 +62,20 @@ function SignUpPage() {
                                 </div>
 
                                 {/* Submit button */}
-                                <div className="flex justify-center  pb-5">
+                                <div className="flex justify-center pb-5">
                                     <AppButton style="solid" size="md" type="submit">
-                                        Sign up
+                                        Log in
                                     </AppButton>
                                 </div>
                             </form>
 
-                            <p className="text-center text-brown-400">
-                                Already have an account?
+                            <p className="text-center text-brown-400 ">
+                                Don’t have any account?
                                 <AppButton
                                     style='underline'
-                                    onClick={() => navigate("/login")}
+                                    onClick={() => navigate(`/signup`)}
                                 >
-                                    Log in
+                                    Log up
                                 </AppButton>
                             </p>
                         </div>
@@ -116,4 +86,4 @@ function SignUpPage() {
     );
 }
 
-export default SignUpPage
+export default SignInPage
