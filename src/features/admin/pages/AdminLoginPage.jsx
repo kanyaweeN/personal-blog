@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import { NavBar } from '../../../components/layouts/NavBar.jsx';
 import { AppButton } from '../../common/AppButton.jsx';
 import InputField from '../../common/InputField.jsx';
 import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
-function SignInPage() {
+function AdminLoginPage() {
     const navigate = useNavigate();
     const { error } = useAppToast();
 
@@ -34,6 +33,8 @@ function SignInPage() {
 
         if (Object.keys(err).length !== 0) {
             error("Your password is incorrect or this email doesn’t exist!", "Please try another password or email");
+        } else {
+            navigate("/admin/article-manament");
         }
     }
 
@@ -47,11 +48,13 @@ function SignInPage() {
 
     return (
         <div className="flex flex-col">
-            <NavBar />
             <main className="flex-1 flex justify-center px-6 py-12">
                 <div className="bg-brown-200 p-10 rounded-xl shadow max-w-xl w-full">
 
                     <div className="space-y-2 flex flex-col items-center">
+                        <span className="text-orange">
+                            Admin panel
+                        </span>
                         <h1 className="text-3xl">
                             Log in
                         </h1>
@@ -89,16 +92,6 @@ function SignInPage() {
                                     </AppButton>
                                 </div>
                             </form>
-
-                            <p className="text-center text-brown-400 ">
-                                Don’t have any account?
-                                <AppButton
-                                    style='underline'
-                                    onClick={() => navigate(`/signup`)}
-                                >
-                                    Log up
-                                </AppButton>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -107,4 +100,4 @@ function SignInPage() {
     );
 }
 
-export default SignInPage
+export default AdminLoginPage
