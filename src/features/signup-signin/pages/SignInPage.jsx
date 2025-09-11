@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import { NavBar } from '../../components/layouts/NavBar.jsx';
-import { AppButton } from '../common/AppButton.jsx';
-import InputField from '../common/InputField.jsx';
-import { useAppToast } from '../../hooks/useAppToast.jsx';
+import { NavBar } from '../../../components/layouts/NavBar.jsx';
+import { AppButton } from '../../common/AppButton.jsx';
+import InputField from '../../common/InputField.jsx';
+import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
 function SignInPage() {
     const navigate = useNavigate();
@@ -80,7 +80,10 @@ function SignInPage() {
 
                                 {/* Submit button */}
                                 <div className="flex justify-center pb-5">
-                                    <AppButton style="solid" size="md" type="submit">
+                                    <AppButton
+                                        style="dark"
+                                        size="md"
+                                        type="submit">
                                         Log in
                                     </AppButton>
                                 </div>
