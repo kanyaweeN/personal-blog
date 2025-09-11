@@ -45,6 +45,14 @@ function SignUpPage() {
         console.log(err);
 
         setError(err);
+
+        if (Object.keys(err).length === 0) {
+            saveData();
+        }
+    }
+
+    const saveData = () => {
+        navigate("/signup/success")
     }
 
     const handleInputonChange = (e) => {
@@ -116,10 +124,9 @@ function SignUpPage() {
                                     showErrorText={true}
                                 />
 
-
                                 {/* Submit button */}
                                 <div className="flex justify-center  py-5">
-                                    <AppButton style="solid" size="md" type="submit">
+                                    <AppButton style="dark" size="md" type="submit">
                                         Sign up
                                     </AppButton>
                                 </div>

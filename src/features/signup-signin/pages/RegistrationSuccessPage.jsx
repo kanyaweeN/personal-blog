@@ -1,10 +1,10 @@
 
 import { useNavigate } from 'react-router-dom';
-import { NavBar } from '../../../components/layouts/NavBar';
-import { AppButton } from '../../common/AppButton.jsx';
+import { NavBar } from '../../../components/layouts/NavBar.jsx';
+import { AppButton } from '../../common/AppButton.jsx'
 import check_green from '../../../assets/icons/check_green.png'
 
-function RegistrationSuccess() {
+function RegistrationSuccessPage() {
     const navigate = useNavigate();
 
     return (
@@ -31,4 +31,4 @@ function RegistrationSuccess() {
     );
 }
 
-export default RegistrationSuccess
+export default RegistrationSuccessPage
