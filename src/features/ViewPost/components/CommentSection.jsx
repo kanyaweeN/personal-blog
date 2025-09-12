@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AppButton } from "../../common/AppButton";
 import CommentCard from "./CommentCard";
 import AlertAuth from "../../common/AlertAuth.jsx";
-import TextArea from "../../common/Textarea.jsx";
+import TextArea from "../../common/TextArea.jsx";
 
 function CommentSection(props) {
     const { postId } = props;
