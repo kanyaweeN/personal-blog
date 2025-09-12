@@ -2,14 +2,18 @@ import { ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import debounce from 'lodash.debounce'
+import {
+    SelectItem,
+} from "@/components/ui/select";
 
 import BlogCard from "./BlogCard";
 import PostService from "../../../services/blogService.js";
 import { formatDate } from "../../../utils/formatDate.js";
 import InputSearch from "../common/InputSearch.jsx";
+import AppSelect from "../../common/AppSelect.jsx";
 
 
-const categories = ["Highlight", "Cat", "Inspiration", "General"];
+const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
     const [activeCategory, setActiveCategory] = useState("Highlight");
@@ -47,6 +51,8 @@ export function ArticleSection() {
 
             if (result.currentPage >= result.totalPages) {
                 setHasMore(false);
+            } else {
+                setHasMore(true);
             }
         } catch (err) {
             setError("โหลดข้อมูลไม่สำเร็จ");
@@ -114,7 +120,7 @@ export function ArticleSection() {
     const handleSearch = (e) => {
         const value = e.target.value
         setSearch(value)
-
+        setPage(1);
         fetchSuggestions(value)
         debouncedFetchPosts(value)
     }
@@ -128,19 +134,19 @@ export function ArticleSection() {
 
     useEffect(() => {
         fetchPosts()
-        window.scrollTo(0, 0)
-    }, [page, activeCategory], search)
+        // window.scrollTo(0, 0)
+    }, [page, activeCategory, search])
 
-    useEffect(() => {
-        if (search) {
-            setPage(1); // reset page เมื่อมีการ search
-        }
-    }, [search])
+    // useEffect(() => {
+    //     if (search) {
+    //         setPage(1); // reset page เมื่อมีการ search
+    //     }
+    // }, [search])
 
     return (
-        <>
-            <section  >
-                <h2 className="text-2xl font-semibold m-6">
+        <div className=" md:px-0 px-5">
+            <section>
+                <h2 className="text-2xl font-semibold m-6 m">
                     Latest articles
                 </h2>
 
@@ -148,7 +154,6 @@ export function ArticleSection() {
                     {/* Mobile Layout */}
                     <div className="md:hidden space-y-4">
                         {/* Search Bar */}
-
                         <InputSearch
                             value={search}
                             onChange={handleSearch}
@@ -157,40 +162,32 @@ export function ArticleSection() {
                         />
 
                         {/* Category Dropdown */}
-                        <div className="space-y-2">
-                            <label className="text-gray-600 text-sm">
-                                Category
-                            </label>
-                            <div className="relative">
-                                <select
-                                    className="w-full p-4 rounded-xl border border-gray-300  text-gray-800 bg-white appearance-none focus:outline-non"
-                                    value={activeCategory}
-                                    onChange={(e) =>
-                                        handleCategory(e.target.value)
-                                    }
-                                >
-                                    {
-                                        categories.map((category) => (
-                                            <option
-                                                key={category}
-                                                value={category}
-                                            >
-                                                {category}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={20} />
-                            </div>
-                        </div>
+                        <AppSelect
+                            value={activeCategory}
+                            onValueChange={(e) => {
+                                console.log(e);
+
+                                handleCategory(e)
+                            }}
+                            placeholder="Select category"
+                            selectContent={
+                                categoryData.map((item, index) => {
+                                    return (
+                                        <SelectItem key={index} value={item}>
+                                            {item}
+                                        </SelectItem>
+                                    );
+                                })}
+                        >
+                        </AppSelect>
                     </div>
 
                     {/* Desktop Layout */}
                     <div className="hidden md:block">
-                        <div className="bg-[#f1f0ed] p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
+                        <div className=" p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
                             {/* Tabs */}
                             <div className="flex gap-6">
-                                {categories.map((category) => (
+                                {categoryData.map((category) => (
                                     <button
                                         key={category}
                                         className={`${category === activeCategory
@@ -265,6 +262,6 @@ export function ArticleSection() {
                     )
                 }
             </section >
-        </>
+        </div>
     );
 };

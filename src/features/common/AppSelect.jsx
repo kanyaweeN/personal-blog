@@ -17,7 +17,7 @@ function AppSelect(
         <Select
             {...props}
         >
-            <SelectTrigger className="w-full py-3 rounded-sm text-muted-foreground focus:ring-0 focus:ring-offset-0 focus:border-muted-foreground">
+            <SelectTrigger className="bg-white w-full py-3 rounded-sm text-muted-foreground focus:ring-0 focus:ring-offset-0 focus:border-muted-foreground">
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
