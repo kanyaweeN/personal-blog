@@ -49,7 +49,7 @@ function SidebarMenu() {
                     </a>
                     <a
                         href="#"
-                        className={clsx(baseStyle, isActive("/admin/category-management") ? activeColor.active : activeColor.unactive)}
+                        className={clsx(baseStyle, isActive("/admin/profile") ? activeColor.active : activeColor.unactive)}
                     >
                         <User className="mr-3 h-5 w-5" />
                         Profile

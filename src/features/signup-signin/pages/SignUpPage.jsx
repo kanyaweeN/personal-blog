@@ -42,7 +42,6 @@ function SignUpPage() {
         if (!signUp.password || signUp.password.length < 6) {
             err.password = "Password must be at least 6 characters";
         }
-        console.log(err);
 
         setError(err);
 
