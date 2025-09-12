@@ -6,7 +6,7 @@ import { useAppToast } from '../../../hooks/useAppToast.jsx';
 import { NavBar } from "../../../components/layouts/NavBar.jsx";
 import ProfileHeader from "../components/ProfileHeader.jsx";
 import ProfileMenu from "../components/ProfileMenu.jsx";
-import AlertResetPassword from "../components/AlertResetPassword.jsx";
+import Alert from "../../common/Alert.jsx";
 
 function ResetPasswordPage() {
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
             <div className="flex items-center justify-center pt-6 ">
 
@@ -96,14 +96,21 @@ function ResetPasswordPage() {
                                             Save
                                         </AppButton>
                                     </div>
-
-                                    <AlertResetPassword open={isOpenAlert} onOpenChange={setisOpenAlert} />
                                 </form>
                             </div>
                         </main>
                     </div>
                 </div>
             </div>
+            <Alert
+                open={isOpenAlert}
+                onOpenChange={setisOpenAlert}
+                title="Reset password"
+                detail="Do you want to reset your password?"
+                acceptOnClick={() => navigate("/profile")}
+                acceptText="Reset"
+                cancelText="Cancel"
+            />
         </div>
     );
 }

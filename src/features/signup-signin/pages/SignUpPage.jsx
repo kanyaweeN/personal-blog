@@ -64,7 +64,7 @@ function SignUpPage() {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
 
             <main className="flex-1 flex justify-center px-6 py-12">

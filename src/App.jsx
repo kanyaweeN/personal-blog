@@ -11,6 +11,7 @@ import ProfilePage from "./features/profile/pages/ProfilePage.jsx";
 import ResetPasswordPage from "./features/profile/pages/ResetPasswordPage.jsx";
 import AdminLoginPage from "./features/admin/pages/AdminLoginPage.jsx";
 import ArticleManamentPage from "./features/admin/pages/ArticleManamentPage.jsx";
+import CreateArticlePage from "./features/admin/pages/CreateArticlePage.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/adminlogin" element={<AdminLoginPage />} />
         <Route path="/admin/article-manament" element={<ArticleManamentPage />} />
+        <Route path="/admin/article-manament/cerate-article" element={<CreateArticlePage />} />
 
         <Route path="/login" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />

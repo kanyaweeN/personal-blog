@@ -34,7 +34,7 @@ function SidebarMenu() {
                 </div>
                 <nav>
                     <a
-                        onClick={() => useNavigate("/admin/article-manament")}
+                        onClick={() => navigate("/admin/article-manament")}
                         className={clsx(baseStyle, isActive("/admin/article-manament") ? activeColor.active : activeColor.unactive)}
                     >
                         <FileText className={iconStyle} />
@@ -72,7 +72,7 @@ function SidebarMenu() {
             </div>
             <div className="space-y-4 text-gray-600 pl-4">
                 <a
-                    onClick={() => useNavigate("/")}
+                    onClick={() => navigate("/")}
                     className="flex items-center gap-2 hover:text-black"
                 >
                     <Globe className="mr-3 h-5 w-5" />

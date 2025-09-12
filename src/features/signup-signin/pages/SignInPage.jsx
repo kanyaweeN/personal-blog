@@ -46,7 +46,7 @@ function SignInPage() {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
             <main className="flex-1 flex justify-center px-6 py-12">
                 <div className="bg-brown-200 p-10 rounded-xl shadow max-w-xl w-full">

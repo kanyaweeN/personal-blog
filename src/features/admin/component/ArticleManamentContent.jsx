@@ -1,7 +1,13 @@
 import { Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
+import { AppButton } from "../../common/AppButton";
+import { useNavigate } from 'react-router-dom';
+import Alert from "../../common/Alert";
 
 function ArticleManamentContent() {
+    const navigate = useNavigate();
+    const [isOpenAlert, setisOpenAlert] = useState(false);
+
     const [articles] = useState([
         { title: "Understanding Cat Behavior: Why Your Feline Friend Acts the Way They Do", category: "Cat", status: "Published" },
         { title: "The Fascinating World of Cats: Why We Love Our Furry Friends", category: "Cat", status: "Published" },
@@ -10,38 +16,50 @@ function ArticleManamentContent() {
         { title: "Top 10 Health Tips to Keep Your Cat Happy and Healthy", category: "Cat", status: "Published" },
         { title: "Unlocking Creativity: Simple Habits to Spark Inspiration Daily", category: "Inspiration", status: "Published" },
     ]);
+    const statusData = ["Status", "Published", "Draft"];
+    const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
+
+    const handleDelete = () => {
+        setisOpenAlert(false)
+    }
 
     return (
         <main className="flex-1 p-10">
-            <div className="bg-white rounded-xl shadow p-6">
-                {/* Header */}
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-lg font-medium">Article management</h2>
-                    <button className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 text-sm">
-                        <Plus size={16} /> Create article
-                    </button>
-                </div>
+            {/* Header */}
+            <header className="flex justify-between items-center mb-5 border-b pb-5">
+                <h2 className="text-xl font-bold">
+                    Article management
+                </h2>
+                <AppButton
+                    style="icondark"
+                >
+                    <Plus size={16} />
+                    Create article
+                </AppButton>
+            </header>
 
-                {/* Search + Filters */}
-                <div className="flex gap-4 mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="w-full px-3 py-2 border rounded-md text-sm"
-                    />
-                    <select className="px-3 py-2 border rounded-md text-sm">
-                        <option>Status</option>
-                        <option>Published</option>
-                        <option>Draft</option>
-                    </select>
-                    <select className="px-3 py-2 border rounded-md text-sm">
-                        <option>Category</option>
-                        <option>Cat</option>
-                        <option>General</option>
-                        <option>Inspiration</option>
-                    </select>
-                </div>
+            {/* Search + Filters */}
+            <section className="flex gap-4 mb-4">
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full px-3 py-2 border rounded-md text-sm"
+                />
+                <select className="px-3 py-2 border rounded-md text-sm">
+                    {
+                        statusData.map((item) => {
+                            return <option key={item}>{item}</option>
+                        })
+                    }
+                </select>
+                <select className="px-3 py-2 border rounded-md text-sm">
+                    {categoryData.map((item) => {
+                        return <option key={item}>{item}</option>
+                    })}
+                </select>
+            </section>
 
+            <section className="bg-white rounded-xl shadow p-6">
                 {/* Table */}
                 <table className="w-full border-collapse text-sm">
                     <thead>
@@ -57,16 +75,35 @@ function ArticleManamentContent() {
                             <tr key={idx} className="border-b hover:bg-gray-50">
                                 <td className="py-3 px-3">{article.title}</td>
                                 <td className="py-3 px-3">{article.category}</td>
-                                <td className="py-3 px-3 text-green-600 font-medium">• {article.status}</td>
+                                <td className="py-3 px-3 text-green font-medium">• {article.status}</td>
                                 <td className="py-3 px-3 text-right space-x-2">
-                                    <button className="text-gray-600 hover:text-black"><Pencil size={16} /></button>
-                                    <button className="text-gray-600 hover:text-red-500"><Trash2 size={16} /></button>
+                                    <button
+                                        className="text-gray-600 hover:text-black"
+                                        onClick={() => navigate("/admin/article-manament/cerate-article")}
+                                    >
+                                        <Pencil size={16} />
+                                    </button>
+                                    <button
+                                        onClick={() => setisOpenAlert(true)}
+                                        className="text-gray-600 hover:text-red-500">
+                                        <Trash2 size={16} />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </section>
+
+            <Alert
+                open={isOpenAlert}
+                onOpenChange={setisOpenAlert}
+                title="Delete article"
+                detail="Do you want to delete this article?"
+                acceptOnClick={handleDelete}
+                acceptText="Delete"
+                cancelText="Cancel"
+            />
         </main>
     );
 }

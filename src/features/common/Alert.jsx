@@ -7,10 +7,19 @@ import {
     AlertDialogDescription,
     AlertDialogHeader,
 } from "@/components/ui/alert-dialog"
-import { AppButton } from '../../common/AppButton';
+import { AppButton } from './AppButton';
 
-function AlertResetPassword({ open, onOpenChange }) {
-    const navigate = useNavigate();
+function Alert(
+    {
+        open,
+        onOpenChange,
+        title,
+        detail,
+        acceptOnClick,
+        acceptText,
+        cancelText
+    }
+) {
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
@@ -21,10 +30,10 @@ function AlertResetPassword({ open, onOpenChange }) {
                     <AlertDialogDescription>
                         <span className="flex flex-col items-center gap-6 my-6 text-center">
                             <span className="font-bold text-2xl leading-snug">
-                                Reset password
+                                {title}
                             </span>
                             <span>
-                                Do you want to reset your password?
+                                {detail}
                             </span>
                             <span className='space-x-3' >
                                 <AppButton
@@ -34,13 +43,13 @@ function AlertResetPassword({ open, onOpenChange }) {
                                         // navigate(-1);          // กลับไปหน้าเดิม
                                     }}
                                 >
-                                    Cancel
+                                    {cancelText}
                                 </AppButton>
                                 <AppButton
                                     style='dark'
-                                    onClick={() => navigate("/profile")}
+                                    onClick={acceptOnClick}
                                 >
-                                    Reset
+                                    {acceptText}
                                 </AppButton>
                             </span>
                         </span>
@@ -51,4 +60,4 @@ function AlertResetPassword({ open, onOpenChange }) {
     );
 }
 
-export default AlertResetPassword;
+export default Alert;

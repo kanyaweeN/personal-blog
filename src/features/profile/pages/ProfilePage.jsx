@@ -31,7 +31,7 @@ function ProfilePage() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col ">
             <NavBar />
             <div className="flex items-center justify-center pt-6 ">
                 <div className="flex flex-col items-start ">
