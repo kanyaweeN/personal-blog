@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import clsx from "clsx";
-import userprofile from '../../assets/icons/Userprofile.png'
+import userprofile from '../../assets/icons/userprofile.png'
 
 function Userprofile({ src = userprofile, slyte }) {
     const navigate = useNavigate();
