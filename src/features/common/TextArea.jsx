@@ -1,7 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-import clsx from "clsx";
-import userprofile from '../../assets/icons/Userprofile.png'
-
 function TextArea({ ...props }) {
     return (
         <textarea
