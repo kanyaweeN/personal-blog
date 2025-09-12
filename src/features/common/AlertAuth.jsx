@@ -15,7 +15,6 @@ function AlertAuth({ open, onOpenChange }) {
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
                 <AlertDialogTitle>
-
                 </AlertDialogTitle>
                 <AlertDialogHeader>
                     <AlertDialogCancel className="absolute top-3 right-3 text-brown-600 hover:text-brown-400 border-0">X</AlertDialogCancel>

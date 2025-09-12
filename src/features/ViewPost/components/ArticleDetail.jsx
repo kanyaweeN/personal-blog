@@ -49,12 +49,12 @@ function ArticleDetail(props) {
     }, [])
 
     return (
-        <>
+        <div className="md:px-0 px-5">
             <div className="flex flex-col gap-4">
                 {/* img */}
                 <img className="w-full h-full object-cover rounded-xl py-15" src={blogPosts.image} alt={blogPosts.title} />
             </div>
-            <div className="flex flex-row relative gap-5">
+            <div className="md:flex md:flex-row relative gap-5">
                 <div>
 
                     <div >
@@ -81,8 +81,12 @@ function ArticleDetail(props) {
                                 </div>
                             </div>
                         </div>
-                        <div >
 
+                        <div className="md:hidden py-7">
+                            <AuthorCard />
+                        </div>
+
+                        <div >
                             <ArticleActions
                                 likes={blogPosts.likes}
                                 onClick=
@@ -93,13 +97,15 @@ function ArticleDetail(props) {
                         </div>
                     </div>
                 </div>
-                <div className="sticky top-0 right-0 w-[500px] h-fit">
-                    <AuthorCard />
+                <div className="hidden md:block md:basis-2/5">
+                    <div className="sticky top-0 right-0 min-m-50 h-fit">
+                        <AuthorCard />
+                    </div>
                 </div>
             </div>
 
             <AlertAuth open={isOpenAlert} onOpenChange={setisOpenAlert} />
-        </>
+        </div>
     );
 }
 
