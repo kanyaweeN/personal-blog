@@ -32,8 +32,10 @@ function SignInPage() {
 
         setError(err);
 
-        if (Object.keys(err).length !== 0) {
-            error("Your password is incorrect or this email doesn’t exist!", "Please try another password or email");
+        if (window.innerWidth > 768) { //desktop
+            if (Object.keys(err).length !== 0) {
+                error("Your password is incorrect or this email doesn’t exist!", "Please try another password or email");
+            }
         }
     }
 

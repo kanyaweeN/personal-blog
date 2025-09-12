@@ -19,25 +19,26 @@ function ArticleActions(props) {
     }
     return (
         <>
-            <div className="flex items-center justify-between bg-brown-200 p-5  rounded-xl">
-                <AppButton
-                    style="icon"
-                    size="lg"
-                    onClick={onClick}>
-                    <Smile size={20} />
-                    {likes}
-                </AppButton>
-
-                <div className="flex items-center gap-3">
+            {/* <div className="flex items-center justify-between bg-brown-200 p-5  rounded-xl"> */}
+            <div className="flex flex-col md:flex-row items-center justify-between bg-brown-200 p-5  rounded-xl">
+                <div className="pb-5 md:pb-0">
                     <AppButton
                         style="icon"
-                        size="lg"
+                        onClick={onClick}>
+                        <Smile size={20} />
+                        {likes}
+                    </AppButton>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <AppButton
+                        style="icon"
                         onClick={hanleClipboard}>
                         <Copy size={20} />
                         Copy link
                     </AppButton>
                     <a
-                        className="h-[50px]"
+                        className="h-10 w-10"
                         href='https://www.facebook.com/share.php?u=<ลิงก์ที่ต้องการแชร์>'
                         target="_blank"
                     >
@@ -49,26 +50,24 @@ function ArticleActions(props) {
                     </a>
 
                     <a
-                        className="h-[50px]"
+                        className="h-10 w-10"
                         href='https://www.linkedin.com/sharing/share-offsite/?url=<ลิงก์ที่ต้องการแชร์>'
                         target="_blank"
                     >
                         <img
                             src={linkin}
                             alt="Linkin"
-                            className="h-[50px]"
                         />
                     </a>
 
                     <a
-                        className="h-[50px]"
+                        className="h-10 w-10"
                         href='https://www.twitter.com/share?&url=<ลิงก์ที่ต้องการแชร์>'
                         target="_blank"
                     >
                         <img
                             src={twitter}
                             alt="Twitter"
-                            className="h-[50px]"
                         />
                     </a>
                 </div >

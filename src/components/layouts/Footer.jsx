@@ -34,7 +34,10 @@ export function Footer() {
             <div>
                 <button
                     className="hover:text-muted-foreground font-medium underline text-brown-600"
-                    onClick={() => navigate(`/`)}
+                    onClick={() => {
+                        window.scrollTo(0, 0)
+                        navigate(`/`)
+                    }}
                 >
                     Home page
                 </button>

@@ -144,7 +144,7 @@ export function ArticleSection() {
     // }, [search])
 
     return (
-        <div className=" md:px-0 px-5">
+        <div>
             <section>
                 <h2 className="text-2xl font-semibold m-6 m">
                     Latest articles
@@ -220,7 +220,7 @@ export function ArticleSection() {
                 </div >
             </section >
 
-            <section className="py-12">
+            <section className="py-12 md:px-0 px-5">
                 {/* BlogCard */}
                 < div className="grid grid-cols-1 gap-10 md:grid-cols-2" >
                     {
