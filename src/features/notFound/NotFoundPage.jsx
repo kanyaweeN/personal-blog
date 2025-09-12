@@ -8,7 +8,7 @@ function NotFoundPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="container min-h-screen flex flex-col">
             <NavBar />
 
             <main className="flex-1 flex items-center justify-center px-6 py-12">

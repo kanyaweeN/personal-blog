@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../../common/AppButton";
 import InputField from "../../common/InputField.jsx"
 import { useAppToast } from '../../../hooks/useAppToast.jsx';
-import Userprofile from "../../common/userprofile.jsx";
+import Userprofile from "../../common/Userprofile.jsx";
 import { NavBar } from "../../../components/layouts/NavBar.jsx";
 import ProfileHeader from "../components/ProfileHeader.jsx";
 import ProfileMenu from "../components/ProfileMenu.jsx";
@@ -31,7 +31,7 @@ function ProfilePage() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col ">
             <NavBar />
             <div className="flex items-center justify-center pt-6 ">
                 <div className="flex flex-col items-start ">

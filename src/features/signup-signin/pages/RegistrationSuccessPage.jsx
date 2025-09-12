@@ -8,7 +8,7 @@ function RegistrationSuccessPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
             <main className="flex-1 flex justify-center px-6 py-12 ">
                 <div className="bg-brown-200 p-20 rounded-xl max-w-xl w-full text-center space-y-6">

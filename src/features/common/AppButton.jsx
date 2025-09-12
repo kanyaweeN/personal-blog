@@ -12,6 +12,10 @@ export function AppButton({ type, children, style = "white", size = "md", disabl
             `flex gap-3 bg-white text-brown-700 border border-brown-400 
             hover:bg-brown-100 
             disabled:border-brown-300 disabled:text-brown-400`,
+        icondark:
+            `flex gap-3 bg-brown-600 text-white border order-brown-700
+            hover:bg-brown-600 
+            disabled:border-brown-300 disabled:text-brown-400`,
         underline: "text-black underline hover:text-brown-400 disabled:text-brown-400",
         dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-600",
         white: "bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400",

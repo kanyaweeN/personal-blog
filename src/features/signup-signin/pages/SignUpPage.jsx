@@ -42,7 +42,6 @@ function SignUpPage() {
         if (!signUp.password || signUp.password.length < 6) {
             err.password = "Password must be at least 6 characters";
         }
-        console.log(err);
 
         setError(err);
 
@@ -64,7 +63,7 @@ function SignUpPage() {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
 
             <main className="flex-1 flex justify-center px-6 py-12">

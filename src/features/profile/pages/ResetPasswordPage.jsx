@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../../common/AppButton";
 import InputField from "../../common/InputField.jsx"
 import { useAppToast } from '../../../hooks/useAppToast.jsx';
-import Userprofile from "../../common/userprofile.jsx";
 import { NavBar } from "../../../components/layouts/NavBar.jsx";
 import ProfileHeader from "../components/ProfileHeader.jsx";
 import ProfileMenu from "../components/ProfileMenu.jsx";
-import AlertResetPassword from "../components/AlertResetPassword.jsx";
+import Alert from "../../common/Alert.jsx";
 
 function ResetPasswordPage() {
     const navigate = useNavigate();
@@ -33,7 +32,7 @@ function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="container flex flex-col">
             <NavBar />
             <div className="flex items-center justify-center pt-6 ">
 
@@ -43,7 +42,6 @@ function ResetPasswordPage() {
                     {/* Sidebar */}
                     <div className="flex md:flex-row w-full">
                         <ProfileMenu
-                            currentPage="reset"
                             onClick={() => navigate("/profile")}
                         />
 
@@ -98,14 +96,21 @@ function ResetPasswordPage() {
                                             Save
                                         </AppButton>
                                     </div>
-
-                                    <AlertResetPassword open={isOpenAlert} onOpenChange={setisOpenAlert} />
                                 </form>
                             </div>
                         </main>
                     </div>
                 </div>
             </div>
+            <Alert
+                open={isOpenAlert}
+                onOpenChange={setisOpenAlert}
+                title="Reset password"
+                detail="Do you want to reset your password?"
+                acceptOnClick={() => navigate("/profile")}
+                acceptText="Reset"
+                cancelText="Cancel"
+            />
         </div>
     );
 }
