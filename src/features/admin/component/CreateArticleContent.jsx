@@ -8,9 +8,11 @@ import {
 import InputField from "../../common/InputField";
 import TextArea from "../../common/Textarea";
 import AppSelect from "../../common/AppSelect";
+import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
 function CreateArticleContent() {
     const navigate = useNavigate();
+    const { success } = useAppToast();
     const [post, setPost] = useState({
         image: "",
         categoryId: null,
@@ -39,6 +41,25 @@ function CreateArticleContent() {
             [name]: value,
         }));
     }
+    const handleSave = (mode) => {
+        switch (mode) {
+            case 1: //draft
+                success(
+                    "Create article and saved as draft",
+                    "You can publish article later"
+                );
+                break;
+            case 2: //publish
+                success(
+                    "Create article and published",
+                    "Your article has been successfully published"
+                );
+                break;
+        }
+
+        navigate("/admin/article-manament")
+    }
+
 
     return (
         <main className="flex-1 p-10">
@@ -49,12 +70,12 @@ function CreateArticleContent() {
                 </h2>
                 <div className="flex gap-2">
                     <AppButton
-                        onClick={() => navigate("/admin/article-manament")}
+                        onClick={() => handleSave(1)}
                     >
                         Save as draft
                     </AppButton>
                     <AppButton
-                        onClick={() => navigate("/admin/article-manament")}
+                        onClick={() => handleSave(2)}
                         style="dark"
                     >
                         Save and publish

@@ -3,9 +3,11 @@ import { useState } from "react";
 import { AppButton } from "../../common/AppButton";
 import { useNavigate } from 'react-router-dom';
 import Alert from "../../common/Alert";
+import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
 function ArticleManamentContent() {
     const navigate = useNavigate();
+    const { success } = useAppToast();
     const [isOpenAlert, setisOpenAlert] = useState(false);
 
     const [articles] = useState([
@@ -21,6 +23,10 @@ function ArticleManamentContent() {
 
     const handleDelete = () => {
         setisOpenAlert(false)
+
+        if (Object.keys(err).length !== 0) {
+            error("   Your password is incorrect or this email doesn’t exist!", "Please try another password or email");
+        }
     }
 
     return (
@@ -32,6 +38,7 @@ function ArticleManamentContent() {
                 </h2>
                 <AppButton
                     style="icondark"
+                    onClick={() => navigate("/admin/article-manament/cerate-article")}
                 >
                     <Plus size={16} />
                     Create article
