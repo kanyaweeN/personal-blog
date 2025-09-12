@@ -10,7 +10,6 @@ import {
 import { useNavigate } from 'react-router-dom'; import { Logo } from "../../../components/nav/Logo";
 import clsx from "clsx";
 
-
 function SidebarMenu() {
     const navigate = useNavigate();
 
@@ -41,29 +40,29 @@ function SidebarMenu() {
                         Article management
                     </a>
                     <a
-                        href="#"
+                        onClick={() => navigate("/admin/category-management")}
                         className={clsx(baseStyle, isActive("/admin/category-management") ? activeColor.active : activeColor.unactive)}
                     >
                         <FolderOpen className="mr-3 h-5 w-5" />
                         Category management
                     </a>
                     <a
-                        href="#"
+                        onClick={() => navigate("/admin/profile")}
                         className={clsx(baseStyle, isActive("/admin/profile") ? activeColor.active : activeColor.unactive)}
                     >
                         <User className="mr-3 h-5 w-5" />
                         Profile
                     </a>
                     <a
-                        href="#"
+                        onClick={() => navigate("/admin/notification")}
                         className={clsx(baseStyle, isActive("/admin/notification") ? activeColor.active : activeColor.unactive)}
                     >
                         <Bell className="mr-3 h-5 w-5" />
                         Notification
                     </a>
                     <a
-                        href="#"
-                        className={clsx(baseStyle, isActive("/admin/category-management") ? activeColor.active : activeColor.unactive)}
+                        onClick={() => navigate("/admin/resetpassword")}
+                        className={clsx(baseStyle, isActive("/admin/resetpassword") ? activeColor.active : activeColor.unactive)}
                     >
                         <Key className="mr-3 h-5 w-5" />
                         Reset password
