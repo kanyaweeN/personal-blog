@@ -6,7 +6,7 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 import InputField from "../../common/InputField";
-import TextArea from "../../common/Textarea";
+import TextArea from "../../common/TextArea";
 import AppSelect from "../../common/AppSelect";
 import { useAppToast } from '../../../hooks/useAppToast.jsx';
 
