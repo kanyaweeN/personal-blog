@@ -15,6 +15,7 @@ import CreateArticlePage from "./features/admin/pages/CreateArticlePage.jsx";
 import CategoryManagementPage from "./features/admin/pages/CategoryManagementPage.jsx";
 import CreateCategoryPage from "./features/admin/pages/CreateCategoryPage.jsx";
 import PorfilePage from "./features/admin/pages/PorfilePage.jsx";
+import NotificationPage from "./features/admin/pages/NotificationPage.jsx";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/admin/category-management" element={<CategoryManagementPage />} />
         <Route path="/admin/category-management/create-category" element={<CreateCategoryPage />} />
         <Route path="/admin/profile" element={<PorfilePage />} />
+        <Route path="/admin/notification" element={<NotificationPage />} />
 
         <Route path="/login" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />

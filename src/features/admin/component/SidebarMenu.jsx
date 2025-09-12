@@ -56,7 +56,7 @@ function SidebarMenu() {
                     </a>
                     <a
                         href="#"
-                        className={clsx(baseStyle, isActive("/admin/category-management") ? activeColor.active : activeColor.unactive)}
+                        className={clsx(baseStyle, isActive("/admin/notification") ? activeColor.active : activeColor.unactive)}
                     >
                         <Bell className="mr-3 h-5 w-5" />
                         Notification
