@@ -53,23 +53,37 @@ function SignUpPage() {
 
     const saveData = async () => {
         let result;
-        console.log(signUp);
+        console.log("signUp", {
+            ...signUp,
+            role: "user"
+        });
 
         try {
             result = await axios.post(
-                "http://localhost:4000/profile/register",
+                "http://localhost:4000/auth/register",
                 {
                     ...signUp,
                     role: "user"
                 }
-
             );
+
+            console.log("signUp result", result);
 
             if (result?.status === 201) {
                 navigate("/signup/success")
             }
         } catch (e) {
-            console.error("axios.register", e);
+            console.log("signUp e", e);
+
+            if (error.response?.status <= 409) {
+                setError({
+                    email: e.response
+                        .data.message
+                })
+            } else {
+                console.error(error);
+            }
+            // console.error("axios.register", e);
         }
     }
 

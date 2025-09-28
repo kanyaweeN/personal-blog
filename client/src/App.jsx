@@ -30,8 +30,13 @@ function App() {
     <>
       <Toaster />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={
+          (() => {
+            return (<HomePage />)
+          })()
+        } />
         <Route path="/viewpost/:postId" element={<ViewPostPage />} />
+        <Route path="*" element={<NotFoundPage />} />
 
         <Route path="/adminlogin" element={<AdminLoginPage />} />
         <Route path="/admin/article-manament" element={<ArticleManamentPage />} />
@@ -40,10 +45,10 @@ function App() {
         <Route path="/admin/category-management/create-category" element={<CreateCategoryPage />} />
         <Route path="/admin/profile" element={
           <ProtectedRoute
-            isLoading={state.getUserLoading}
-            isAuthenticated={isAuthenticated}
-            userRole={state.user?.role}
-            requiredRole="admin"
+          // isLoading={state.getUserLoading}
+          // isAuthenticated={isAuthenticated}
+          // userRole={state.user?.role}
+          // requiredRole="admin"
           >
             <PorfilePage />
           </ProtectedRoute>
@@ -51,30 +56,58 @@ function App() {
         <Route path="/admin/notification" element={<NotificationPage />} />
         <Route path="/admin/resetpassword" element={<AdminResetPasswordPage />} />
 
+        {/* Authentication Section */}
         <Route path="/login" element={
+          (() => {
+            return (
+              <AuthenticationRoute
+                isLoading={state.getUserLoading}
+                isAuthenticated={isAuthenticated}
+              >
+                <SignInPage />
+              </AuthenticationRoute>
+            );
+          })()
+        } />
+        <Route path="/signup" element={
           <AuthenticationRoute
             isLoading={state.getUserLoading}
             isAuthenticated={isAuthenticated}
           >
-            <SignInPage />
+            <SignUpPage />
           </AuthenticationRoute>
         } />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/signup/success" element={<RegistrationSuccessPage />} />
-
-        <Route path="/profile" element={
-          <ProtectedRoute
+        <Route path="/signup/success" element={
+          <AuthenticationRoute
             isLoading={state.getUserLoading}
             isAuthenticated={isAuthenticated}
-            userRole={state.user?.role}
-            requiredRole="user"
+          >
+            <RegistrationSuccessPage />
+          </AuthenticationRoute>
+        } />
+
+        {/* User Section */}
+        <Route path="/profile" element={
+          <ProtectedRoute
+          // isLoading={state.getUserLoading}
+          // isAuthenticated={isAuthenticated}
+          // userRole={state.user?.role}
+          // requiredRole="user"
           >
             <ProfilePage />
           </ProtectedRoute>
         } />
-        <Route path="/profile/resetpassword" element={<ResetPasswordPage />} />
+        <Route path="/profile/resetpassword" element={
+          <ProtectedRoute
+          // isLoading={state.getUserLoading}
+          // isAuthenticated={isAuthenticated}
+          // userRole={state.user?.role}
+          // requiredRole="user"
+          >
+            <ResetPasswordPage />
+          </ProtectedRoute>
+        } />
 
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

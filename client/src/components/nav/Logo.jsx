@@ -7,7 +7,10 @@ export function Logo() {
     return (
         <AppButton
             style="transition"
-            onClick={() => navigate("/")}
+            onClick={() => {
+                console.log("=== LOGO CLICKED ===");
+                // navigate("/");
+            }}
         >
             <div className="flex items-center">
                 <span className="text-2xl font-semibold text-gray-800">

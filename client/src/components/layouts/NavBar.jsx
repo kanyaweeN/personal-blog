@@ -5,12 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../../features/common/AppButton.jsx";
 import { MobileMenu } from "../nav/MobileMenu.jsx";
 import { Logo } from "../nav/Logo.jsx";
+import { useAuth } from "@/contexts/authentication";
+import Userprofile from "../../features/common/Userprofile.jsx";
 
 export function NavBar() {
     const navigate = useNavigate();
+    const { isAuthenticated, state, logout } = useAuth();
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+    // console.log("NavBar", isAuthenticated);
 
     return (
         <div className="w-full relative">
@@ -20,18 +24,30 @@ export function NavBar() {
                 <Logo />
 
                 {/* Desktop Buttons */}
+
                 <div className="hidden md:flex gap-3 items-center">
-                    <AppButton
-                        onClick={() => navigate("/login")}
-                    >
-                        Log in
-                    </AppButton>
-                    <AppButton
-                        style="dark"
-                        onClick={() => navigate("/signup")}
-                    >
-                        Sign up
-                    </AppButton>
+                    {!isAuthenticated ?
+                        (
+                            <>
+                                <AppButton
+                                    onClick={() => navigate("/login")}
+                                >
+                                    Log in
+                                </AppButton>
+                                <AppButton
+                                    style="dark"
+                                    onClick={() => navigate("/signup")}
+                                >
+                                    Sign up
+                                </AppButton></>
+                        )
+                        : (
+                            <>
+                                <Userprofile
+                                    slyte="w-10 h-10"
+                                />
+                            </>
+                        )}
                 </div>
 
                 {/* Hamburger */}

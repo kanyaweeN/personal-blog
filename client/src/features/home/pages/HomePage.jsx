@@ -4,6 +4,8 @@ import { HeroSection } from "../components/HeroSection.jsx";
 import { ArticleSection } from "../components/ArticleSection.jsx";
 
 function HomePage() {
+    
+    console.log("=== BEFORE Home CALL ===", window.location.href);
     return (
         <div className="container">
             <NavBar />

@@ -10,6 +10,7 @@ function jwtInterceptor() {
                 Authorization: `Bearer ${window.localStorage.getItem("token")}`,
             };
         }
+        console.log("jwtInterceptor", req);
 
         return req;
     });
@@ -19,13 +20,15 @@ function jwtInterceptor() {
             return response;
         },
         (error) => {
+            console.log("=== JWT INTERCEPTOR ERROR ===", error.response);
             if (
                 error.response &&
                 error.response.status === 401 &&
                 error.response.data.error.includes("Unauthorized")
             ) {
+                console.log("=== JWT INTERCEPTOR REDIRECTING ===");
                 window.localStorage.removeItem("token");
-                window.location.replace("/");
+                // window.location.replace("/"); // คอมเมนต์ไว้ก่อน
             }
             return Promise.reject(error);
         }

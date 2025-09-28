@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import profileRouter from "./routes/ProfileRouter.mjs";
 import postRouter from "./routes/PostRouter.mjs";
+import authRouter from "./routes/auth.mjs";
 import protectUser from "./middlewares/protectUser.mjs";
 import protectAdmin from "./middlewares/protectAdmin.mjs";
 
@@ -15,6 +16,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
     return res.json("Server API is working")
 })
+
+app.use("/auth", authRouter);
 
 app.use("/profile", profileRouter);
 app.use("/post", postRouter);
