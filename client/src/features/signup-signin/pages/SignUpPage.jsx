@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavBar } from '../../../components/layouts/NavBar.jsx';
 import { AppButton } from '../../common/AppButton.jsx';
 import InputField from '../../common/InputField.jsx';
+import axios from "axios"
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -50,8 +51,26 @@ function SignUpPage() {
         }
     }
 
-    const saveData = () => {
-        navigate("/signup/success")
+    const saveData = async () => {
+        let result;
+        console.log(signUp);
+
+        try {
+            result = await axios.post(
+                "http://localhost:4000/profile/register",
+                {
+                    ...signUp,
+                    role: "user"
+                }
+
+            );
+
+            if (result?.status === 201) {
+                navigate("/signup/success")
+            }
+        } catch (e) {
+            console.error("axios.register", e);
+        }
     }
 
     const handleInputonChange = (e) => {
