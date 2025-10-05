@@ -1,4 +1,4 @@
-import { AppButton } from "../../features/common/AppButton";
+import { AppButton } from "../button/AppButton";
 import { useNavigate } from 'react-router-dom';
 
 export function Logo() {

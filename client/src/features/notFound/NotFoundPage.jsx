@@ -1,8 +1,8 @@
 import { CircleAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { NavBar } from '../../components/layouts/NavBar.jsx';
-import { Footer } from '../../components/layouts/Footer.jsx';
-import { AppButton } from '../common/AppButton.jsx';
+import { NavBar } from '../../components/nav/NavBar.jsx';
+import { Footer } from '../../components/nav/Footer.jsx';
+import { AppButton } from '../../components/button/AppButton.jsx';
 
 function NotFoundPage() {
     const navigate = useNavigate();

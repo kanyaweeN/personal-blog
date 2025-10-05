@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { AppButton } from "../../features/common/AppButton.jsx";
+import { AppButton } from "../button/AppButton.jsx";
 
 export function MobileMenu({ isOpen }) {
     const navigate = useNavigate();
