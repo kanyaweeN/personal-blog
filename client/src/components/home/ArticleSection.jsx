@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 
 import BlogCard from "./BlogCard.jsx";
-import PostService from "../../services/blogService.js";
+import PostService from "../../services/postService.js";
 import { formatDate } from "../../utils/formatDate.js";
 import InputSearch from "../input/InputSearch.jsx";
 import AppSelect from "../input/AppSelect.jsx";
@@ -33,14 +33,15 @@ export function ArticleSection() {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery(searchTerm));
-            console.log("ArticleSection.fetchPosts : ", result);
 
+            console.log("result", result.posts);
             if (page === 1) {
                 setblogPosts(result.posts);
             }
             else {
                 setblogPosts([...blogPosts, ...result.posts]);
             }
+            console.log("try", blogPosts);
 
             // Update suggestions when searching
             if (searchTerm && Array.isArray(result.posts)) {
@@ -58,7 +59,10 @@ export function ArticleSection() {
             setError("โหลดข้อมูลไม่สำเร็จ");
         } finally {
             setLoading(false);
+            console.log("finally", blogPosts);
         }
+
+        console.log("out", blogPosts);
         return result;
     };
 
@@ -68,7 +72,6 @@ export function ArticleSection() {
         let result = {};
         try {
             result = await PostService.getPostBykeyword(searchTerm);
-            // console.log("ArticleSection.fetchSuggestions : ", result);
 
             // Update suggestions when searching
             if (searchTerm && Array.isArray(result.posts)) {
@@ -219,20 +222,20 @@ export function ArticleSection() {
                     </div>
                 </div >
             </section >
-
             <section className="py-12 md:px-0 px-5">
                 {/* BlogCard */}
                 < div className="grid grid-cols-1 gap-10 md:grid-cols-2" >
                     {
-                        blogPosts.map((item) =>
+                        blogPosts.map((item, index) =>
                             <BlogCard
-                                key={item.id}
+                                key={`${item.id}-${index}`}
                                 id={item.id}
                                 image={item.image}
                                 category={item.category}
                                 title={item.title}
                                 description={item.description}
                                 author={item.author}
+                                authorImg={item.author_img}
                                 date={formatDate(item.date)}
                             />
                         )

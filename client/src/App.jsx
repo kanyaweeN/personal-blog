@@ -54,7 +54,7 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/admin/notification" element={<NotificationPage />} />
-        <Route path="/admin/resetpassword" element={<AdminResetPasswordPage />} />
+        <Route path="/admin/reset-password" element={<AdminResetPasswordPage />} />
 
         {/* Authentication Section */}
         <Route path="/login" element={
@@ -89,20 +89,20 @@ function App() {
         {/* User Section */}
         <Route path="/profile" element={
           <ProtectedRoute
-          // isLoading={state.getUserLoading}
-          // isAuthenticated={isAuthenticated}
-          // userRole={state.user?.role}
-          // requiredRole="user"
+            isLoading={state.getUserLoading}
+            isAuthenticated={isAuthenticated}
+            userRole={state.user?.role}
+            requiredRole="user"
           >
             <ProfilePage />
           </ProtectedRoute>
         } />
-        <Route path="/profile/resetpassword" element={
+        <Route path="/profile/reset-password" element={
           <ProtectedRoute
-          // isLoading={state.getUserLoading}
-          // isAuthenticated={isAuthenticated}
-          // userRole={state.user?.role}
-          // requiredRole="user"
+            isLoading={state.getUserLoading}
+            isAuthenticated={isAuthenticated}
+            userRole={state.user?.role}
+            requiredRole="user"
           >
             <ResetPasswordPage />
           </ProtectedRoute>

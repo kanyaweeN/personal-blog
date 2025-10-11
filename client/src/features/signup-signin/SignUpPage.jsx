@@ -53,10 +53,6 @@ function SignUpPage() {
 
     const saveData = async () => {
         let result;
-        console.log("signUp", {
-            ...signUp,
-            role: "user"
-        });
 
         try {
             result = await axios.post(
@@ -66,8 +62,6 @@ function SignUpPage() {
                     role: "user"
                 }
             );
-
-            console.log("signUp result", result);
 
             if (result?.status === 201) {
                 navigate("/signup/success")

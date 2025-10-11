@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from 'react-markdown'
 import CategoryTag from "../tag/CategoryTag.jsx";
 import { formatDate } from "../../utils/formatDate.js";
-import PostService from "../../services/blogService.js";
+import PostService from "../../services/postService.js";
 import ArticleActions from "./ArticleActions.jsx";
 import CommentSection from "./CommentSection.jsx";
 import AuthorCard from "./AuthorCard.jsx";
@@ -22,7 +22,6 @@ function ArticleDetail(props) {
         let result = {};
         try {
             result = await PostService.getPostById(postId);
-            console.log("ViewPostPage.fetchPosts : ", result);
 
             setBlogPosts(result);
         } catch (err) {
@@ -33,17 +32,25 @@ function ArticleDetail(props) {
         return result;
     };
 
-    const handleLike = () => {
-        setisOpenAlert(true);
+    const handleLike = async () => {
+        setBlogPosts((prev) => ({
+            ...prev,
+            likes: (prev.likes || 0) + 1,
+        }));
+        console.log("handleLike");
 
-        // setBlogPosts((prev) => ({
-        //     ...prev,
-        //     likes: (prev.likes || 0) + 1,
-        // }));
+        try {
+            await PostService.likePost(postId);
+        } catch (error) {
+            console.error("Failed to like post:", error);
 
-        // ถ้าอยากส่งไป backend ด้วย
-        // PostService.likePost(postId);
+            setBlogPosts((prev) => ({
+                ...prev,
+                likes: (prev.likes || 1) - 1,
+            }));
+        }
     };
+
     useEffect(() => {
         fetchPosts();
     }, [])
@@ -86,13 +93,13 @@ function ArticleDetail(props) {
                             <AuthorCard />
                         </div>
 
-                        <div >
+                        <div className="py-5">
                             <ArticleActions
                                 likes={blogPosts.likes}
                                 onClick=
                                 {handleLike} />
                         </div>
-                        <div className="py-10">
+                        <div className="py-5">
                             <CommentSection postId={postId} />
                         </div>
                     </div>

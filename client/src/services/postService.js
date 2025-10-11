@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://blog-post-project-api.vercel.app";
+const url = "http://localhost:4000";
 
 const PostService = {
     getAllPost: async (params) => {
@@ -10,7 +10,8 @@ const PostService = {
                     params: params
                 }
             )
-            return result.data;
+
+            return result.data.data;
         } catch (e) {
             console.error("PostService.getAllPost : ", e);
             return [];
@@ -19,7 +20,7 @@ const PostService = {
         try {
             const result = await axios.get(`${url}/posts/${id}`,
             )
-            return result.data;
+            return result.data.data;
         } catch (e) {
             console.error("PostService.getPostById : ", e);
             return [];
@@ -32,6 +33,16 @@ const PostService = {
         } catch (e) {
             console.error("PostService.getPostBykeyword : ", e);
             return [];
+        }
+    }, likePost: async (postId) => {
+        try {
+            console.log("likePost", postId);
+
+            const result = await axios.patch(`${url}/posts/${postId}/like`);
+            return result.data;
+        } catch (e) {
+            console.error("PostService.likePost:", e);
+            throw e;
         }
     },
 }

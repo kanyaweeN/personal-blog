@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../../components/button/AppButton.jsx";
 import InputField from "../../components/input/InputField.jsx"
@@ -7,8 +7,11 @@ import { NavBar } from "../../components/nav/NavBar.jsx";
 import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
 import ProfileMenu from "../../components/profile/ProfileMenu.jsx";
 import Alert from "../../components/alert/Alert.jsx";
+import ResetPasswordForm from "../../components/profile/ResetPasswordForm.jsx";
+import { useAuth } from "../../contexts/authentication.jsx";
 
-function ResetPasswordPage() {
+export default function ResetPasswordPage() {
+    const { state } = useAuth();
     const navigate = useNavigate();
     const { success } = useAppToast();
 
@@ -19,6 +22,17 @@ function ResetPasswordPage() {
         newPassword: "",
         confirmNewPassword: "",
     });
+
+    useEffect(() => {
+        if (state?.user) {
+            setProfile({
+                image: state.user.avatar || "",
+                name: state.user.name || "",
+                username: state.user.username || "",
+                email: state.user.email || "",
+            });
+        }
+    }, [state?.user]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,73 +46,24 @@ function ResetPasswordPage() {
     };
 
     return (
-        <div className="container flex flex-col">
+        <div className="min-h-screen bg-gray-50">
             <NavBar />
-            <div className="flex items-center justify-center pt-6 ">
+            <div className="container mx-auto px-4 py-6">
 
                 <div className="flex flex-col items-start ">
                     <ProfileHeader name={profile.name} menuName="Reset password" />
 
                     {/* Sidebar */}
                     <div className="flex md:flex-row w-full">
-                        <ProfileMenu
-                            onClick={() => navigate("/profile")}
-                        />
+                        {/* Sidebar Menu */}
+                        <aside className="w-[200px]">
+                            <ProfileMenu
+                                onClick={() => navigate("/profile")}
+                            />
+                        </aside>
 
                         {/* Main content */}
-                        <main className="flex-1 flex justify-center items-start ">
-                            <div className="bg-brown-200 max-w-lg rounded-xl shadow p-8 space-y-6">
-
-                                {/* Form */}
-                                <form onSubmit={handleSubmit} className="space-y-5 ">
-                                    {/* Current Password */}
-                                    <div>
-                                        <InputField
-                                            text="currentPassword"
-                                            type="password"
-                                            name="currentPassword"
-                                            placeholder="Current Password"
-                                            value={profile.currentPassword}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-
-                                    {/* New Password */}
-                                    <div>
-                                        <InputField
-                                            text="New Password"
-                                            type="password"
-                                            name="newPassword"
-                                            placeholder="New Password"
-                                            value={profile.newPassword}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-
-                                    {/* Confirm new password */}
-                                    <div>
-                                        <InputField
-                                            text="Confirm New Password"
-                                            type="password"
-                                            name="confirmNewPassword"
-                                            placeholder="Confirm New Password"
-                                            value={profile.confirmNewPassword}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-
-                                    {/* Save button */}
-                                    <div className="flex justify-start">
-                                        <AppButton
-                                            type="submit"
-                                            style="dark"
-                                        >
-                                            Save
-                                        </AppButton>
-                                    </div>
-                                </form>
-                            </div>
-                        </main>
+                        <ResetPasswordForm />
                     </div>
                 </div>
             </div>
@@ -114,5 +79,3 @@ function ResetPasswordPage() {
         </div>
     );
 }
-
-export default ResetPasswordPage

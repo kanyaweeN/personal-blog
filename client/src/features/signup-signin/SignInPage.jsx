@@ -60,15 +60,11 @@ function SignInPage() {
             if (result?.error) {
                 error("Please try another password or email");
             } else if (result?.success) {
-                console.log("signIn success");
                 // ตรวจสอบว่า token ถูกบันทึกใน localStorage หรือไม่
                 const savedToken = localStorage.getItem("token");
-                console.log("Token in localStorage:", savedToken);
 
                 if (savedToken) {
-                    // ไม่ navigate ทันที ให้แสดงข้อความสำเร็จก่อน
-                    console.log("Login successful! Token saved.");
-                    // navigate("/"); // คอมเมนต์ไว้ก่อน
+                    navigate("/"); // 
                 } else {
                     error("Token not saved properly");
                 }

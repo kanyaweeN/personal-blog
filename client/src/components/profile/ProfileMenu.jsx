@@ -22,8 +22,8 @@ function ProfileMenu({ onClick }) {
                     Profile
                 </a>
                 <a
-                    onClick={isActive("/profile/resetpassword") ? undefined : onClick}
-                    className={clsx(baseColor, isActive("/profile/resetpassword") ? activeColor.active : activeColor.unactive)}
+                    onClick={isActive("/profile/reset-password") ? undefined : onClick}
+                    className={clsx(baseColor, isActive("/profile/reset-password") ? activeColor.active : activeColor.unactive)}
                 >
                     <Lock className="h-5 w-5 mb-1" />
                     Reset password

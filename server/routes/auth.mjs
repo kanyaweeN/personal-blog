@@ -109,21 +109,16 @@ authRouter.post("/login", async (req, res) => {
             });
         }
 
-        // console.log("/login rows", rows);
         const user = rows[0];
 
-        // console.log("/login password", password, user.password);
-        // ตรวจสอบรหัสผ่าน
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
-        // console.log("/login isPasswordValid", isPasswordValid);
         if (!isPasswordValid) {
             return res.status(400).json({
                 message: "Your password is incorrect or this email doesn't exist",
             });
         }
 
-        // console.log("/login user", user);
         // สร้าง JWT token
         const token = jwt.sign(
             {
@@ -134,7 +129,6 @@ authRouter.post("/login", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
-        // console.log("/login token", token);
         return res.status(200).json({
             message: "Signed in successfully",
             access_token: token,
@@ -146,9 +140,7 @@ authRouter.post("/login", async (req, res) => {
     }
 });
 authRouter.get("/get-user", async (req, res) => {
-    console.log("get-user", req.headers);
     const token = req.headers.authorization?.split(" ")[1];
-    console.log("authorization", token);
 
     if (!token) {
         return res.status(401).json({ message: "Unauthorized: Token missing" });
@@ -157,7 +149,6 @@ authRouter.get("/get-user", async (req, res) => {
     try {
         // ตรวจสอบ JWT token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("authorization decoded", decoded);
 
         const query = `
                     SELECT * FROM users 
@@ -180,7 +171,6 @@ authRouter.get("/get-user", async (req, res) => {
             profilePic: user.profile_pic,
         });
     } catch (error) {
-        console.log("authorization", error);
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: "Unauthorized or token expired" });
         }

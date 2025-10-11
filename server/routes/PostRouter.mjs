@@ -7,6 +7,7 @@ const postRouter = Router();
 postRouter.post("/", PostValidation.createProduct, PostController.createPost);
 postRouter.get("/", PostController.getAll);
 postRouter.get("/:id", PostController.getById);
+postRouter.patch("/:id/like", PostController.updateLikeById);
 postRouter.put("/:id", PostValidation.updateProduct, PostController.updateById);
 postRouter.delete("/:id", PostController.deleteById);
 

@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../button/AppButton.jsx";
+import Userprofile from './Userprofile.jsx';
+import { useAuth } from '../../contexts/authentication.jsx';
 
 export function MobileMenu({ isOpen }) {
+    const { isAuthenticated, state, logout } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -11,19 +14,31 @@ export function MobileMenu({ isOpen }) {
                 : "opacity-0 max-h-0 invisible overflow-hidden"
                 }`}
         >
-            <div className="p-4 flex flex-col gap-5">
-                <AppButton
-                    onClick={() => navigate("/login")}
-                >
-                    Log in
-                </AppButton>
-                <AppButton
-                    style="dark"
-                    onClick={() => navigate("/signup")}
-                >
-                    Sign up
-                </AppButton>
-            </div>
+            {!isAuthenticated ?
+                (
+                    <div className="p-4 flex flex-col gap-5">
+                        <AppButton
+                            onClick={() => navigate("/login")}
+                        >
+                            Log in
+                        </AppButton>
+                        <AppButton
+                            style="dark"
+                            onClick={() => navigate("/signup")}
+                        >
+                            Sign up
+                        </AppButton>
+                    </div>
+
+                )
+                : (
+                    <>
+                        <Userprofile
+                            slyte="w-10 h-10"
+                        />
+                    </>
+                )}
+
         </div>
     );
 }

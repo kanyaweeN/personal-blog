@@ -11,6 +11,9 @@ export const PostService = {
     async getById(id) {
         return await PostRepository.getById(id);
     },
+    async updateLikeById(id) {
+        return await PostRepository.updateLikeById(id);
+    },
     async updateById(postData) {
         const dataWithTimestamp = { ...postData, created_at: new Date() };
         return await PostRepository.updateById(dataWithTimestamp);

@@ -1,17 +1,19 @@
-import { useNavigate } from 'react-router-dom';
 import clsx from "clsx";
-import userprofile from '../../assets/icons/userprofile.png'
+import { useAuth } from "@/contexts/authentication";
+import userprofile from "../../assets/icons/userprofile.png";
 
-function Userprofile({ src = userprofile, slyte }) {
-    const navigate = useNavigate();
-    const baseColor = `rounded-full object-cover`
+export default function Userprofile({
+    src = userprofile,
+    slyte,
+}) {
+    const { state } = useAuth();
+    const avatarUrl = state?.user?.avatar || src;
+
     return (
         <img
-            src={src}
+            src={avatarUrl}
             alt="avatar"
-            className={clsx(baseColor, slyte)}
+            className={clsx("rounded-full object-cover", slyte)}
         />
     );
 }
-
-export default Userprofile;

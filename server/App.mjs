@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRouter);
 
 app.use("/profile", profileRouter);
-app.use("/post", postRouter);
+app.use("/posts", postRouter);
 // ตัวอย่างเส้นทางที่ผู้ใช้ทั่วไปที่ล็อกอินแล้วสามารถเข้าถึงได้
 app.get("/protected-route", protectUser, (req, res) => {
     res.json({ message: "This is protected content", user: req.user });

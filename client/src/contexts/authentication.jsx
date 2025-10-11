@@ -16,11 +16,8 @@ function AuthProvider(props) {
 
     // ดึงข้อมูลผู้ใช้โดยใช้ Supabase API
     const fetchUser = async () => {
-        console.log("=== FETCHUSER START ===", localStorage.getItem("token"));
         const token = localStorage.getItem("token");
-        console.log("=== FETCHUSER TOKEN ===", token);
         if (!token) {
-            console.log("=== NO TOKEN, SETTING USER NULL ===");
             setState((prevState) => ({
                 ...prevState,
                 user: null,
@@ -30,24 +27,18 @@ function AuthProvider(props) {
         }
 
         try {
-            console.log("=== SETTING GETUSERLOADING TRUE ===");
             setState((prevState) => ({ ...prevState, getUserLoading: true }));
-            console.log("=== CALLING GET-USER API ===");
             // let response;
             const response = await axios.get(
                 "http://localhost:4000/auth/get-user"
             );
-            console.log("=== GET-USER RESPONSE ===", response.data);
-            console.log("=== SETTING USER DATA ===");
             setState((prevState) => ({
                 ...prevState,
                 user: response.data,
                 getUserLoading: false,
             }));
-            console.log("=== FETCHUSER SUCCESS - USER SET ===", response.data);
         } catch (error) {
             console.error("=== FETCHUSER ERROR ===", error);
-
             setState((prevState) => ({
                 ...prevState,
                 error: error.message,
@@ -69,7 +60,6 @@ function AuthProvider(props) {
                 "http://localhost:4000/auth/login",
                 data
             );
-            console.log("=== LOGIN API RESPONSE ===", response.data);
             const token = response.data.access_token;
 
             if (!token) {
@@ -77,7 +67,6 @@ function AuthProvider(props) {
             }
 
             localStorage.setItem("token", token);
-            console.log("=== TOKEN SAVED ===", token);
 
             // ดึงและตั้งค่าข้อมูลผู้ใช้
             setState((prevState) => ({ ...prevState, loading: false, error: null }));
@@ -119,12 +108,10 @@ function AuthProvider(props) {
     const logout = () => {
         localStorage.removeItem("token");
         setState({ user: null, error: null, loading: null });
-        // navigate("/");
-        console.log("logout");
+        navigate("/");
     };
 
     const isAuthenticated = Boolean(state.user);
-    console.log("AuthProvider - isAuthenticated:", isAuthenticated, "user:", state.user);
 
     return (
         <AuthContext.Provider

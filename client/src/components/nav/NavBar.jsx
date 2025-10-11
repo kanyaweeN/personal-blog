@@ -7,6 +7,8 @@ import { MobileMenu } from "./MobileMenu.jsx";
 import { Logo } from "./Logo.jsx";
 import { useAuth } from "@/contexts/authentication";
 import Userprofile from "./Userprofile.jsx";
+import { Notifications } from "../button/Notifications.jsx";
+import DropdownProfile from "./DropdownProfile.jsx";
 
 export function NavBar() {
     const navigate = useNavigate();
@@ -14,7 +16,6 @@ export function NavBar() {
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
-    // console.log("NavBar", isAuthenticated);
 
     return (
         <div className="w-full relative">
@@ -24,7 +25,6 @@ export function NavBar() {
                 <Logo />
 
                 {/* Desktop Buttons */}
-
                 <div className="hidden md:flex gap-3 items-center">
                     {!isAuthenticated ?
                         (
@@ -39,11 +39,13 @@ export function NavBar() {
                                     onClick={() => navigate("/signup")}
                                 >
                                     Sign up
-                                </AppButton></>
+                                </AppButton>
+                            </>
                         )
                         : (
                             <>
-                                <Userprofile
+                                <DropdownProfile
+                                    isMobileMenuOpen={false}
                                     slyte="w-10 h-10"
                                 />
                             </>
@@ -65,7 +67,13 @@ export function NavBar() {
             </nav>
 
             {/* Mobile Menu */}
-            <MobileMenu isOpen={isMobileMenuOpen} />
+            <>
+                <DropdownProfile
+                    isMobile={true}
+                    isMobileMenuOpen={isMobileMenuOpen}
+                    slyte="w-10 h-10"
+                />
+            </>
         </div>
     );
 }

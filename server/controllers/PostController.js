@@ -66,12 +66,28 @@ export const PostController = {
             }
 
             return res.status(201).json({
-                data: result,
+                data: result.rows[0],
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
                 message: "Server could not read post because database connection"
+            });
+        }
+    },
+    async updateLikeById(req, res) {
+        try {
+            const postId = req.params.id;
+
+            const result = await PostService.updateLikeById(postId)
+
+            return res.status(201).json({
+                message: "Post liked successfully",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Server could not update liked because database connection"
             });
         }
     },
