@@ -45,10 +45,10 @@ function App() {
         <Route path="/admin/category-management/create-category" element={<CreateCategoryPage />} />
         <Route path="/admin/profile" element={
           <ProtectedRoute
-          // isLoading={state.getUserLoading}
-          // isAuthenticated={isAuthenticated}
-          // userRole={state.user?.role}
-          // requiredRole="admin"
+            isLoading={state.getUserLoading}
+            isAuthenticated={isAuthenticated}
+            userRole={state.user?.role}
+            requiredRole="admin"
           >
             <PorfilePage />
           </ProtectedRoute>

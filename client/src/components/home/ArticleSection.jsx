@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 
 import BlogCard from "./BlogCard.jsx";
-import PostService from "../../services/postService.js";
+import { PostService } from "../../services/postService.js";
 import { formatDate } from "../../utils/formatDate.js";
 import InputSearch from "../input/InputSearch.jsx";
 import AppSelect from "../input/AppSelect.jsx";

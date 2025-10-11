@@ -168,7 +168,7 @@ authRouter.get("/get-user", async (req, res) => {
             username: user.username,
             name: user.name,
             role: user.role,
-            profilePic: user.profile_pic,
+            profilePic: user.profile_pic
         });
     } catch (error) {
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {

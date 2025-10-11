@@ -1,7 +1,14 @@
 
 import clsx from "clsx";
 
-export function AppButton({ type, children, style = "white", size = "md", disabled = false, onClick }) {
+export function AppButton({
+    type,
+    children,
+    style = "white",
+    size = "md",
+    disabled = false,
+    onClick
+}) {
 
     const baseStyles =
         "rounded-full transition-colors ";
@@ -17,7 +24,7 @@ export function AppButton({ type, children, style = "white", size = "md", disabl
             hover:bg-brown-600 
             disabled:border-brown-300 disabled:text-brown-400`,
         underline: "text-black underline hover:text-brown-400 disabled:text-brown-400",
-        dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-600",
+        dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-600 disabled:bg-brown-200",
         white: "bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400",
     };
 

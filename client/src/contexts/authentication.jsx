@@ -12,6 +12,7 @@ function AuthProvider(props) {
         user: null,
     });
 
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     // ดึงข้อมูลผู้ใช้โดยใช้ Supabase API
@@ -37,6 +38,7 @@ function AuthProvider(props) {
                 user: response.data,
                 getUserLoading: false,
             }));
+            setIsAdmin(response.data.role === "admin")
         } catch (error) {
             console.error("=== FETCHUSER ERROR ===", error);
             setState((prevState) => ({
@@ -61,6 +63,7 @@ function AuthProvider(props) {
                 data
             );
             const token = response.data.access_token;
+            console.log("response", response);
 
             if (!token) {
                 throw new Error("No token received from server");
@@ -121,6 +124,7 @@ function AuthProvider(props) {
                 logout,
                 register,
                 isAuthenticated,
+                isAdmin,
                 fetchUser,
             }}
         >

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, UserRoundPen, RotateCcw, LogOut, Bell } from "lucide-react";
+import { ChevronDown, UserRoundPen, RotateCcw, LogOut, SquareArrowOutUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useAuth } from "@/contexts/authentication";
@@ -16,7 +16,7 @@ export default function DropdownProfile({
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
     const navigate = useNavigate();
-    const { logout, state } = useAuth();
+    const { logout, state, isAdmin } = useAuth();
 
     const toggleMenu = () => setIsOpen((prev) => !prev);
     const closeMenu = () => setIsOpen(false);
@@ -26,16 +26,25 @@ export default function DropdownProfile({
 
     const menuItems = [
         {
+            id: 1,
             icon: <UserRoundPen className="w-5 h-5" />,
             text: "Profile",
             onClick: () => navigate("/profile"),
         },
         {
+            id: 2,
             icon: <RotateCcw className="w-5 h-5" />,
             text: "Reset password",
             onClick: () => navigate("/profile/reset-password"),
         },
         {
+            id: 3,
+            icon: <SquareArrowOutUpRight className="w-5 h-5" />,
+            text: "Admin panel",
+            onClick: () => navigate("/admin/profile"),
+        },
+        {
+            id: 4,
             icon: <LogOut className="w-5 h-5" />,
             text: "Log out",
             onClick: () => {
@@ -118,16 +127,27 @@ export default function DropdownProfile({
                         )}
                     </div>
                     {menuItems.map((item, index) => (
-                        <MenuButton
-                            key={index}
-                            icon={item.icon}
-                            text={item.text}
-                            textColor={item.textColor}
-                            onClick={() => {
-                                item.onClick();
-                                closeMenu();
-                            }}
-                        />
+                        (item.id === 3 && isAdmin) ?
+                            <MenuButton
+                                key={index}
+                                icon={item.icon}
+                                text={item.text}
+                                textColor={item.textColor}
+                                onClick={() => {
+                                    item.onClick();
+                                    closeMenu();
+                                }}
+                            /> : item.id !== 3 ? <MenuButton
+                                key={index}
+                                icon={item.icon}
+                                text={item.text}
+                                textColor={item.textColor}
+                                onClick={() => {
+                                    item.onClick();
+                                    closeMenu();
+                                }}
+                            />
+                                : <></>
                     ))}
                 </div>
             )}

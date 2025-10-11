@@ -1,5 +1,7 @@
 import { PostService } from "../services/PostService.js";
 
+const msg = 'post'
+
 export const PostController = {
     async createPost(req, res) {
         try {
@@ -8,7 +10,7 @@ export const PostController = {
             const result = await PostService.createPost({ title, image, category_id, description, content, status_id })
 
             return res.status(201).json({
-                message: `Created post sucessfully`,
+                message: `Created ${msg} sucessfully`,
                 data: {
                     title,
                     image,
@@ -21,7 +23,7 @@ export const PostController = {
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not create post because database connection"
+                message: `Server could not create ${msg} because database connection`
             });
         }
     },
@@ -49,7 +51,7 @@ export const PostController = {
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not read post because database connection"
+                message: `Server could not read ${msg} because database connection`
             });
         }
     },
@@ -61,7 +63,7 @@ export const PostController = {
 
             if (!result.rows) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post"
+                    message: `Server could not find a requested ${msg}`
                 });
             }
 
@@ -71,7 +73,7 @@ export const PostController = {
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not read post because database connection"
+                message: `Server could not read ${msg} because database connection`
             });
         }
     },
@@ -82,12 +84,12 @@ export const PostController = {
             const result = await PostService.updateLikeById(postId)
 
             return res.status(201).json({
-                message: "Post liked successfully",
+                message: `${msg} liked successfully`,
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not update liked because database connection"
+                message: `Server could not update ${msg} because database connection`
             });
         }
     },
@@ -103,17 +105,17 @@ export const PostController = {
 
             if (result.rowCount === 0) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post to update"
+                    message: `Server could not find a requested ${msg} to update`
                 });
             }
 
             return res.status(201).json({
-                message: "Updated post sucessfully"
+                message: `Updated ${msg} sucessfully`
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not update post because database connection"
+                message: `Server could not update ${msg} because database connection`
             });
         }
     },
@@ -125,17 +127,17 @@ export const PostController = {
 
             if (result.rowCount === 0) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post to delete"
+                    message: `Server could not find a requested ${msg} to delete`
                 });
             }
 
             return res.status(201).json({
-                message: "Deleted post sucessfully"
+                message: `Deleted ${msg} sucessfully`
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not delete post because database connection"
+                message: `Server could not delete ${msg} because database connection`
             });
         }
     },

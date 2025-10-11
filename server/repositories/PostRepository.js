@@ -141,6 +141,7 @@ export const PostRepository = {
                 posts.description,
                 users.name as author,
                 users.profile_pic as author_img,
+                users.description as author_description,
                 posts.date,
                 posts.content,
                 posts.likes_count as likes

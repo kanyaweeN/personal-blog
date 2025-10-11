@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = "http://localhost:4000";
 
-const PostService = {
+export const PostService = {
     getAllPost: async (params) => {
         try {
             const result = await axios.get(`${url}/posts`,
@@ -46,5 +46,3 @@ const PostService = {
         }
     },
 }
-
-export default PostService

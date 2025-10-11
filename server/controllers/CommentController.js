@@ -1,33 +1,30 @@
-import { ProfileService } from "../services/ProfileService.js";
+import { CommentService } from "../services/CommentService.js";
 
-const msg = 'profile'
+const msg = 'comment'
 
-export const ProfileController = {
-    async getAll(req, res) {
+export const CommentController = {
+    async create(req, res) {
         try {
-            const result = await ProfileService.getAll()
+            const { post_id, comment_text, user_id } = req.body;
 
-            if (!result.rows) {
-                return res.status(404).json({
-                    message: `Server could not find a requested ${msg}`
-                });
-            }
+            const result = await CommentService.create({ post_id, comment_text, user_id })
 
             return res.status(201).json({
-                data: result.rows[0],
+                message: `Created ${msg} sucessfully`,
+                data: result,
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: `Server could not read ${msg} because database connection`
+                message: `Server could not create ${msg} because database connection`
             });
         }
     },
-    async getById(req, res) {
+    async getByPostId(req, res) {
         try {
             const postId = req.params.id;
 
-            const result = await ProfileService.getById(postId)
+            const result = await CommentService.getByPostId(postId)
 
             if (!result.rows) {
                 return res.status(404).json({
@@ -36,7 +33,7 @@ export const ProfileController = {
             }
 
             return res.status(201).json({
-                data: result.rows[0],
+                data: result.rows,
             });
         } catch (error) {
             console.error(error);
@@ -53,7 +50,7 @@ export const ProfileController = {
                 ...req.body,
             }
 
-            const result = await ProfileService.updateById(newPost)
+            const result = await CommentService.updateById(newPost)
 
             if (result.rowCount === 0) {
                 return res.status(404).json({
@@ -68,6 +65,28 @@ export const ProfileController = {
             console.error(error);
             return res.status(500).json({
                 message: `Server could not update ${msg} because database connection`
+            });
+        }
+    },
+    async deleteById(req, res) {
+        try {
+            const id = req.params.id;
+
+            const result = await CommentService.deleteById(id)
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    message: `Server could not find a requested ${msg} to delete`
+                });
+            }
+
+            return res.status(201).json({
+                message: `Deleted ${msg} sucessfully`
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: `Server could not ${msg} comment because database connection`
             });
         }
     },
