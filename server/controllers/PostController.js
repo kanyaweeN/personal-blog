@@ -34,13 +34,15 @@ export const PostController = {
             const category = req.query.category || "";
             const keyword = req.query.keyword || "";
             const offset = (page - 1) * limit;
+            const statusid = req.query.statusid || 0;
 
             const param = {
                 page,
                 limit,
                 offset,
                 category,
-                keyword
+                keyword,
+                statusid
             }
 
             const result = await PostService.getAll(param)
