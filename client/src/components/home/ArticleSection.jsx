@@ -11,140 +11,34 @@ import { PostService } from "../../services/postService.js";
 import { formatDate } from "../../utils/formatDate.js";
 import InputSearch from "../input/InputSearch.jsx";
 import AppSelect from "../input/AppSelect.jsx";
-
+import { usePosts } from "../../hooks/usePosts.js";
+import { useSearch } from "../../hooks/useSearch.js";
 
 const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
-    const [activeCategory, setActiveCategory] = useState("Highlight");
-    const [blogPosts, setblogPosts] = useState([]);
-    const [isLoading, setLoading] = useState(false);
-    const [iserror, setError] = useState("");
+    const {
+        blogPosts,
+        isLoading,
+        page,
+        hasMore,
+        activeCategory,
+        setPage,
+        fetchPosts,
+        handleCategory,
+        handleLoadMore,
+    } = usePosts();
 
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
-    const [search, setSearch] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-    const navigate = useNavigate();
-
-    const fetchPosts = async (searchTerm = search) => {
-        setLoading(true);
-
-        let result = {};
-        try {
-            result = await PostService.getAllPost(setQuery(searchTerm));
-
-            console.log("result", result.posts);
-            if (page === 1) {
-                setblogPosts(result.posts);
-            }
-            else {
-                setblogPosts([...blogPosts, ...result.posts]);
-            }
-            console.log("try", blogPosts);
-
-            // Update suggestions when searching
-            if (searchTerm && Array.isArray(result.posts)) {
-                setSuggestions(result.posts.slice(0, 8));
-            } else {
-                setSuggestions([]);
-            }
-
-            if (result.currentPage >= result.totalPages) {
-                setHasMore(false);
-            } else {
-                setHasMore(true);
-            }
-        } catch (err) {
-            setError("โหลดข้อมูลไม่สำเร็จ");
-        } finally {
-            setLoading(false);
-            console.log("finally", blogPosts);
-        }
-
-        console.log("out", blogPosts);
-        return result;
-    };
-
-    const fetchSuggestions = async (searchTerm) => {
-        setLoading(true);
-
-        let result = {};
-        try {
-            result = await PostService.getPostBykeyword(searchTerm);
-
-            // Update suggestions when searching
-            if (searchTerm && Array.isArray(result.posts)) {
-                setSuggestions(result.posts.slice(0, 8));
-            } else {
-                setSuggestions([]);
-            }
-
-            if (result.currentPage >= result.totalPages) {
-                setHasMore(false);
-            }
-        } catch (err) {
-            setError("โหลดข้อมูลไม่สำเร็จ");
-        } finally {
-            setLoading(false);
-        }
-        return result;
-    };
-
-    const setQuery = (searchTerm) => {
-        const queries = {
-            page: page,
-            limit: 6,
-            keyword: searchTerm,
-            category: activeCategory === "Highlight" ? "" : `${activeCategory}`,
-        }
-
-        return queries;
-    }
-
-    // สร้าง debounced function
-    const debouncedFetchPosts = useCallback(
-        debounce((searchTerm) => {
-            fetchPosts(searchTerm)
-        }, 500), // รอ 500ms
-        []
-    )
-
-    const handleCategory = (category) => {
-        setActiveCategory(category);
-        setPage(1);
-    }
-
-    // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
-    const handleLoadMore = () => {
-        setPage((prevPage) => prevPage + 1);
-    }
-
-    const handleSearch = (e) => {
-        const value = e.target.value
-        setSearch(value)
-        setPage(1);
-        fetchSuggestions(value)
-        debouncedFetchPosts(value)
-    }
-
-    const handleSelectSuggestion = (post) => {
-        // Clear dropdown and go to the post page
-        setSuggestions([]);
-        setSearch("");
-        navigate(`/view-post/${post.id}`);
-    }
+    const {
+        search,
+        suggestions,
+        handleSearch,
+        handleSelectSuggestion,
+    } = useSearch(fetchPosts, setPage);
 
     useEffect(() => {
-        fetchPosts()
-        // window.scrollTo(0, 0)
-    }, [page, activeCategory, search])
-
-    // useEffect(() => {
-    //     if (search) {
-    //         setPage(1); // reset page เมื่อมีการ search
-    //     }
-    // }, [search])
+        fetchPosts(search);
+    }, [page, activeCategory]);
 
     return (
         <div>

@@ -40,7 +40,7 @@ function App() {
 
         <Route path="/adminlogin" element={<AdminLoginPage />} />
         <Route path="/admin/article-manament" element={<ArticleManamentPage />} />
-        <Route path="/admin/article-manament/cerate-article" element={<CreateArticlePage />} />
+        <Route path="/admin/article-manament/cerate-article/:postId" element={<CreateArticlePage />} />
         <Route path="/admin/category-management" element={<CategoryManagementPage />} />
         <Route path="/admin/category-management/create-category" element={<CreateCategoryPage />} />
         <Route path="/admin/profile" element={

@@ -38,7 +38,6 @@ function ArticleDetail(props) {
             ...prev,
             likes: (prev.likes || 0) + 1,
         }));
-        console.log("handleLike");
 
         try {
             await PostService.likePost(postId);

@@ -1,25 +1,56 @@
 import { Pencil, Trash2, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AppButton } from "../button/AppButton.jsx";
 import { useNavigate } from 'react-router-dom';
 import Alert from "../alert/Alert.jsx";
 import { useAppToast } from '../../hooks/useAppToast.jsx';
+import { PostService } from "../../services/postService.js";
+import { usePosts } from "../../hooks/usePosts.js";
+import { useSearch } from "../../hooks/useSearch.js";
+import { LoadingDot } from "../loading/LoadingDot.jsx";
 
 function ArticleManamentContent() {
     const navigate = useNavigate();
     const { error } = useAppToast();
+    const [iserror, setError] = useState("");
     const [isOpenAlert, setisOpenAlert] = useState(false);
+    const isInitialized = useRef(false);
 
-    const [articles] = useState([
-        { title: "Understanding Cat Behavior: Why Your Feline Friend Acts the Way They Do", category: "Cat", status: "Published" },
-        { title: "The Fascinating World of Cats: Why We Love Our Furry Friends", category: "Cat", status: "Published" },
-        { title: "Finding Motivation: How to Stay Inspired Through Life’s Challenges", category: "General", status: "Published" },
-        { title: "The Science of the Cat’s Purr: How It Benefits Cats and Humans Alike", category: "Cat", status: "Published" },
-        { title: "Top 10 Health Tips to Keep Your Cat Happy and Healthy", category: "Cat", status: "Published" },
-        { title: "Unlocking Creativity: Simple Habits to Spark Inspiration Daily", category: "Inspiration", status: "Published" },
-    ]);
-    const statusData = ["Status", "Published", "Draft"];
-    const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
+    const {
+        limit,
+        setLimit,
+        statusid,
+        setStatusid,
+        blogPosts,
+        statusData,
+        categoriesData,
+        isLoading,
+        page,
+        hasMore,
+        activeCategory,
+        setPage,
+        fetchPosts,
+        fetchcategories,
+        fetchStatus,
+        handleCategory,
+        handleLoadMore,
+    } = usePosts(100, 0);
+
+    const {
+        search,
+        suggestions,
+        handleSearch,
+        handleSelectSuggestion,
+    } = useSearch(fetchPosts, setPage);
+
+    useEffect(() => {
+        fetchcategories();
+        fetchStatus();
+        fetchPosts();
+    }, []);
+
+    // const statusData = ["Status", "Published", "Draft"];
+    // const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
 
     const handleDelete = () => {
         setisOpenAlert(false)
@@ -30,6 +61,9 @@ function ArticleManamentContent() {
         );
 
     }
+
+    console.log(statusData, categoriesData);
+
 
     return (
         <main className="flex-1 p-10">
@@ -46,64 +80,69 @@ function ArticleManamentContent() {
                     Create article
                 </AppButton>
             </header>
+            {isLoading ?
+                <LoadingDot />
+                : <>
+                    {/* Search + Filters */}
+                    <section className="flex gap-4 mb-4">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="w-full px-3 py-2 border rounded-md text-sm"
+                        />
+                        <select className="px-3 py-2 border rounded-md text-sm">
+                            {
+                                statusData.map((item) => {
+                                    return <option key={item.id}>{item.status}</option>
+                                })
+                            }
+                        </select>
+                        <select className="px-3 py-2 border rounded-md text-sm">
+                            {
+                                categoriesData.map((item) => {
+                                    return <option key={item.id}>{item.name}</option>
+                                })}
+                        </select>
+                    </section>
 
-            {/* Search + Filters */}
-            <section className="flex gap-4 mb-4">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full px-3 py-2 border rounded-md text-sm"
-                />
-                <select className="px-3 py-2 border rounded-md text-sm">
-                    {
-                        statusData.map((item) => {
-                            return <option key={item}>{item}</option>
-                        })
-                    }
-                </select>
-                <select className="px-3 py-2 border rounded-md text-sm">
-                    {categoryData.map((item) => {
-                        return <option key={item}>{item}</option>
-                    })}
-                </select>
-            </section>
+                    <section className="bg-white rounded-xl shadow p-6">
+                        {/* Table */}
+                        <table className="w-full border-collapse text-sm">
+                            <thead>
+                                <tr className="text-left border-b">
+                                    <th className="py-2 px-3">Article title</th>
+                                    <th className="py-2 px-3">Category</th>
+                                    <th className="py-2 px-3">Status</th>
+                                    <th className="py-2 px-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {blogPosts.map((article, idx) => (
+                                    <tr key={idx} className="border-b hover:bg-gray-50">
+                                        <td className="py-3 px-3">{article.title}</td>
+                                        <td className="py-3 px-3">{article.category}</td>
+                                        <td className="py-3 px-3 text-green font-medium">• {article.status}</td>
+                                        <td className="py-3 px-3 text-right space-x-2">
+                                            <button
+                                                className="text-gray-600 hover:text-black"
+                                                onClick={() => navigate(`/admin/article-manament/cerate-article/${article.id}`)}
+                                            >
+                                                <Pencil size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => setisOpenAlert(true)}
+                                                className="text-gray-600 hover:text-red-500">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
 
-            <section className="bg-white rounded-xl shadow p-6">
-                {/* Table */}
-                <table className="w-full border-collapse text-sm">
-                    <thead>
-                        <tr className="text-left border-b">
-                            <th className="py-2 px-3">Article title</th>
-                            <th className="py-2 px-3">Category</th>
-                            <th className="py-2 px-3">Status</th>
-                            <th className="py-2 px-3 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {articles.map((article, idx) => (
-                            <tr key={idx} className="border-b hover:bg-gray-50">
-                                <td className="py-3 px-3">{article.title}</td>
-                                <td className="py-3 px-3">{article.category}</td>
-                                <td className="py-3 px-3 text-green font-medium">• {article.status}</td>
-                                <td className="py-3 px-3 text-right space-x-2">
-                                    <button
-                                        className="text-gray-600 hover:text-black"
-                                        onClick={() => navigate("/admin/article-manament/cerate-article")}
-                                    >
-                                        <Pencil size={16} />
-                                    </button>
-                                    <button
-                                        onClick={() => setisOpenAlert(true)}
-                                        className="text-gray-600 hover:text-red-500">
-                                        <Trash2 size={16} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </section>
-
+                </>
+            }
             <Alert
                 open={isOpenAlert}
                 onOpenChange={setisOpenAlert}

@@ -26,7 +26,6 @@ function CommentSection(props) {
         let result = {};
         try {
             result = await CommentService.getByPostId(postId);
-            console.log("CommentSection", result);
 
             setCommentData(result);
         } catch (err) {
