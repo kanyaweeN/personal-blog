@@ -48,12 +48,12 @@ export const ProfileController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
-            const newPost = {
+            const newDate = {
                 id,
                 ...req.body,
             }
 
-            const result = await ProfileService.updateById(newPost)
+            const result = await ProfileService.updateById(newDate)
 
             if (result.rowCount === 0) {
                 return res.status(404).json({

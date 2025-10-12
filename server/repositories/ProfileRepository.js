@@ -29,7 +29,9 @@ export const ProfileRepository = {
             set 
                 username = $2,
                 name = $3,
-                profile_pic = $4
+                profile_pic = $4,
+                email = $5,
+                bio = $6
             where 
                 id = $1
         `;
@@ -38,7 +40,9 @@ export const ProfileRepository = {
                 newData.id,
                 newData.username,
                 newData.name,
-                newData.profile_pic
+                newData.profile_pic,
+                newData.email,
+                newData.bio
             ]);
     },
 };
