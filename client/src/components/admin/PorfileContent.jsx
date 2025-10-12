@@ -1,29 +1,62 @@
 import { useNavigate } from 'react-router-dom';
 import { ImageIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppButton } from '../button/AppButton.jsx';
 import InputField from '../input/InputField.jsx';
 import TextArea from '../input/TextArea.jsx';
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import Userprofile from '../nav/Userprofile.jsx';
+import { useAuth } from '../../contexts/authentication.jsx';
+import { ProfileService } from '../../services/profileService.js';
 
 function PorfileContent() {
+    const { state, fetchUser } = useAuth();
     const navigate = useNavigate();
     const { success } = useAppToast();
+    const [isLoading, setLoading] = useState(false);
     const [porfile, setPorfile] = useState({
         image: "",
         name: "",
         username: "",
         email: "",
-        context: "",
+        bio: "",
     });
     const [error, setError] = useState({
         image: "",
         name: "",
         username: "",
         email: "",
-        context: "",
+        bio: "",
     })
+
+    const updateData = async () => {
+        setLoading(true);
+
+        let result = {};
+        try {
+            result = await ProfileService.updateById(porfile);
+            fetchUser()
+
+        } catch (err) {
+            setError("โหลดข้อมูลไม่สำเร็จ");
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    };
+
+    useEffect(() => {
+        if (state?.user) {
+            setPorfile({
+                id: state.user.id,
+                image: state.user.avatar || "",
+                name: state.user.name || "",
+                username: state.user.username || "",
+                email: state.user.email || "",
+                bio: state.user.bio || "",
+            });
+        }
+    }, [state?.user]);
 
     const handleonChange = (e) => {
         const { name, value } = e.target;
@@ -53,16 +86,12 @@ function PorfileContent() {
         setError(err);
 
         if (Object.keys(err).length === 0) {
-            saveData();
+            updateData();
             success(
                 "Saved profile",
                 "Your profile has been successfully updated"
             );
         }
-    }
-
-    const saveData = () => {
-
     }
 
     return (
@@ -137,14 +166,14 @@ function PorfileContent() {
                 </div>
 
                 <div>
-                    <label htmlFor="context" className="text-sm">Bio (max 120 letters)</label>
+                    <label htmlFor="bio" className="text-sm">Bio (max 120 letters)</label>
                     <TextArea
-                        id="context"
-                        name="context"
+                        id="bio"
+                        name="bio"
                         placeholder="Bio"
                         maxLength={120}
                         rows={3}
-                        value={porfile.context} // Prefill with the 
+                        value={porfile.bio} // Prefill with the 
                         onChange={handleonChange}
                     />
                 </div>

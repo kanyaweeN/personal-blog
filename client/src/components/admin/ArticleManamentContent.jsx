@@ -62,9 +62,6 @@ function ArticleManamentContent() {
 
     }
 
-    console.log(statusData, categoriesData);
-
-
     return (
         <main className="flex-1 p-10">
             {/* Header */}

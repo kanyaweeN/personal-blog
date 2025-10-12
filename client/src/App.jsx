@@ -43,6 +43,7 @@ function App() {
         <Route path="/admin/article-manament/cerate-article/:postId" element={<CreateArticlePage />} />
         <Route path="/admin/category-management" element={<CategoryManagementPage />} />
         <Route path="/admin/category-management/create-category" element={<CreateCategoryPage />} />
+        <Route path="/admin/category-management/create-category/:id" element={<CreateCategoryPage />} />
         <Route path="/admin/profile" element={
           <ProtectedRoute
             isLoading={state.getUserLoading}
@@ -92,7 +93,7 @@ function App() {
             isLoading={state.getUserLoading}
             isAuthenticated={isAuthenticated}
             userRole={state.user?.role}
-            requiredRole="user"
+            requiredRole={["user", "admin"]}
           >
             <ProfilePage />
           </ProtectedRoute>

@@ -30,6 +30,7 @@ export const ProfileService = {
             const result = await axios.put(`${url}/profile/${newData.id}`,
                 newData
             )
+
             return result.data;
         } catch (e) {
             console.error("ProfileService.updateById : ", e);

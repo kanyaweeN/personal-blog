@@ -19,6 +19,7 @@ export default function ProfileForm() {
         name: "",
         username: "",
         email: "",
+        bio: "",
     });
 
     // Initialize profile data from auth state
@@ -30,6 +31,7 @@ export default function ProfileForm() {
                 name: state.user.name || "",
                 username: state.user.username || "",
                 email: state.user.email || "",
+                bio: state.user.bio || "",
             });
         }
     }, [state?.user]);

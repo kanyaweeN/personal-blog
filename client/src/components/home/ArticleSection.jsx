@@ -14,7 +14,7 @@ import AppSelect from "../input/AppSelect.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
 
-const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
+// const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
 
 export function ArticleSection() {
     const {
@@ -23,8 +23,10 @@ export function ArticleSection() {
         page,
         hasMore,
         activeCategory,
+        categoriesData,
         setPage,
         fetchPosts,
+        fetchcategories,
         handleCategory,
         handleLoadMore,
     } = usePosts();
@@ -35,6 +37,10 @@ export function ArticleSection() {
         handleSearch,
         handleSelectSuggestion,
     } = useSearch(fetchPosts, setPage);
+
+    useEffect(() => {
+        fetchcategories();
+    }, []);
 
     useEffect(() => {
         fetchPosts(search);
@@ -62,16 +68,16 @@ export function ArticleSection() {
                         <AppSelect
                             value={activeCategory}
                             onValueChange={(e) => {
-                                console.log(e);
-
                                 handleCategory(e)
                             }}
                             placeholder="Select category"
                             selectContent={
-                                categoryData.map((item, index) => {
+                                categoriesData.map((item, index) => {
                                     return (
-                                        <SelectItem key={index} value={item}>
-                                            {item}
+                                        <SelectItem
+                                            key={`${item.id}-${index}`}
+                                            value={item.name}>
+                                            {item.name}
                                         </SelectItem>
                                     );
                                 })}
@@ -84,20 +90,20 @@ export function ArticleSection() {
                         <div className=" p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
                             {/* Tabs */}
                             <div className="flex gap-6">
-                                {categoryData.map((category) => (
+                                {categoriesData.map((item, index) => (
                                     <button
-                                        key={category}
-                                        className={`${category === activeCategory
+                                        key={`${item.id}-${index}`}
+                                        className={`${item.name === activeCategory
                                             ? "bg-brown-300 text-brown-500" // สีปุ่มเมื่อถูกเลือก
                                             : "text-brown-400 hover:bg-brown-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
                                             } px-4 py-2 rounded
                                      `}
-                                        disabled={category === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
+                                        disabled={item.name === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
                                         onClick={() =>
-                                            handleCategory(category)
+                                            handleCategory(category.name)
                                         }
                                     >
-                                        {category}
+                                        {item.name}
                                     </button>
                                 ))}
                             </div>

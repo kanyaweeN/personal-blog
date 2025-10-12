@@ -25,7 +25,6 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
             category: activeCategory === "Highlight" ? "" : `${activeCategory}`,
             statusid: statusid
         }
-        console.log("queries", queries);
 
         return queries;
     }
