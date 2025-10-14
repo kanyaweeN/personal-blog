@@ -8,7 +8,7 @@ import AuthenticationRoute from "./components/auth/AuthenticationRoute.jsx";
 import { Toaster } from "@/components/ui/sonner"
 import HomePage from "./features/home/HomePage.jsx";
 import ViewPostPage from "./features/view-post/ViewPostPage.jsx";
-import NotFoundPage from "./features/notfound/NotFoundPage.jsx";
+import NotFoundPage from "./features/not-found/NotFoundPage.jsx";
 import SignUpPage from "./features/signup-signin/SignUpPage.jsx";
 import SignInPage from "./features/signup-signin/SignInPage.jsx";
 import RegistrationSuccessPage from "./features/signup-signin/RegistrationSuccessPage.jsx";
