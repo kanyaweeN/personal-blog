@@ -100,7 +100,7 @@ export function ArticleSection() {
                                      `}
                                         disabled={item.name === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
                                         onClick={() =>
-                                            handleCategory(category.name)
+                                            handleCategory(item.name)
                                         }
                                     >
                                         {item.name}

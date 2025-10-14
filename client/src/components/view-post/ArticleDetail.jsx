@@ -62,20 +62,23 @@ function ArticleDetail(props) {
                     <LoadingDot sizes="xl" />
                 </div>
                 : <>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 py-5">
                         {/* img */}
-                        <img className="w-full h-full object-cover rounded-xl py-15" src={blogPosts.image} alt={blogPosts.title} />
+                        {
+                            blogPosts.image &&
+                            <img className="w-full h-full object-cover rounded-xl py-10" src={blogPosts.image} alt={blogPosts.title} />
+                        }
                     </div>
-                    <div className="md:flex md:flex-row relative gap-5 ">
-                        <div>
+                    <div className="md:flex md:flex-row relative gap-5 max-w-full min-w-0">
+                        <div className="flex-1">
                             <div >
                                 <div className="flex gap-4">
-                                    <CategoryTag category={blogPosts.category} />
+                                    <CategoryTag category={blogPosts.category_name} />
                                     <span className="text-brown-400">
                                         {formatDate(blogPosts.date)}
                                     </span>
                                 </div>
-                                <div className="text-brown-500 w-auto">
+                                <div className="text-brown-500 ">
                                     <h1
                                         className="text-start font-bold text-5xl py-5 ">
                                         {blogPosts.title}
@@ -93,11 +96,11 @@ function ArticleDetail(props) {
                                     </div>
                                 </div>
 
-                                <div className="md:hidden py-7 ">
+                                <div className="md:hidden py-7 w-auto">
                                     <AuthorCard
                                         name={blogPosts.author}
                                         image={blogPosts.author_img}
-                                        description={blogPosts.author_description}
+                                        description={blogPosts.bio}
                                     />
                                 </div>
 
@@ -112,12 +115,12 @@ function ArticleDetail(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="hidden md:block md:basis-2/5 md:max-w-[40%]">
+                        <div className="hidden md:block w-80 shrink-0">
                             <div className="sticky top-0 right-0 min-m-50 h-fit overflow-hidden">
                                 <AuthorCard
                                     name={blogPosts.author}
                                     image={blogPosts.author_img}
-                                    description={blogPosts.author_description}
+                                    description={blogPosts.bio}
                                 />
                             </div>
                         </div>

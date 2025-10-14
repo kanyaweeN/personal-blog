@@ -5,20 +5,17 @@ const msg = 'post'
 export const PostController = {
     async createPost(req, res) {
         try {
-            const { title, image, category_id, description, content, status_id } = req.body;
+            const newPost = {
+                ...req.body,
+                category_id: Number(req.body.category_id) == 0 ? null : Number(req.body.category_id),
+                image: req.body.image || null,
+            }
 
-            const result = await PostService.createPost({ title, image, category_id, description, content, status_id })
+            const result = await PostService.createPost(newPost)
 
             return res.status(201).json({
                 message: `Created ${msg} sucessfully`,
-                data: {
-                    title,
-                    image,
-                    category_id,
-                    description,
-                    content,
-                    status_id
-                },
+                data: result
             });
         } catch (error) {
             console.error(error);

@@ -11,10 +11,12 @@ import { LoadingDot } from "../loading/LoadingDot.jsx";
 
 function ArticleManamentContent() {
     const navigate = useNavigate();
-    const { error } = useAppToast();
+    const { success, error } = useAppToast();
     const [iserror, setError] = useState("");
+    const [isLoadingSometing, setLoadingSometing] = useState(false);
     const [isOpenAlert, setisOpenAlert] = useState(false);
     const isInitialized = useRef(false);
+    const [dataDelete, setDataDelete] = useState(null);
 
     const {
         limit,
@@ -49,17 +51,44 @@ function ArticleManamentContent() {
         fetchPosts();
     }, []);
 
-    // const statusData = ["Status", "Published", "Draft"];
-    // const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
+    const deleteData = async (id) => {
+        setLoadingSometing(true);
 
-    const handleDelete = () => {
+        try {
+            await PostService.deleteById(id);
+            return true;
+        } catch (err) {
+            console.error("Delete error:", err);
+            return false;
+        } finally {
+            setLoadingSometing(false);
+        }
+    };
+
+    const handleOpenDeleteAlert = (item) => {
+        setisOpenAlert(true);
+        console.log(item);
+
+        setDataDelete(item)
+    };
+
+    const handleDelete = async () => {
+        const result = await deleteData(dataDelete.id);
+
         setisOpenAlert(false)
-
-        error(
-            "Post category",
-            "Post has been successfully deleted."
-        );
-
+        if (result) {
+            success(
+                "Post category",
+                "Post has been successfully deleted."
+            );
+            await fetchPosts();
+        } else {
+            error(
+                "Post category",
+                "Failed to delete post"
+            );
+        }
+        setDataDelete(null)
     }
 
     return (
@@ -77,7 +106,7 @@ function ArticleManamentContent() {
                     Create article
                 </AppButton>
             </header>
-            {isLoading ?
+            {(isLoading || isLoadingSometing) ?
                 <LoadingDot />
                 : <>
                     {/* Search + Filters */}
@@ -127,7 +156,7 @@ function ArticleManamentContent() {
                                                 <Pencil size={16} />
                                             </button>
                                             <button
-                                                onClick={() => setisOpenAlert(true)}
+                                                onClick={() => handleOpenDeleteAlert(article)}
                                                 className="text-gray-600 hover:text-red-500">
                                                 <Trash2 size={16} />
                                             </button>

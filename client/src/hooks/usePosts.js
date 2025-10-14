@@ -26,6 +26,7 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
             statusid: statusid
         }
 
+        console.log("queries", queries);
         return queries;
     }
 
@@ -35,6 +36,7 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery(searchTerm));
+            console.log("result", result);
 
             if (page === 1) {
                 setblogPosts(result.posts);
@@ -55,6 +57,20 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
 
         return result;
     }, [page, activeCategory]);
+
+    const fetchPostsById = useCallback(async (id) => {
+        setLoading(true);
+
+        let result = {};
+        try {
+            return await PostService.getPostById(id);
+        } catch (err) {
+            setError("โหลดข้อมูลไม่สำเร็จ");
+        } finally {
+            setLoading(false);
+        }
+        return result;
+    }, []);
 
     const fetchcategories = useCallback(async () => {
         setLoading(true);
@@ -116,6 +132,7 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
     const handleCategory = (category) => {
         setActiveCategory(category);
         setPage(1);
+        console.log("category", category);
     }
 
     const handleLoadMore = () => {
@@ -140,6 +157,7 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
         setPage,
 
         fetchPosts,
+        fetchPostsById,
         fetchcategories,
         fetchStatus,
 

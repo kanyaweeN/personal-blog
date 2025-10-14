@@ -13,7 +13,7 @@ function CommentSection(props) {
     const [isLoading, setLoading] = useState(false);
     const [isRefresh, setRefresh] = useState(false);
     const [isOpenAlert, setisOpenAlert] = useState(false);
-    const [commentText, setCommentText] = useState(false);
+    const [commentText, setCommentText] = useState("");
     const [commentData, setCommentData] = useState([]);
 
     useEffect(() => {

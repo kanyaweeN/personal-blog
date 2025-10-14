@@ -2,12 +2,12 @@ import connectionPool from "../utils/db.mjs";
 
 export const PostRepository = {
     async createPost(postData) {
-
         let query = `
             insert into posts
                 (
                     title, 
                     image, 
+                    author_id,
                     category_id, 
                     description, 
                     content, 
@@ -16,7 +16,7 @@ export const PostRepository = {
                     date
                 )
             values 
-                ($1, $2, $3, $4, $5, $6, $7, $8)
+                ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING id
         `;
         return await connectionPool.query(
@@ -25,6 +25,7 @@ export const PostRepository = {
             [
                 postData.title,
                 postData.image,
+                postData.anthor_id,
                 postData.category_id,
                 postData.description,
                 postData.content,
@@ -71,7 +72,7 @@ export const PostRepository = {
         let queryFrom = `
             FROM 
                 posts
-                inner join categories on categories.id = posts.category_id
+                left join categories on categories.id = posts.category_id
                 inner join status on status.id = posts.status_id
                 inner join users on users.id = posts.author_id
         `;
@@ -142,18 +143,21 @@ export const PostRepository = {
             SELECT 
                 posts.id,
                 posts.image,
-                categories.name as category,
+                categories.id as category_id,
+                categories.name as category_name,
                 posts.title,
                 posts.description,
                 users.name as author,
                 users.profile_pic as author_img,
-                users.bio as author_description,
+                users.bio,
                 posts.date,
                 posts.content,
-                posts.likes_count as likes
+                posts.likes_count as likes,
+                status.id as status_id,
+                status.status as status_status
             FROM 
                 posts
-                inner join categories on categories.id = posts.category_id
+                left join categories on categories.id = posts.category_id
                 inner join status on status.id = posts.status_id
                 inner join users on users.id = posts.author_id
             WHERE
@@ -180,9 +184,9 @@ export const PostRepository = {
             update 
                 posts
             set 
-                title = $2,
-                image = $3,
-                category_id = $4,
+                image = $2,
+                category_id = $3,
+                title = $4,
                 description = $5,
                 content = $6,
                 status_id = $7,
@@ -193,9 +197,9 @@ export const PostRepository = {
         return await connectionPool.query(query
             , [
                 newPost.id,
-                newPost.title,
                 newPost.image,
                 newPost.category_id,
+                newPost.title,
                 newPost.description,
                 newPost.content,
                 newPost.status_id,
