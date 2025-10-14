@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:4000";
+// const url = "http://localhost:4000";
+const url = import.meta.env.VITE_API_URL;
 
 export const categoriesService = {
     create: async (newData) => {

@@ -40,7 +40,13 @@ app.get("/admin-only", protectAdmin, (req, res) => {
     res.json({ message: "This is admin-only content", admin: req.user });
 });
 
+// สำหรับ Vercel (Serverless)
+module.exports = app;
 
-app.listen(port, () => {
-    console.log(`Server is runnig at ${port}`);
-})
+// สำหรับ Local
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
