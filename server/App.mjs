@@ -15,8 +15,7 @@ const port = process.env.PORT || 4001;
 
 app.use(cors({
     origin: [
-        'https://personal-blog-c6a425rxh-kanyaweens-projects.vercel.app',
-        'https://your-production-domain.vercel.app', // เปลี่ยนเป็น domain จริง
+        'https://personal-blog-server-iota.vercel.app/',
         `http://localhost:${port}` // สำหรับ development
     ],
     credentials: true,
