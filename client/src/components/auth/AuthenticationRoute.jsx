@@ -3,24 +3,25 @@ import { Navigate } from "react-router-dom";
 import { LoadingScreen } from "../ui/WebSection.tsx";
 
 function AuthenticationRoute({ isLoading, isAuthenticated, children }) {
-    if (isLoading === null || isLoading) {
-        // สถานะกำลังโหลดข้อมูลหรือยังไม่มีข้อมูล
-        return (
-            <div className="flex flex-col min-h-screen">
-                <div className="min-h-screen md:p-8">
-                    <LoadingScreen />
+    try {
+        if (isLoading === null || isLoading) {
+            return (
+                <div className="flex flex-col min-h-screen">
+                    <div className="min-h-screen md:p-8">
+                        <LoadingScreen />
+                    </div>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
 
-    if (isAuthenticated) {
-        // คืนค่า null ขณะที่ Navigate ทำการเปลี่ยนเส้นทาง
-        return <Navigate to="/" replace />;
+        if (isAuthenticated) {
+            return <Navigate to="/" replace />;
+        }
+        return children;
+    } catch (error) {
+        console.error("=== AUTHENTICATION ROUTE ERROR ===", error);
+        return <div>Error in AuthenticationRoute</div>;
     }
-
-    // ผู้ใช้มีการยืนยันตัวตนและมีบทบาทที่ถูกต้อง
-    return children;
 }
 
 export default AuthenticationRoute;

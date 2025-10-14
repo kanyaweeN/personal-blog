@@ -9,8 +9,8 @@ function ProtectedRoute({
     requiredRole,
     children,
 }) {
+    // สถานะกำลังโหลดข้อมูลหรือยังไม่มีข้อมูล
     if (isLoading === null || isLoading) {
-        // สถานะกำลังโหลดข้อมูลหรือยังไม่มีข้อมูล
         return (
             <div className="flex flex-col min-h-screen">
                 <div className="min-h-screen md:p-8">
@@ -20,9 +20,20 @@ function ProtectedRoute({
         );
     }
 
-    if (!isAuthenticated || userRole !== requiredRole) {
-        // คืนค่า null ขณะที่ Navigate ทำการเปลี่ยนเส้นทาง
+    // ถ้ายังไม่ login
+    if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
+    }
+
+    // เช็ค role (ถ้ามี requiredRole)
+    if (requiredRole) {
+        const hasPermission = Array.isArray(requiredRole)
+            ? requiredRole.includes(userRole)
+            : userRole === requiredRole;
+
+        if (!hasPermission) {
+            return <Navigate to="/" replace />;
+        }
     }
 
     // ผู้ใช้มีการยืนยันตัวตนและมีบทบาทที่ถูกต้อง

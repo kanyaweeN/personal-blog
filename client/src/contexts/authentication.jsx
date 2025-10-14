@@ -12,6 +12,7 @@ function AuthProvider(props) {
         user: null,
     });
 
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     // ดึงข้อมูลผู้ใช้โดยใช้ Supabase API
@@ -28,15 +29,18 @@ function AuthProvider(props) {
 
         try {
             setState((prevState) => ({ ...prevState, getUserLoading: true }));
+            // let response;
             const response = await axios.get(
-                "http://localhost:5000/auth/get-user"
+                "http://localhost:4000/auth/get-user"
             );
             setState((prevState) => ({
                 ...prevState,
                 user: response.data,
                 getUserLoading: false,
             }));
+            setIsAdmin(response.data.role === "admin")
         } catch (error) {
+            console.error("=== FETCHUSER ERROR ===", error);
             setState((prevState) => ({
                 ...prevState,
                 error: error.message,
@@ -55,17 +59,25 @@ function AuthProvider(props) {
         try {
             setState((prevState) => ({ ...prevState, loading: true, error: null }));
             const response = await axios.post(
-                "http://localhost:5000/auth/login",
+                "http://localhost:4000/auth/login",
                 data
             );
             const token = response.data.access_token;
+            console.log("response", response);
+
+            if (!token) {
+                throw new Error("No token received from server");
+            }
+
             localStorage.setItem("token", token);
 
             // ดึงและตั้งค่าข้อมูลผู้ใช้
             setState((prevState) => ({ ...prevState, loading: false, error: null }));
-            navigate("/");
             await fetchUser();
+            return { success: true };
         } catch (error) {
+            console.error("=== LOGIN ERROR ===", error);
+
             setState((prevState) => ({
                 ...prevState,
                 loading: false,
@@ -80,7 +92,7 @@ function AuthProvider(props) {
         try {
             setState((prevState) => ({ ...prevState, loading: true, error: null }));
             await axios.post(
-                "http://localhost:5000/auth/register",
+                "http://localhost:4000/auth/register",
                 data
             );
             setState((prevState) => ({ ...prevState, loading: false, error: null }));
@@ -112,6 +124,7 @@ function AuthProvider(props) {
                 logout,
                 register,
                 isAuthenticated,
+                isAdmin,
                 fetchUser,
             }}
         >

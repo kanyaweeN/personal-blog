@@ -1,27 +1,26 @@
 import { PostService } from "../services/PostService.js";
 
+const msg = 'post'
+
 export const PostController = {
     async createPost(req, res) {
         try {
-            const { title, image, category_id, description, content, status_id } = req.body;
+            const newPost = {
+                ...req.body,
+                category_id: Number(req.body.category_id) == 0 ? null : Number(req.body.category_id),
+                image: req.body.image || null,
+            }
 
-            const result = await PostService.createPost({ title, image, category_id, description, content, status_id })
+            const result = await PostService.createPost(newPost)
 
             return res.status(201).json({
-                message: `Created post sucessfully`,
-                data: {
-                    title,
-                    image,
-                    category_id,
-                    description,
-                    content,
-                    status_id
-                },
+                message: `Created ${msg} sucessfully`,
+                data: result
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not create post because database connection"
+                message: `Server could not create ${msg} because database connection`
             });
         }
     },
@@ -32,13 +31,15 @@ export const PostController = {
             const category = req.query.category || "";
             const keyword = req.query.keyword || "";
             const offset = (page - 1) * limit;
+            const statusid = req.query.statusid || 0;
 
             const param = {
                 page,
                 limit,
                 offset,
                 category,
-                keyword
+                keyword,
+                statusid
             }
 
             const result = await PostService.getAll(param)
@@ -49,7 +50,7 @@ export const PostController = {
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not read post because database connection"
+                message: `Server could not read ${msg} because database connection`
             });
         }
     },
@@ -61,17 +62,33 @@ export const PostController = {
 
             if (!result.rows) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post"
+                    message: `Server could not find a requested ${msg}`
                 });
             }
 
             return res.status(201).json({
-                data: result,
+                data: result.rows[0],
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not read post because database connection"
+                message: `Server could not read ${msg} because database connection`
+            });
+        }
+    },
+    async updateLikeById(req, res) {
+        try {
+            const postId = req.params.id;
+
+            const result = await PostService.updateLikeById(postId)
+
+            return res.status(201).json({
+                message: `${msg} liked successfully`,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: `Server could not update ${msg} because database connection`
             });
         }
     },
@@ -87,17 +104,17 @@ export const PostController = {
 
             if (result.rowCount === 0) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post to update"
+                    message: `Server could not find a requested ${msg} to update`
                 });
             }
 
             return res.status(201).json({
-                message: "Updated post sucessfully"
+                message: `Updated ${msg} sucessfully`
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not update post because database connection"
+                message: `Server could not update ${msg} because database connection`
             });
         }
     },
@@ -109,17 +126,17 @@ export const PostController = {
 
             if (result.rowCount === 0) {
                 return res.status(404).json({
-                    message: "Server could not find a requested post to delete"
+                    message: `Server could not find a requested ${msg} to delete`
                 });
             }
 
             return res.status(201).json({
-                message: "Deleted post sucessfully"
+                message: `Deleted ${msg} sucessfully`
             });
         } catch (error) {
             console.error(error);
             return res.status(500).json({
-                message: "Server could not delete post because database connection"
+                message: `Server could not delete ${msg} because database connection`
             });
         }
     },

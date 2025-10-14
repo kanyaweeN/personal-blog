@@ -7,7 +7,7 @@ function jwtInterceptor() {
         if (hasToken) {
             req.headers = {
                 ...req.headers,
-                Authorization: <Code>Bearer ${window.localStorage.getItem("token")}</Code>,
+                Authorization: `Bearer ${window.localStorage.getItem("token")}`,
             };
         }
 
@@ -25,7 +25,7 @@ function jwtInterceptor() {
                 error.response.data.error.includes("Unauthorized")
             ) {
                 window.localStorage.removeItem("token");
-                window.location.replace("/");
+                // window.location.replace("/"); // คอมเมนต์ไว้ก่อน
             }
             return Promise.reject(error);
         }

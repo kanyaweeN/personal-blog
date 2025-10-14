@@ -2,13 +2,12 @@ import connectionPool from "../utils/db.mjs";
 
 export const PostRepository = {
     async createPost(postData) {
-        console.log(postData);
-
         let query = `
             insert into posts
                 (
                     title, 
                     image, 
+                    author_id,
                     category_id, 
                     description, 
                     content, 
@@ -17,7 +16,7 @@ export const PostRepository = {
                     date
                 )
             values 
-                ($1, $2, $3, $4, $5, $6, $7, $8)
+                ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING id
         `;
         return await connectionPool.query(
@@ -26,6 +25,7 @@ export const PostRepository = {
             [
                 postData.title,
                 postData.image,
+                postData.anthor_id,
                 postData.category_id,
                 postData.description,
                 postData.content,
@@ -35,12 +35,20 @@ export const PostRepository = {
             ]);
     },
     async getAll(param) {
-        const { page, limit, offset, category, keyword } = param;
+        const { page, limit, offset, category, keyword, statusid } = param;
 
         //query condition
         let conditions = [];
         let values = [];
         let paramIndex = 1; // ใช้สำหรับนับ $1, $2, $3
+
+        if (statusid != 0) {
+            conditions.push(`
+                posts.status_id = $${paramIndex}`
+            );
+            values.push(`${statusid}`);
+            paramIndex++;
+        }
 
         if (category) {
             conditions.push(`
@@ -64,20 +72,28 @@ export const PostRepository = {
         let queryFrom = `
             FROM 
                 posts
-                inner join categories on categories.id = posts.category_id
-                inner join statuses on statuses.id = posts.status_id
-            WHERE 
-                posts.status_id = 2
+                left join categories on categories.id = posts.category_id
+                inner join status on status.id = posts.status_id
+                inner join users on users.id = posts.author_id
         `;
 
         //query post all
         let querySelectAll = `
             SELECT 
-                *
+                posts.id,
+                posts.image,
+                categories.name as category,
+                posts.title,
+                posts.description,
+                users.name as author,
+                users.profile_pic as author_img,
+                posts.date,
+                status.status
         `;
 
+        querySelectAll += queryFrom;
         if (conditions.length > 0) {
-            querySelectAll += queryFrom + " AND " + conditions.join(" AND ");
+            querySelectAll += " WHERE " + conditions.join(" AND ");
         }
 
         querySelectAll += ` ORDER BY date DESC 
@@ -85,7 +101,6 @@ export const PostRepository = {
             OFFSET $${paramIndex + 1}`;
         values.push(limit, offset);
 
-        // console.log("result", querySelectAll, values);
         const result = await connectionPool.query(querySelectAll, values);
 
         //query post count
@@ -94,12 +109,12 @@ export const PostRepository = {
                 count(*)
         `;
 
+        queryCount += queryFrom
         if (conditions.length > 0) {
-            queryCount += queryFrom + " AND " + conditions.join(" AND ");
+            queryCount += " WHERE " + conditions.join(" AND ");
         }
         let countValues = values.slice(0, -2);
 
-        // console.log("countResult", queryCount, countValues);
         const countResult = await connectionPool.query(queryCount, countValues);
 
         const totalPosts = Number(countResult.rows[0].count);
@@ -126,12 +141,42 @@ export const PostRepository = {
     async getById(id) {
         let query = `
             SELECT 
-                *
+                posts.id,
+                posts.image,
+                categories.id as category_id,
+                categories.name as category_name,
+                posts.title,
+                posts.description,
+                users.name as author,
+                users.profile_pic as author_img,
+                users.bio,
+                posts.date,
+                posts.content,
+                posts.likes_count as likes,
+                status.id as status_id,
+                status.status as status_status
             FROM 
                 posts
+                left join categories on categories.id = posts.category_id
+                inner join status on status.id = posts.status_id
+                inner join users on users.id = posts.author_id
             WHERE
-                id = $1
+                posts.id = $1
         `;
+
+        return await connectionPool.query(query, [id]);
+    },
+    async updateLikeById(id) {
+        let query = `
+            update 
+                posts 
+            set 
+                likes_count = likes_count + 1 
+            where 
+                id = $1 
+            RETURNING *
+        `;
+
         return await connectionPool.query(query, [id]);
     },
     async updateById(newPost) {
@@ -139,9 +184,9 @@ export const PostRepository = {
             update 
                 posts
             set 
-                title = $2,
-                image = $3,
-                category_id = $4,
+                image = $2,
+                category_id = $3,
+                title = $4,
                 description = $5,
                 content = $6,
                 status_id = $7,
@@ -152,9 +197,9 @@ export const PostRepository = {
         return await connectionPool.query(query
             , [
                 newPost.id,
-                newPost.title,
                 newPost.image,
                 newPost.category_id,
+                newPost.title,
                 newPost.description,
                 newPost.content,
                 newPost.status_id,

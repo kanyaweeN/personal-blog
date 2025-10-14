@@ -2,7 +2,10 @@ import { PostRepository } from "../repositories/PostRepository.js";
 
 export const PostService = {
     async createPost(postData) {
-        const dataWithTimestamp = { ...postData, created_at: new Date() };
+        const dataWithTimestamp = {
+            ...postData,
+            created_at: new Date()
+        };
         return await PostRepository.createPost(dataWithTimestamp);
     },
     async getAll(param) {
@@ -10,6 +13,9 @@ export const PostService = {
     },
     async getById(id) {
         return await PostRepository.getById(id);
+    },
+    async updateLikeById(id) {
+        return await PostRepository.updateLikeById(id);
     },
     async updateById(postData) {
         const dataWithTimestamp = { ...postData, created_at: new Date() };

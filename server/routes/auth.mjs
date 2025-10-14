@@ -1,15 +1,12 @@
 import { Router } from "express";
-import { createClient } from "@supabase/supabase-js";
 import connectionPool from "../utils/db.mjs";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY
-);
 const authRouter = Router();
 
 authRouter.post("/register", async (req, res) => {
-    const { email, password, username, name } = req.body;
+    const { name, username, email, password, role } = req.body
 
     try {
         // ตรวจสอบว่า username มีในฐานข้อมูลหรือไม่
@@ -17,6 +14,7 @@ authRouter.post("/register", async (req, res) => {
                                 SELECT * FROM users 
                                 WHERE username = $1
                                `;
+
         const usernameCheckValues = [username];
         const { rows: existingUser } = await connectionPool.query(
             usernameCheckQuery,
@@ -24,160 +22,221 @@ authRouter.post("/register", async (req, res) => {
         );
 
         if (existingUser.length > 0) {
-            return res.status(400).json({ error: "This username is already taken" });
+            return res.status(409).json({
+                message: "This username is already taken"
+            });
         }
 
-        // สร้างผู้ใช้ใหม่ผ่าน Supabase Auth
-        const { data, error: supabaseError } = await supabase.auth.signUp({
-            email,
-            password,
-        });
+        // ตรวจสอบว่า email มีในฐานข้อมูลหรือไม่
+        const emailCheckQuery = `
+                                SELECT * FROM users 
+                                WHERE email = $1
+                               `;
+        const emailCheckValues = [email];
 
-        // ตรวจสอบ error จาก Supabase
-        if (supabaseError) {
-            if (supabaseError.code === "user_already_exists") {
-                return res
-                    .status(400)
-                    .json({ error: "User with this email already exists" });
-            }
-            // จัดการกับ error อื่นๆ จาก Supabase
-            return res
-                .status(400)
-                .json({ error: "Failed to create user. Please try again." });
+        const { rows: existingEmail } = await connectionPool.query(
+            emailCheckQuery,
+            emailCheckValues
+        );
+
+        if (existingEmail.length > 0) {
+            return res.status(400).json({ message: "User with this email already exists" });
         }
 
-        const supabaseUserId = data.user.id;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // เพิ่มข้อมูลผู้ใช้ในฐานข้อมูล PostgreSQL
         const query = `
-        INSERT INTO users (id, username, name, role)
-        VALUES ($1, $2, $3, $4)
-        RETURNING *;
-      `;
+            insert into users
+            (
+                name,
+                username,
+                email,
+                password,
+                role
+            )
+            values(
+                $1,
+                $2,
+                $3,
+                $4,
+                $5
+            )
+            RETURNING *;
+        `;
 
-        const values = [supabaseUserId, username, name, "user"];
+        const values = [name, username, email, hashedPassword, role];
 
         const { rows } = await connectionPool.query(query, values);
+
+        // สร้าง JWT token
+        const token = jwt.sign(
+            {
+                userId: rows[0].id,
+                email: rows[0].email,
+                role: rows[0].role
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
         res.status(201).json({
             message: "User created successfully",
             user: rows[0],
+            access_token: token,
         });
     } catch (error) {
-        res.status(500).json({ error: "An error occurred during registration" });
+        console.error("/register error", error);
+
+        res.status(500).json({ message: "An error occurred during registration" });
     }
 });
 authRouter.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        // ค้นหาผู้ใช้จากฐานข้อมูล
+        const query = `
+            SELECT * FROM users 
+            WHERE email = $1
+        `;
+        const values = [email];
+        const { rows } = await connectionPool.query(query, values);
 
-        if (error) {
-            // ตรวจสอบว่า error เกิดจากข้อมูลเข้าสู่ระบบไม่ถูกต้องหรือไม่
-            if (
-                error.code === "invalid_credentials" ||
-                error.message.includes("Invalid login credentials")
-            ) {
-                return res.status(400).json({
-                    error: "Your password is incorrect or this email doesn't exist",
-                });
-            }
-            return res.status(400).json({ error: error.message });
+        if (rows.length === 0) {
+            return res.status(400).json({
+                message: "Your password is incorrect or this email doesn't exist",
+            });
         }
 
+        const user = rows[0];
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(400).json({
+                message: "Your password is incorrect or this email doesn't exist",
+            });
+        }
+
+        // สร้าง JWT token
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                email: user.email,
+                role: user.role
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
         return res.status(200).json({
             message: "Signed in successfully",
-            access_token: data.session.access_token,
+            access_token: token,
         });
     } catch (error) {
-        return res.status(500).json({ error: "An error occurred during login" });
+        console.error("/login", error);
+
+        return res.status(500).json({ message: "An error occurred during login" });
     }
 });
 authRouter.get("/get-user", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
-        return res.status(401).json({ error: "Unauthorized: Token missing" });
+        return res.status(401).json({ message: "Unauthorized: Token missing" });
     }
 
     try {
-        // ดึงข้อมูลผู้ใช้จาก Supabase
-        const { data, error } = await supabase.auth.getUser(token);
-        if (error) {
-            return res.status(401).json({ error: "Unauthorized or token expired" });
-        }
+        // ตรวจสอบ JWT token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const supabaseUserId = data.user.id;
         const query = `
                     SELECT * FROM users 
                     WHERE id = $1
                   `;
-        const values = [supabaseUserId];
+        const values = [decoded.userId];
         const { rows } = await connectionPool.query(query, values);
 
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const user = rows[0];
         res.status(200).json({
-            id: data.user.id,
-            email: data.user.email,
-            username: rows[0].username,
-            name: rows[0].name,
-            role: rows[0].role,
-            profilePic: rows[0].profile_pic,
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            name: user.name,
+            role: user.role,
+            profilePic: user.profile_pic,
+            bio: user.bio
         });
     } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: "Unauthorized or token expired" });
+        }
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 authRouter.put("/reset-password", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1]; // ดึง token จาก Authorization header
+    const token = req.headers.Authorization?.split(" ")[1]; // ดึง token จาก Authorization header
     const { oldPassword, newPassword } = req.body;
 
     if (!token) {
-        return res.status(401).json({ error: "Unauthorized: Token missing" });
+        return res.status(401).json({ message: "Unauthorized: Token missing" });
     }
 
     if (!newPassword) {
-        return res.status(400).json({ error: "New password is required" });
+        return res.status(400).json({ message: "New password is required" });
     }
 
     try {
-        // ตั้งค่า session ด้วย token ที่ส่งมา
-        const { data: userData, error: userError } = await supabase.auth.getUser(
-            token
-        );
+        // ตรวจสอบ JWT token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        if (userError) {
-            return res.status(401).json({ error: "Unauthorized: Invalid token" });
+        // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+        const userQuery = `
+            SELECT * FROM users 
+            WHERE id = $1
+        `;
+        const userValues = [decoded.userId];
+        const { rows: userRows } = await connectionPool.query(userQuery, userValues);
+
+        if (userRows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        // ตรวจสอบรหัสผ่านเดิมโดยลองล็อกอิน
-        const { data: loginData, error: loginError } =
-            await supabase.auth.signInWithPassword({
-                email: userData.user.email,
-                password: oldPassword,
-            });
+        const user = userRows[0];
 
-        if (loginError) {
-            return res.status(400).json({ error: "Invalid old password" });
+        // ตรวจสอบรหัสผ่านเดิม
+        const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isOldPasswordValid) {
+            return res.status(400).json({ message: "Invalid old password" });
         }
 
-        // อัปเดตรหัสผ่านของผู้ใช้
-        const { data, error } = await supabase.auth.updateUser({
-            password: newPassword,
-        });
+        // เข้ารหัสรหัสผ่านใหม่
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-        if (error) {
-            return res.status(400).json({ error: error.message });
-        }
+        // อัปเดตรหัสผ่านในฐานข้อมูล
+        const updateQuery = `
+            UPDATE users 
+            SET password = $1 
+            WHERE id = $2
+            RETURNING *
+        `;
+        const updateValues = [hashedNewPassword, decoded.userId];
+        const { rows: updatedRows } = await connectionPool.query(updateQuery, updateValues);
 
         res.status(200).json({
             message: "Password updated successfully",
-            user: data.user,
+            user: updatedRows[0],
         });
     } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: "Unauthorized: Invalid token" });
+        }
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 
