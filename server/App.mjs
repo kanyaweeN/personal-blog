@@ -14,14 +14,10 @@ const app = express();
 const port = process.env.PORT || 4001;
 
 app.use(cors({
-    origin: [
-        'https://personal-blog-server-iota.vercel.app/',
-        `http://localhost:${port}` // สำหรับ development
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*', // หรือระบุ domain เฉพาะ
+    credentials: true
 }));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
