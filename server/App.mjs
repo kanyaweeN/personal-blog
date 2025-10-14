@@ -13,7 +13,16 @@ import statusRouter from "./routes/StatusRouter.mjs";
 const app = express();
 const port = process.env.PORT || 4001;
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://personal-blog-c6a425rxh-kanyaweens-projects.vercel.app',
+        'https://your-production-domain.vercel.app', // เปลี่ยนเป็น domain จริง
+        `http://localhost:${port}` // สำหรับ development
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
