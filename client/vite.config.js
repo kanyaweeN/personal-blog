@@ -11,4 +11,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // แยก vendor libraries ออกมา
+          'react-vendor': ['react', 'react-dom'],
+          'router-vendor': ['react-router-dom'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000 // เพิ่ม limit ถ้าไม่อยากเห็น warning
+  }
 });
