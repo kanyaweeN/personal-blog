@@ -13,42 +13,26 @@ import statusRouter from "./routes/StatusRouter.mjs";
 const app = express();
 const port = process.env.PORT || 4001;
 
+// CORS configuration - ใส่ preflightContinue: false เพื่อให้จัดการ OPTIONS ให้อัตโนมัติ
 app.use(cors({
     origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }));
 
-// จัดการ preflight requests
-app.options('*', cors());
-
 app.use(express.json());
-
-// เพิ่ม middleware สำหรับตั้งค่า headers ทุก request
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-    res.header('Access-Control-Allow-Credentials', 'true');
-
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
 
 app.get("/", (req, res) => {
     return res.json({ message: "Server API is working", timestamp: new Date().toISOString() });
 });
 
 app.use("/auth", authRouter);
-
 app.use("/profile", profileRouter);
 app.use("/posts", postRouter);
-
 app.use("/comment", commentRouter);
-
 app.use("/categories", categoriesRouter);
 app.use("/status", statusRouter);
 
@@ -64,8 +48,12 @@ app.get("/admin-only", protectAdmin, (req, res) => {
 
 // Error handling
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+    console.error('Error:', err);
+    res.status(500).json({
+        error: 'Something went wrong!',
+        message: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
 });
 
 // สำหรับ Vercel (Serverless)
