@@ -5,6 +5,7 @@ import { NavBar } from '../../components/nav/NavBar.jsx';
 import { AppButton } from '../../components/button/AppButton.jsx';
 import InputField from '../../components/input/InputField.jsx';
 
+const url = import.meta.env.VITE_API_URL;
 function SignUpPage() {
     const navigate = useNavigate();
     const [signUp, setSignUp] = useState({
@@ -56,7 +57,7 @@ function SignUpPage() {
 
         try {
             result = await axios.post(
-                "http://localhost:4000/auth/register",
+                `${url}/auth/register`,
                 {
                     ...signUp,
                     role: "user"

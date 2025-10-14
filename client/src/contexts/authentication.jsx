@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext();
+const url = import.meta.env.VITE_API_URL;
 
 function AuthProvider(props) {
     const [state, setState] = useState({
@@ -31,7 +32,7 @@ function AuthProvider(props) {
             setState((prevState) => ({ ...prevState, getUserLoading: true }));
             // let response;
             const response = await axios.get(
-                "http://localhost:4000/auth/get-user"
+                `${url}/auth/get-user`
             );
             setState((prevState) => ({
                 ...prevState,
@@ -59,7 +60,7 @@ function AuthProvider(props) {
         try {
             setState((prevState) => ({ ...prevState, loading: true, error: null }));
             const response = await axios.post(
-                "http://localhost:4000/auth/login",
+                `${url}/auth/login`,
                 data
             );
             const token = response.data.access_token;
@@ -92,7 +93,7 @@ function AuthProvider(props) {
         try {
             setState((prevState) => ({ ...prevState, loading: true, error: null }));
             await axios.post(
-                "http://localhost:4000/auth/register",
+                `${url}/auth/register`,
                 data
             );
             setState((prevState) => ({ ...prevState, loading: false, error: null }));
