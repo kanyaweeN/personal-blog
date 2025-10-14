@@ -14,15 +14,33 @@ const app = express();
 const port = process.env.PORT || 4001;
 
 app.use(cors({
-    origin: '*', // หรือระบุ domain เฉพาะ
-    credentials: true
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
+
+// จัดการ preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 
+// เพิ่ม middleware สำหรับตั้งค่า headers ทุก request
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
 app.get("/", (req, res) => {
-    return res.json("Server API is working")
-})
+    return res.json({ message: "Server API is working", timestamp: new Date().toISOString() });
+});
 
 app.use("/auth", authRouter);
 
@@ -44,8 +62,14 @@ app.get("/admin-only", protectAdmin, (req, res) => {
     res.json({ message: "This is admin-only content", admin: req.user });
 });
 
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
+});
+
 // สำหรับ Vercel (Serverless)
-module.exports = app;
+export default app;
 
 // สำหรับ Local
 if (process.env.NODE_ENV !== 'production') {
