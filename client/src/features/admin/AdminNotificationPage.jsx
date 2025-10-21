@@ -1,5 +1,5 @@
 import SidebarMenu from '../../components/menu/AdminMenu.jsx';
-import NotificationContent from '../../components/admin/NotificationContent.jsx';
+import NotificationContent from '../../components/notifications/NotificationContent.jsx';
 
 export default function AdminNotificationPage() {
     return (

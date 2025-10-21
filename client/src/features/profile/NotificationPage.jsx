@@ -5,7 +5,7 @@ import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
 import ProfileMenu from "../../components/menu/ProfileMenu.jsx";
 import ResetPasswordForm from "../../components/profile/ResetPasswordForm.jsx";
 import { useAuth } from "../../contexts/authentication.jsx";
-import NotificationContent from "../../components/admin/NotificationContent.jsx";
+import NotificationContent from "../../components/notifications/NotificationContent.jsx";
 
 export default function NotificationPage() {
     const { state } = useAuth();

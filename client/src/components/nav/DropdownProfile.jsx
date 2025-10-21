@@ -3,8 +3,8 @@ import { ChevronDown, UserRoundPen, RotateCcw, LogOut, SquareArrowOutUpRight } f
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useAuth } from "@/contexts/authentication";
-import { Notifications } from "../button/Notifications";
 import Userprofile from "../avatar/Userprofile";
+import { Notifications } from "../notifications/Notifications";
 
 export default function DropdownProfile({
     src,
@@ -20,7 +20,6 @@ export default function DropdownProfile({
     const toggleMenu = () => setIsOpen((prev) => !prev);
     const closeMenu = () => setIsOpen(false);
 
-    const avatarUrl = state?.user?.avatar || src;
     const username = state?.user?.username || "User";
 
     const menuItems = [
@@ -67,11 +66,6 @@ export default function DropdownProfile({
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
-
-    const handleNotificationClick = () => {
-        navigate("/notifications");
-        // TODO: Mark notifications as read
-    };
 
     return (
         <div className="relative" ref={menuRef}>
