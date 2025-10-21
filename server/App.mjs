@@ -14,35 +14,15 @@ import notificationRouter from "./routes/notificationRouter.mjs";
 const app = express();
 const port = process.env.PORT || 4001;
 
-const allowedOrigins = [
-    process.env.CLIENT_URL || "https://personal-blog-ivory-eight.vercel.app",
-    "http://localhost:3000",
-];
-
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                console.warn(`Blocked by CORS: ${origin}`);
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        allowedHeaders: [
-            "Content-Type",
-            "Authorization",
-            "X-Requested-With",
-            "Accept",
-            "Origin",
-        ],
-        optionsSuccessStatus: 204,
-    })
-);
-
-app.options("*", cors());
+// CORS configuration - ใส่ preflightContinue: false เพื่อให้จัดการ OPTIONS ให้อัตโนมัติ
+app.use(cors({
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
