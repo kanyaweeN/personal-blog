@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { AppButton } from "../button/AppButton.jsx";
-import Userprofile from './Userprofile.jsx';
+import Userprofile from '../avatar/Userprofile.jsx';
 import { useAuth } from '../../contexts/authentication.jsx';
 
 export function MobileMenu({ isOpen }) {
@@ -34,7 +34,7 @@ export function MobileMenu({ isOpen }) {
                 : (
                     <>
                         <Userprofile
-                            slyte="w-10 h-10"
+                            style="w-10 h-10"
                         />
                     </>
                 )}

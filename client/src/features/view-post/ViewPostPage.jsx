@@ -7,7 +7,7 @@ function ViewPostPage() {
     const param = useParams();
 
     return (
-        <div className="container">
+        <div className="container ">
             <NavBar />
             <ArticleDetail postId={param.postId} />
             <Footer />

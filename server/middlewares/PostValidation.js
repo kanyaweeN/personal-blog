@@ -1,4 +1,4 @@
-export const PostValidation = {
+export const postValidation = {
     createProduct(req, res, next) {
         const body = req.body;
 

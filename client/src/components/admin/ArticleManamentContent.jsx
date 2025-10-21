@@ -7,7 +7,7 @@ import { useAppToast } from '../../hooks/useAppToast.jsx';
 import { PostService } from "../../services/postService.js";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 function ArticleManamentContent() {
     const navigate = useNavigate();
@@ -67,7 +67,6 @@ function ArticleManamentContent() {
 
     const handleOpenDeleteAlert = (item) => {
         setisOpenAlert(true);
-        console.log(item);
 
         setDataDelete(item)
     };
@@ -107,7 +106,7 @@ function ArticleManamentContent() {
                 </AppButton>
             </header>
             {(isLoading || isLoadingSometing) ?
-                <LoadingDot />
+                <LoadingPage />
                 : <>
                     {/* Search + Filters */}
                     <section className="flex gap-4 mb-4">

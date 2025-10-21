@@ -3,13 +3,12 @@ import { ChevronDown, UserRoundPen, RotateCcw, LogOut, SquareArrowOutUpRight } f
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useAuth } from "@/contexts/authentication";
-import userprofile from "../../assets/icons/userprofile.png";
-import { Notifications } from "../button/Notifications";
-import Userprofile from "./Userprofile";
+import Userprofile from "../avatar/Userprofile";
+import { Notifications } from "../notifications/Notifications";
 
 export default function DropdownProfile({
-    src = userprofile,
-    slyte,
+    src,
+    style,
     isMobile = false,
     isMobileMenuOpen = false,
 }) {
@@ -21,7 +20,6 @@ export default function DropdownProfile({
     const toggleMenu = () => setIsOpen((prev) => !prev);
     const closeMenu = () => setIsOpen(false);
 
-    const avatarUrl = state?.user?.avatar || src;
     const username = state?.user?.username || "User";
 
     const menuItems = [
@@ -69,11 +67,6 @@ export default function DropdownProfile({
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
-    const handleNotificationClick = () => {
-        navigate("/notifications");
-        // TODO: Mark notifications as read
-    };
-
     return (
         <div className="relative" ref={menuRef}>
             {/* Desktop Profile Button */}
@@ -84,7 +77,7 @@ export default function DropdownProfile({
                         onClick={toggleMenu}
                         className="flex items-center gap-2 focus:outline-none cursor-pointer"
                     >
-                        <Userprofile slyte={slyte} />
+                        <Userprofile style={style} />
                         <span
                             className="hidden md:inline text-gray-700 font-medium">
                             {username}
@@ -114,7 +107,7 @@ export default function DropdownProfile({
                             <div
                                 className="flex items-center justify-between p-3">
                                 <div className="flex items-center gap-3">
-                                    <Userprofile slyte={slyte} />
+                                    <Userprofile style={style} />
                                     <span
                                         className="text-gray-700 font-medium">
                                         {username}

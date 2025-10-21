@@ -1,14 +1,11 @@
-import SidebarMenu from '../../components/admin/SidebarMenu.jsx';
 import ArticleManamentContent from '../../components/admin/ArticleManamentContent.jsx';
+import AdminLayout from '../../components/admin/AdminLayout.jsx';
 
 function ArticleManamentPage() {
     return (
-        <div >
-            <main className="flex justify-center h-screen">
-                <SidebarMenu />
-                <ArticleManamentContent />
-            </main>
-        </div>
+        <AdminLayout>
+            <ArticleManamentContent />
+        </AdminLayout>
     );
 }
 

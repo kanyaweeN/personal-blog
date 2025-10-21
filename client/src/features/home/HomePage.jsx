@@ -5,7 +5,7 @@ import { ArticleSection } from "../../components/home/ArticleSection.jsx";
 
 function HomePage() {
     return (
-        <div className="container">
+        <div className="container overflow-x-hidden mx-auto">
             <NavBar />
             <HeroSection />
             <ArticleSection />

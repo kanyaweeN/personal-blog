@@ -14,16 +14,20 @@ export function Footer() {
                     Get in touch
                 </span>
                 <div className="flex gap-4">
-                    <img
-                        src={LinkedIN_black}
-                        alt="Linked In"
-                        className="h-[20px]"
-                    />
-                    <img
-                        src={Github_black}
-                        alt="Github"
-                        className="h-[20px]"
-                    />
+                    <a href="https://www.linkedin.com/in/kanyawee-n/" target="_blank" rel="LinkedIn">
+                        <img
+                            src={LinkedIN_black}
+                            alt="Linked In"
+                            className="h-[20px]"
+                        />
+                    </a>
+                    <a href="https://github.com/kanyaweeN/" target="_blank" rel="Github">
+                        <img
+                            src={Github_black}
+                            alt="Github"
+                            className="h-[20px]"
+                        />
+                    </a>
                     <img
                         src={Google_black}
                         alt="Google"

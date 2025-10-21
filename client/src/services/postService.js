@@ -4,10 +4,15 @@ import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
 
 export const PostService = {
-    create: async (newData) => {
+    create: async (formData) => {
         try {
             const result = await axios.post(`${url}/posts`,
-                newData
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             )
 
             return result.data.data;
@@ -50,10 +55,15 @@ export const PostService = {
             return [];
         }
     },
-    updateById: async (newData) => {
+    updateById: async (id, formData) => {
         try {
-            const result = await axios.put(`${url}/posts/${newData.id}`,
-                newData
+            const result = await axios.put(`${url}/posts/${id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             )
             return result.data;
         } catch (e) {

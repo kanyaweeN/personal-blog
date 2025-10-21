@@ -11,4 +11,7 @@ export const ProfileService = {
         const dataWithTimestamp = { ...postData, created_at: new Date() };
         return await ProfileRepository.updateById(dataWithTimestamp);
     },
+    async updatePassword(id, hashedPassword) {
+        return await ProfileRepository.updatePassword(id, hashedPassword);
+    },
 }

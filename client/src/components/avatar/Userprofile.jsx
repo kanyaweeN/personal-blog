@@ -3,17 +3,17 @@ import { useAuth } from "@/contexts/authentication";
 import userprofile from "../../assets/icons/userprofile.png";
 
 export default function Userprofile({
-    src = userprofile,
-    slyte,
+    src,
+    style,
 }) {
     const { state } = useAuth();
-    const avatarUrl = state?.user?.avatar || src;
+    const avatarUrl = src || state?.user?.profilePic;
 
     return (
         <img
-            src={avatarUrl}
+            src={avatarUrl || userprofile}
             alt="avatar"
-            className={clsx("rounded-full object-cover", slyte)}
+            className={clsx("rounded-full object-cover", style)}
         />
     );
 }

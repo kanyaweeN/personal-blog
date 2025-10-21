@@ -19,7 +19,6 @@ function ArticleActions(props) {
     }
     return (
         <>
-            {/* <div className="flex items-center justify-between bg-brown-200 p-5  rounded-xl"> */}
             <div className="flex flex-col md:flex-row items-center justify-between bg-brown-200 p-5  rounded-xl">
                 <div className="pb-5 md:pb-0">
                     <AppButton

@@ -1,14 +1,21 @@
+import cloudinary from "../middlewares/cloudinary.js";
 import { PostService } from "../services/PostService.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const msg = 'post'
+const cloudinaryFolder = 'post-imges'
 
 export const PostController = {
     async createPost(req, res) {
         try {
+            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post");
+
             const newPost = {
                 ...req.body,
-                category_id: Number(req.body.category_id) == 0 ? null : Number(req.body.category_id),
-                image: req.body.image || null,
+                category_id: Number(req.body.category_id) == 0
+                    ? null
+                    : Number(req.body.category_id),
+                ...(publicUrl && { image: publicUrl }),
             }
 
             const result = await PostService.createPost(newPost)
@@ -80,7 +87,7 @@ export const PostController = {
         try {
             const postId = req.params.id;
 
-            const result = await PostService.updateLikeById(postId)
+            await PostService.updateLikeById(postId)
 
             return res.status(201).json({
                 message: `${msg} liked successfully`,
@@ -95,9 +102,14 @@ export const PostController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
+
+            const { image } = req.body;
+            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post", image);
+
             const newPost = {
                 id,
                 ...req.body,
+                ...(publicUrl && { image: publicUrl }),
             }
 
             const result = await PostService.updateById(newPost)

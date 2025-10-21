@@ -9,6 +9,7 @@ import protectAdmin from "./middlewares/protectAdmin.mjs";
 import commentRouter from "./routes/CommentRouter.mjs";
 import categoriesRouter from "./routes/CategoriesRouter.mjs";
 import statusRouter from "./routes/StatusRouter.mjs";
+import notificationRouter from "./routes/notificationRouter.mjs";
 
 const app = express();
 const port = process.env.PORT || 4001;
@@ -24,6 +25,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
     return res.json({ message: "Server API is working", timestamp: new Date().toISOString() });
@@ -35,6 +37,7 @@ app.use("/posts", postRouter);
 app.use("/comment", commentRouter);
 app.use("/categories", categoriesRouter);
 app.use("/status", statusRouter);
+app.use("/notifications", notificationRouter);
 
 // ตัวอย่างเส้นทางที่ผู้ใช้ทั่วไปที่ล็อกอินแล้วสามารถเข้าถึงได้
 app.get("/protected-route", protectUser, (req, res) => {

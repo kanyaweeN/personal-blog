@@ -1,20 +1,16 @@
-import { ChevronDown, Loader2 } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import debounce from 'lodash.debounce'
+import { useEffect } from "react";
 import {
     SelectItem,
 } from "@/components/ui/select";
 
 import BlogCard from "./BlogCard.jsx";
-import { PostService } from "../../services/postService.js";
 import { formatDate } from "../../utils/formatDate.js";
 import InputSearch from "../input/InputSearch.jsx";
 import AppSelect from "../input/AppSelect.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
-
-// const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
+import { LoadingPage } from "../loading/LoadingPage.jsx";
+import CategoryTabs from "../tag/CategoryTabs.jsx";
 
 export function ArticleSection() {
     const {
@@ -87,29 +83,19 @@ export function ArticleSection() {
 
                     {/* Desktop Layout */}
                     <div className="hidden md:block">
-                        <div className=" p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
-                            {/* Tabs */}
-                            <div className="flex gap-6">
-                                {categoriesData.map((item, index) => (
-                                    <button
-                                        key={`${item.id}-${index}`}
-                                        className={`${item.name === activeCategory
-                                            ? "bg-brown-300 text-brown-500" // สีปุ่มเมื่อถูกเลือก
-                                            : "text-brown-400 hover:bg-brown-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
-                                            } px-4 py-2 rounded
-                                     `}
-                                        disabled={item.name === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
-                                        onClick={() =>
-                                            handleCategory(item.name)
-                                        }
-                                    >
-                                        {item.name}
-                                    </button>
-                                ))}
+                        <div className="p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
+
+                            {/* Tabs แยกออกมาใน div ของมันเอง */}
+                            <div className="flex-1 w-full md:w-auto overflow-hidden">
+                                <CategoryTabs
+                                    categoriesData={categoriesData}
+                                    activeCategory={activeCategory}
+                                    handleCategory={handleCategory}
+                                />
                             </div>
 
                             {/* Search */}
-                            <div className=" md:w-72">
+                            <div className="w-full md:w-72 shrink-0">
                                 <InputSearch
                                     value={search}
                                     onChange={handleSearch}
@@ -117,7 +103,6 @@ export function ArticleSection() {
                                     onSelectSuggestion={handleSelectSuggestion}
                                 />
                             </div>
-
                         </div>
                     </div>
                 </div >
@@ -152,14 +137,9 @@ export function ArticleSection() {
                                 className="text-brown-600 hover:text-muted-foreground font-medium underline"
                                 disabled={isLoading}
                             >
-                                {isLoading ? (
-                                    <div className="flex flex-col items-center ">
-                                        <Loader2 className="h-10 w-10 animate-spin" />
-                                        Loading...
-                                    </div>
-                                ) : (
-                                    "View more"
-                                )}
+                                {isLoading
+                                    ? (<LoadingPage />)
+                                    : ("View more")}
                             </button>
                         </div>
                     )

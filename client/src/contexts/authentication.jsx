@@ -64,7 +64,6 @@ function AuthProvider(props) {
                 data
             );
             const token = response.data.access_token;
-            console.log("response", response);
 
             if (!token) {
                 throw new Error("No token received from server");

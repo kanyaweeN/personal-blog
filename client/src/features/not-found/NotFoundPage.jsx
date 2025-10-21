@@ -4,7 +4,7 @@ import { NavBar } from '../../components/nav/NavBar.jsx';
 import { Footer } from '../../components/nav/Footer.jsx';
 import { AppButton } from '../../components/button/AppButton.jsx';
 
-function NotFoundPage() {
+export default function NotFoundPage() {
     const navigate = useNavigate();
 
     return (
@@ -35,5 +35,3 @@ function NotFoundPage() {
         </div>
     );
 }
-
-export default NotFoundPage

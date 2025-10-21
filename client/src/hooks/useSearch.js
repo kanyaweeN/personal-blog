@@ -17,8 +17,8 @@ export const useSearch = (fetchPosts, setPage) => {
         try {
             result = await PostService.getPostBykeyword(searchTerm);
 
-            if (searchTerm && Array.isArray(result.posts)) {
-                setSuggestions(result.posts.slice(0, 8));
+            if (searchTerm && Array.isArray(result.data.posts)) {
+                setSuggestions(result.data.posts.slice(0, 8));
             } else {
                 setSuggestions([]);
             }

@@ -1,9 +1,10 @@
-import React from 'react';
+import { Loader2 } from 'lucide-react';
 
-export const LoadingDot = ({
+export const LoadingPage = ({
     size = 'md',
     color = 'brown',
-    className = ''
+    className = '',
+    text = 'Loading...'
 }) => {
     const sizes = {
         xs: { dot: 'w-1.5 h-1.5', gap: 'gap-1.5' },
@@ -29,14 +30,23 @@ export const LoadingDot = ({
     const gradient = colors[color] || colors.blue;
 
     return (
-        <div className={`flex justify-center ${gap} ${className}`} role="status" aria-label="Loading">
-            {[0, 0.1, 0.2].map((delay, i) => (
+        <div
+            className={`flex flex-col justify-center items-center ${gap} ${className}`}
+            role="status"
+            aria-label="Loading">
+            {/* {[0, 0.1, 0.2].map((delay, i) => (
                 <div
                     key={i}
                     className={`${dot} bg-gradient-to-r ${gradient} rounded-full animate-bounce`}
                     style={{ animationDelay: `${delay}s` }}
                 />
-            ))}
+            ))} */}
+            {/* <LoaderCircle /> */}
+            <div className="flex flex-col items-center ">
+                <Loader2 className="h-10 w-10 animate-spin" />
+                {text}
+            </div>
+            {/* <LoadingScreen text={text} /> */}
         </div>
     );
 };

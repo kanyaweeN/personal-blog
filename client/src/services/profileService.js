@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const url = "http://localhost:4000";
-const url = import.meta.env.VITE_API_URL;
+// Prefer env; fallback to Vite proxy for dev
+const url = import.meta.env.VITE_API_URL || "/api";
 
 export const ProfileService = {
     getAll: async (params) => {
@@ -26,16 +26,33 @@ export const ProfileService = {
             console.error("ProfileService.getById : ", e);
             return [];
         }
-    }, updateById: async (newData) => {
+    }, updateById: async (id, formData) => {
         try {
-            const result = await axios.put(`${url}/profile/${newData.id}`,
-                newData
-            )
+            const result = await axios.put(
+                `${url}/profile/${id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
 
             return result.data;
         } catch (e) {
             console.error("ProfileService.updateById : ", e);
-            return [];
+            return []
+        }
+    },
+    resetPassword: async (id, passwordData) => {
+        try {
+            const result = await axios.put(
+                `${url}/profile/${id}/reset-password`,
+                passwordData
+            );
+            return result.data;
+        } catch (error) {
+            throw error;
         }
     }
 }
