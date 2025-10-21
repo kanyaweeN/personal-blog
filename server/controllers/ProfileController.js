@@ -1,6 +1,7 @@
 import { ProfileService } from "../services/ProfileService.js";
 import cloudinary from "../middlewares/cloudinary.js";
 import bcrypt from "bcryptjs";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const msg = 'profile'
 
@@ -50,55 +51,17 @@ export const ProfileController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
-            let publicUrl = null;
+            const publicUrl = await uploadToCloudinary(req.file, "profile-images", "profile");
 
-            // 1) ตรวจสอบและอัปโหลดไฟล์
-            if (req.file) {
-                const file = req.file;
-
-                const uploadResult = await new Promise((resolve, reject) => {
-                    const uploadStream = cloudinary.uploader.upload_stream(
-                        {
-                            folder: "my-personal-blog",
-                            public_id: `profile/${Date.now()}_${file.originalname.split('.')[0]}`,
-                            resource_type: "auto",
-                        },
-                        (error, result) => {
-                            if (error) {
-                                console.error("Cloudinary error:", error);
-                                reject(error);
-                            } else {
-                                console.log("✓ Cloudinary upload success:", result.secure_url);
-                                resolve(result);
-                            }
-                        }
-                    );
-
-                    // multer เก็บไฟล์ใน buffer
-                    uploadStream.end(file.buffer);
-                });
-
-                publicUrl = uploadResult.secure_url;
-            } else {
-                console.log("✗ No file found - skipping file upload");
-            }
-
-            // 2) เตรียมข้อมูลสำหรับอัปเดต
             const newData = {
                 id,
                 name: req.body.name,
                 username: req.body.username,
                 email: req.body.email,
                 bio: req.body.bio,
-                profile_pic: req.body.profile_pic,
+                ...(publicUrl && { profile_pic: publicUrl }),
             };
 
-            // เพิ่ม profile_pic เฉพาะเมื่อมีการอัปโหลดไฟล์ใหม่
-            if (publicUrl) {
-                newData.profile_pic = publicUrl;
-            }
-
-            // 3) อัปเดตข้อมูลในฐานข้อมูล
             const result = await ProfileService.updateById(newData);
 
             if (result.rowCount === 0) {

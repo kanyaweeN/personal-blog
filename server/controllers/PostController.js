@@ -1,51 +1,21 @@
 import cloudinary from "../middlewares/cloudinary.js";
 import { PostService } from "../services/PostService.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const msg = 'post'
+const cloudinaryFolder = 'post-imges'
 
 export const PostController = {
     async createPost(req, res) {
         try {
-            let publicUrl = null;
-
-            // 1) ตรวจสอบและอัปโหลดไฟล์
-            if (req.file) {
-                const file = req.file;
-
-                const uploadResult = await new Promise((resolve, reject) => {
-                    const uploadStream = cloudinary.uploader.upload_stream(
-                        {
-                            folder: "my-personal-blog",
-                            public_id: `profile/${Date.now()}_${file.originalname.split('.')[0]}`,
-                            resource_type: "auto",
-                        },
-                        (error, result) => {
-                            if (error) {
-                                console.error("Cloudinary error:", error);
-                                reject(error);
-                            } else {
-                                console.log("✓ Cloudinary upload success:", result.secure_url);
-                                resolve(result);
-                            }
-                        }
-                    );
-
-                    // multer เก็บไฟล์ใน buffer
-                    uploadStream.end(file.buffer);
-                });
-
-                publicUrl = uploadResult.secure_url;
-            } else {
-                console.log("✗ No file found - skipping file upload");
-            }
+            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post");
 
             const newPost = {
                 ...req.body,
-                category_id: Number(req.body.category_id) == 0 ? null : Number(req.body.category_id)
-            }
-
-            if (publicUrl) {
-                newPost.image = publicUrl;
+                category_id: Number(req.body.category_id) == 0
+                    ? null
+                    : Number(req.body.category_id),
+                ...(publicUrl && { image: publicUrl }),
             }
 
             const result = await PostService.createPost(newPost)
@@ -117,7 +87,7 @@ export const PostController = {
         try {
             const postId = req.params.id;
 
-            const result = await PostService.updateLikeById(postId)
+            await PostService.updateLikeById(postId)
 
             return res.status(201).json({
                 message: `${msg} liked successfully`,
@@ -132,47 +102,12 @@ export const PostController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
-            let publicUrl = null;
-
-            // 1) ตรวจสอบและอัปโหลดไฟล์
-            if (req.file) {
-                const file = req.file;
-
-                const uploadResult = await new Promise((resolve, reject) => {
-                    const uploadStream = cloudinary.uploader.upload_stream(
-                        {
-                            folder: "my-personal-blog",
-                            public_id: `profile/${Date.now()}_${file.originalname.split('.')[0]}`,
-                            resource_type: "auto",
-                        },
-                        (error, result) => {
-                            if (error) {
-                                console.error("Cloudinary error:", error);
-                                reject(error);
-                            } else {
-                                console.log("✓ Cloudinary upload success:", result.secure_url);
-                                resolve(result);
-                            }
-                        }
-                    );
-
-                    // multer เก็บไฟล์ใน buffer
-                    uploadStream.end(file.buffer);
-                });
-
-                publicUrl = uploadResult.secure_url;
-            } else {
-                console.log("✗ No file found - skipping file upload");
-            }
+            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post");
 
             const newPost = {
                 id,
                 ...req.body,
-            }
-
-            // เพิ่ม profile_pic เฉพาะเมื่อมีการอัปโหลดไฟล์ใหม่
-            if (publicUrl) {
-                newPost.image = publicUrl;
+                ...(publicUrl && { image: publicUrl }),
             }
 
             const result = await PostService.updateById(newPost)

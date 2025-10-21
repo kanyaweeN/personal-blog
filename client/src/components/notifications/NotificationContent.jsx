@@ -34,13 +34,10 @@ export default function NotificationContent() {
         if (!notification.is_read) {
             markAsRead(notification.id);
         }
-        console.log(`handleView ${notification.reference_id}`, notification.type, notification.reference_type, `/view-post/${notification.reference_id}`);
-
         if (notification.type === "message") {
             navigate("/messages");
         } else if (notification.reference_type === "post" && notification.reference_id) {
             navigate(`/view-post/${notification.reference_id}`);
-            console.log(`Navigating to post: ${notification.reference_id}`);
 
         } else if (notification.reference_type === "comment" && notification.reference_id) {
             navigate(`/view-post/${notification.reference_id}#comment-${notification.reference_id}`);
