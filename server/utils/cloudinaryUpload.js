@@ -1,4 +1,4 @@
-import cloudinary from "../middlewares/cloudinary.js";
+import cloudinary from "../middlewares/cloudinarys.js";
 
 /**
  * Upload file to Cloudinary and return secure_url
