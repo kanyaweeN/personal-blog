@@ -9,7 +9,6 @@ import protectAdmin from "./middlewares/protectAdmin.mjs";
 import commentRouter from "./routes/CommentRouter.mjs";
 import categoriesRouter from "./routes/CategoriesRouter.mjs";
 import statusRouter from "./routes/StatusRouter.mjs";
-import CloudinaryRouter from "./routes/CloudinaryRouter.mjs";
 
 const app = express();
 const port = process.env.PORT || 4001;
@@ -32,7 +31,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/upload", CloudinaryRouter);
 app.use("/profile", profileRouter);
 app.use("/posts", postRouter);
 app.use("/comment", commentRouter);

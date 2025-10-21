@@ -5,7 +5,8 @@ export const ProfileRepository = {
         let query = `
             SELECT 
                 *
-            FROM user
+            FROM 
+                users
         `;
         return await connectionPool.query(query);
 
@@ -15,9 +16,9 @@ export const ProfileRepository = {
             SELECT 
                 *
             FROM 
-                user
+                users
             WHERE
-                posts.id = $1
+                id = $1
         `;
 
         return await connectionPool.query(query, [id]);
@@ -44,5 +45,23 @@ export const ProfileRepository = {
                 newData.email,
                 newData.bio
             ]);
+    },
+    async updatePassword(id, hashedPassword) {
+        const query = `
+            update 
+                users
+            set 
+                password = $1
+            where 
+                id = $2
+            returning id
+        `;
+
+        const result = await connectionPool.query(query,
+            [
+                hashedPassword,
+                id
+            ]);
+        return result.rows[0];
     },
 };

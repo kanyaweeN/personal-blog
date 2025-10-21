@@ -27,8 +27,6 @@ export const ProfileService = {
             return [];
         }
     }, updateById: async (id, formData) => {
-        console.log("ProfileService.updateById : ", id, formData);
-
         try {
             const result = await axios.put(
                 `${url}/profile/${id}`,
@@ -44,7 +42,18 @@ export const ProfileService = {
             return result.data;
         } catch (e) {
             console.error("ProfileService.updateById : ", e);
-            throw e; // ส่ง error ให้ frontend จัดการ
+            return []
+        }
+    },
+    resetPassword: async (id, passwordData) => {
+        try {
+            const result = await axios.put(
+                `${url}/profile/${id}/reset-password`,
+                passwordData
+            );
+            return result.data;
+        } catch (error) {
+            throw error;
         }
     }
 }

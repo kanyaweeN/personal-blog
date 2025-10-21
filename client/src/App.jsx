@@ -104,7 +104,7 @@ function App() {
             isLoading={state.getUserLoading}
             isAuthenticated={isAuthenticated}
             userRole={state.user?.role}
-            requiredRole="user"
+            requiredRole={["user", "admin"]}
           >
             <ResetPasswordPage />
           </ProtectedRoute>

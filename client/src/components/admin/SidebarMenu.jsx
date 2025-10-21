@@ -62,8 +62,8 @@ function SidebarMenu() {
                         Notification
                     </a>
                     <a
-                        onClick={() => navigate("/admin/resetpassword")}
-                        className={clsx(baseStyle, isActive("/admin/resetpassword") ? activeColor.active : activeColor.unactive)}
+                        onClick={() => navigate("/admin/reset-password")}
+                        className={clsx(baseStyle, isActive("/admin/reset-password") ? activeColor.active : activeColor.unactive)}
                     >
                         <Key className="mr-3 h-5 w-5" />
                         Reset password

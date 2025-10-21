@@ -55,65 +55,65 @@ export default function ProfileForm() {
 
                 <hr className="border-gray-300" />
 
-                {isLoading ? (
-                    <LoadingDot />
-                ) : (
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        <InputField
-                            text="Name"
-                            type="text"
-                            name="name"
-                            placeholder="Enter your name"
-                            value={profile.name}
-                            onChange={handleInputChange}
-                            error={error.name}
-                            showErrorText={true}
-                            required
-                        />
+                {isLoading
+                    ? (<LoadingDot />)
+                    : (
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <InputField
+                                text="Name"
+                                type="text"
+                                name="name"
+                                placeholder="Enter your name"
+                                value={profile.name}
+                                onChange={handleInputChange}
+                                error={error.name}
+                                showErrorText={true}
+                                required
+                            />
 
-                        <InputField
-                            text="Username"
-                            type="text"
-                            name="username"
-                            placeholder="Enter your username"
-                            value={profile.username}
-                            onChange={handleInputChange}
-                            error={error.username}
-                            showErrorText={true}
-                            required
-                        />
+                            <InputField
+                                text="Username"
+                                type="text"
+                                name="username"
+                                placeholder="Enter your username"
+                                value={profile.username}
+                                onChange={handleInputChange}
+                                error={error.username}
+                                showErrorText={true}
+                                required
+                            />
 
-                        <InputField
-                            text="Email"
-                            type="email"
-                            name="email"
-                            placeholder="your.email@example.com"
-                            value={profile.email}
-                            onChange={handleInputChange}
-                            error={error.email}
-                            showErrorText={true}
-                            disabled={true}
-                        />
+                            <InputField
+                                text="Email"
+                                type="email"
+                                name="email"
+                                placeholder="your.email@example.com"
+                                value={profile.email}
+                                onChange={handleInputChange}
+                                error={error.email}
+                                showErrorText={true}
+                                disabled={true}
+                            />
 
-                        {error.form && (
-                            <p className="text-sm text-red-500">{error.form}</p>
-                        )}
+                            {error.form && (
+                                <p className="text-sm text-red-500">{error.form}</p>
+                            )}
 
-                        {/* Action Buttons */}
-                        <div className="flex flex-col justify-end sm:flex-row gap-3 pt-4">
-                            <AppButton type="submit" style="dark" disabled={isLoading}>
-                                {isLoading ? "Saving..." : "Save Changes"}
-                            </AppButton>
-                            <AppButton
-                                type="button"
-                                onClick={() => navigate("/")}
-                                disabled={isLoading}
-                            >
-                                Cancel
-                            </AppButton>
-                        </div>
-                    </form>
-                )}
+                            {/* Action Buttons */}
+                            <div className="flex flex-col justify-end sm:flex-row gap-3 pt-4">
+                                <AppButton type="submit" style="dark" disabled={isLoading}>
+                                    {isLoading ? "Saving..." : "Save Changes"}
+                                </AppButton>
+                                <AppButton
+                                    type="button"
+                                    onClick={() => navigate("/")}
+                                    disabled={isLoading}
+                                >
+                                    Cancel
+                                </AppButton>
+                            </div>
+                        </form>
+                    )}
             </div>
         </main>
     );
