@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/authentication";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { useAppToast } from "../useAppToast";
-import { ProfileService } from "../../services/profileService";
-import { MAX_FILE_SIZE, EMAIL_REGEX } from "../../utils/regex.ts"
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useAuth } from "../../contexts/authentication.jsx";
+import { useAppToast } from "../../hooks/useAppToast.jsx";
+import { ProfileService } from "../../services/profileService.js";
+import { MAX_FILE_SIZE, EMAIL_REGEX } from "../../utils/regex.js";
 
-const initialize = {
+const initialProfile = {
     image: "",
     name: "",
     username: "",
@@ -13,17 +12,54 @@ const initialize = {
     bio: "",
 };
 
-export function useProfile() {
+const initialError = {
+    image: "",
+    name: "",
+    username: "",
+    email: "",
+    form: "",
+};
+
+export default function useProfile() {
     const { state, fetchUser } = useAuth();
-    const navigate = useNavigate();
     const { success } = useAppToast();
     const fileInputRef = useRef(null);
 
-    const [isLoading, setLoading] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
-    const [profile, setProfile] = useState(initialize);
-    const [error, setError] = useState(initialize);
+    const [isLoading, setIsLoading] = useState(false);
+    const [profile, setProfile] = useState(initialProfile);
+    const [error, setError] = useState(initialError);
     const [imageFile, setImageFile] = useState(null);
+
+    // Preview URL for selected image
+    const previewUrl = useMemo(() => {
+        if (imageFile instanceof File) {
+            return URL.createObjectURL(imageFile);
+        }
+        return null;
+    }, [imageFile]);
+
+    // Cleanup object URL
+    useEffect(() => {
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [previewUrl]);
+
+    // Initialize profile from user data
+    useEffect(() => {
+        if (state?.user) {
+            setProfile({
+                id: state.user.id,
+                image: state.user.avatar || "",
+                name: state.user.name || "",
+                username: state.user.username || "",
+                email: state.user.email || "",
+                bio: state.user.bio || "",
+            });
+        }
+    }, [state?.user]);
 
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -31,13 +67,18 @@ export function useProfile() {
             ...prev,
             [name]: value,
         }));
+        // Clear error when user types
+        setError((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
     }, []);
 
     const handleUploadClick = useCallback(() => {
         fileInputRef.current?.click();
     }, []);
 
-    const validateImageFile = (file) => {
+    const validateImageFile = useCallback((file) => {
         if (!file.type.startsWith("image/")) {
             return "Please upload a valid image file (JPEG, PNG, GIF, WebP)";
         }
@@ -45,9 +86,9 @@ export function useProfile() {
             return "The file is too large. Please upload an image smaller than 5MB.";
         }
         return "";
-    };
+    }, []);
 
-    const handleFileChange = async (e) => {
+    const handleFileChange = useCallback((e) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -59,16 +100,15 @@ export function useProfile() {
             }));
             return;
         }
-        setImageFile(file);
 
-        // Clear error ถ้ามี
+        setImageFile(file);
         setError((prev) => ({
             ...prev,
             image: "",
         }));
-    };
+    }, [validateImageFile]);
 
-    const validateProfileData = () => {
+    const validateProfileData = useCallback(() => {
         const newErrors = {};
 
         if (!profile.name.trim()) {
@@ -86,35 +126,26 @@ export function useProfile() {
         }
 
         return newErrors;
-    };
-    const updateProfile = async () => {
-        setLoading(true);
+    }, [profile.name, profile.username, profile.email]);
+
+    const updateProfile = useCallback(async () => {
+        setIsLoading(true);
         try {
             const formData = new FormData();
-
-            // เพิ่มข้อมูลทั้งหมดลงใน FormData
             formData.append("name", profile.name);
             formData.append("username", profile.username);
             formData.append("email", profile.email);
             formData.append("bio", profile.bio);
             formData.append("profile_pic", state.user.profilePic);
 
-            console.log("profile_pic", state.user.profilePic);
-            // ตรวจสอบว่ามีไฟล์ก่อนเพิ่ม
-            // ตรวจสอบไฟล์ที่เลือก
             if (imageFile) {
-                console.log("Adding file to FormData:", imageFile);
                 formData.append("imageFile", imageFile);
-            } else {
-                console.warn("No image file selected - skipping file upload");
             }
 
             await ProfileService.updateById(state.user.id, formData);
             await fetchUser();
-            setError((prev) => ({
-                ...prev,
-                form: "",
-            }));
+
+            setError(initialError);
             setImageFile(null);
             return true;
         } catch (err) {
@@ -125,45 +156,32 @@ export function useProfile() {
             }));
             return false;
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
-    };
+    }, [profile, imageFile, state.user, fetchUser]);
 
-    const handleSave = async () => {
+    const handleSave = useCallback(async () => {
         const newErrors = validateProfileData();
         setError(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            const success_result = await updateProfile();
-            if (success_result) {
+            const isSuccess = await updateProfile();
+            if (isSuccess) {
                 success(
                     "Saved profile",
                     "Your profile has been successfully updated"
                 );
             }
         }
-    };
+    }, [validateProfileData, updateProfile, success]);
 
-    // Initialize profile from user data
-    useEffect(() => {
-        if (state?.user) {
-            setProfile({
-                id: state.user.id,
-                image: state.user.avatar || "",
-                name: state.user.name || "",
-                username: state.user.username || "",
-                email: state.user.email || "",
-                bio: state.user.bio || "",
-            });
-        }
-    }, [state?.user]);
     return {
         // State
         profile,
         error,
         isLoading,
-        isUploading,
         imageFile,
+        previewUrl,
 
         // Refs
         fileInputRef,
