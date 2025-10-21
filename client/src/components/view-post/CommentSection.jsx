@@ -82,15 +82,17 @@ function CommentSection(props) {
                     Comment
                 </label>
                 <form
-                    className="bg-white flex flex-col items-end gap-2"
+                    className="bg-white flex flex-col items-end gap-2 w-full"
                     onSubmit={heandleSend}
                 >
-                    <TextArea
-                        value={commentText}
-                        rows={3}
-                        placeholder="What are your thoughts?"
-                        onChange={heandleComment}
-                    />
+                    <div className="w-full">
+                        <TextArea
+                            value={commentText}
+                            rows={3}
+                            placeholder="What are your thoughts?"
+                            onChange={heandleComment}
+                        />
+                    </div>
                     <AppButton
                         type="submit"
                         style="dark"
