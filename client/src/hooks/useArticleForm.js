@@ -1,23 +1,33 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppToast } from "../hooks/useAppToast.jsx";
 import { usePosts } from "../hooks/usePosts.js";
 import { useAuth } from "../contexts/authentication.jsx";
 import { PostService } from "../services/postService.js";
-import { MAX_FILE_SIZE } from "../utils/regex.js";
+import { useImageUpload } from "../hooks/useImageUpload.js";
 
 export function useArticleForm() {
     const { state } = useAuth();
     const param = useParams();
     const navigate = useNavigate();
     const { success, error } = useAppToast();
-    const { fetchcategories, fetchPostsById, categoriesData } = usePosts();
+    const {
+        fetchcategories,
+        fetchPostsById,
+        categoriesData
+    } = usePosts();
+
+    const {
+        fileInputRef,
+        imageFile,
+        errorImage,
+        previewUrl,
+        handleUploadClick,
+        handleFileChange
+    } = useImageUpload();
 
     const id = param.postId;
-    const fileInputRef = useRef(null);
-
     const [isLoadingData, setLoadingData] = useState(false);
-    const [imageFile, setImageFile] = useState(null);
     const [category, setCategory] = useState({ id: 0, name: "Highlight" });
     const [blogPosts, setBlogPosts] = useState({
         id: 0,
@@ -35,40 +45,13 @@ export function useArticleForm() {
         status_id: 0,
         status_status: ""
     });
-    const [errorInput, setErrorInput] = useState({ title: "", content: "", description: "" });
+    const [errorInput, setErrorInput] = useState({ title: "", content: "", description: "", image: "" });
 
-    const previewUrl = useMemo(() => {
-        if (imageFile instanceof File) return URL.createObjectURL(imageFile);
-        return null;
-    }, [imageFile]);
 
-    const handleUploadClick = useCallback(() => {
-        fileInputRef.current?.click();
-    }, []);
-
-    const validateImageFile = useCallback((file) => {
-        if (!file.type.startsWith("image/"))
-            return "Please upload a valid image file (JPEG, PNG, GIF, WebP)";
-        if (file.size > MAX_FILE_SIZE)
-            return "The file is too large. Please upload an image smaller than 5MB.";
-        return "";
-    }, []);
-
-    const handleFileChange = useCallback(
-        (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-
-            const validationError = validateImageFile(file);
-            if (validationError) {
-                setErrorInput((prev) => ({ ...prev, image: validationError }));
-                return;
-            }
-            setImageFile(file);
-            setErrorInput((prev) => ({ ...prev, image: "" }));
-        },
-        [validateImageFile]
-    );
+    // รวม error จาก useImageUpload ด้วย
+    useEffect(() => {
+        if (errorImage) setErrorInput((prev) => ({ ...prev, image: errorImage }));
+    }, [errorImage]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -81,21 +64,11 @@ export function useArticleForm() {
     };
 
     const checkData = () => {
-        let err = {}
-        if (!blogPosts.title) {
-            err.title = "Please enter your title.";
-        }
-
-        if (!blogPosts.content) {
-            err.content = "Please enter your content";
-        }
-
-        if (!blogPosts.description) {
-            err.description = "Please enter your description";
-        }
-
+        let err = {};
+        if (!blogPosts.title) err.title = "Please enter your title.";
+        if (!blogPosts.content) err.content = "Please enter your content";
+        if (!blogPosts.description) err.description = "Please enter your description";
         setErrorInput(err);
-
         return Object.keys(err).length === 0;
     };
 
@@ -109,10 +82,7 @@ export function useArticleForm() {
                 name: result.category_name || "Highlight"
             });
         } else if (state.user) {
-            setBlogPosts((prev) => ({
-                ...prev,
-                author: state.user.name
-            }));
+            setBlogPosts((prev) => ({ ...prev, author: state.user.name }));
         }
         setLoadingData(false);
     };
@@ -130,20 +100,14 @@ export function useArticleForm() {
             formData.append("status_id", status_id);
             formData.append("likes_count", 0);
 
-            if (imageFile) {
-                formData.append("imageFile", imageFile);
-            } else {
-                formData.append("image", blogPosts.image);
-            }
+            if (imageFile) formData.append("imageFile", imageFile);
+            else formData.append("image", blogPosts.image);
 
-            if (id === 0 || !id) {
-                await PostService.create(formData);
-            } else {
-                await PostService.updateById(id, formData);
-            }
+            if (!id || id === 0) await PostService.create(formData);
+            else await PostService.updateById(id, formData);
 
             return true;
-        } catch (err) {
+        } catch {
             error("Error", "Failed to save article");
             return false;
         } finally {
@@ -152,41 +116,28 @@ export function useArticleForm() {
     };
 
     const handleSave = async (mode) => {
-        const canSave = checkData()
-
+        const canSave = checkData();
         if (canSave) {
-            const result = await saveData(mode)
+            const result = await saveData(mode);
             if (result) {
-                switch (mode) {
-                    case 1: //draft
-                        success(
-                            "Create article and saved as draft",
-                            "You can publish article later"
-                        );
-                        break;
-                    case 2: //publish
-                        success(
-                            "Create article and published",
-                            "Your article has been successfully published"
-                        );
-                        break;
-                }
-                navigate("/admin/article-manament")
+                success(
+                    mode === 1
+                        ? "Create article and saved as draft"
+                        : "Create article and published",
+                    mode === 1
+                        ? "You can publish article later"
+                        : "Your article has been successfully published"
+                );
+                navigate("/admin/article-manament");
             } else {
-                switch (mode) {
-                    case 1: //draft
-                        error(
-                            "Create article and saved as draft",
-                            "You can not draft article"
-                        );
-                        break;
-                    case 2: //publish
-                        error(
-                            "Create article and published",
-                            "You can not published article"
-                        );
-                        break;
-                }
+                error(
+                    mode === 1
+                        ? "Create article and saved as draft"
+                        : "Create article and published",
+                    mode === 1
+                        ? "You can not draft article"
+                        : "You can not publish article"
+                );
             }
         }
     };
@@ -195,10 +146,6 @@ export function useArticleForm() {
         fetchcategories();
         fetchData();
     }, [id, state.user]);
-
-    useEffect(() => {
-        return () => previewUrl && URL.revokeObjectURL(previewUrl);
-    }, [previewUrl]);
 
     return {
         id,

@@ -38,7 +38,6 @@ export const ProfileService = {
                 }
             );
 
-            console.log("Update response:", result.data);
             return result.data;
         } catch (e) {
             console.error("ProfileService.updateById : ", e);
