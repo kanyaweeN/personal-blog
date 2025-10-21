@@ -10,6 +10,7 @@ import AppSelect from "../input/AppSelect.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
 import { LoadingPage } from "../loading/LoadingPage.jsx";
+import CategoryTabs from "../tag/CategoryTabs.jsx";
 
 export function ArticleSection() {
     const {
@@ -82,29 +83,19 @@ export function ArticleSection() {
 
                     {/* Desktop Layout */}
                     <div className="hidden md:block">
-                        <div className=" p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
-                            {/* Tabs */}
-                            <div className="flex gap-6">
-                                {categoriesData.map((item, index) => (
-                                    <button
-                                        key={`${item.id}-${index}`}
-                                        className={`${item.name === activeCategory
-                                            ? "bg-brown-300 text-brown-500" // สีปุ่มเมื่อถูกเลือก
-                                            : "text-brown-400 hover:bg-brown-300" // สีปุ่มเมื่อไม่ได้ถูกเลือก
-                                            } px-4 py-2 rounded
-                                     `}
-                                        disabled={item.name === activeCategory} // ปิดการคลิกปุ่มที่ถูกเลือก
-                                        onClick={() =>
-                                            handleCategory(item.name)
-                                        }
-                                    >
-                                        {item.name}
-                                    </button>
-                                ))}
+                        <div className="p-4 rounded-xl flex flex-col md:flex-row md:justify-between items-center gap-4">
+
+                            {/* Tabs แยกออกมาใน div ของมันเอง */}
+                            <div className="flex-1 w-full md:w-auto overflow-hidden">
+                                <CategoryTabs
+                                    categoriesData={categoriesData}
+                                    activeCategory={activeCategory}
+                                    handleCategory={handleCategory}
+                                />
                             </div>
 
                             {/* Search */}
-                            <div className=" md:w-72">
+                            <div className="w-full md:w-72 shrink-0">
                                 <InputSearch
                                     value={search}
                                     onChange={handleSearch}
@@ -112,7 +103,6 @@ export function ArticleSection() {
                                     onSelectSuggestion={handleSelectSuggestion}
                                 />
                             </div>
-
                         </div>
                     </div>
                 </div >
