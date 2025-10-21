@@ -21,7 +21,7 @@ import CategoryManagementPage from "./features/admin/CategoryManagementPage.jsx"
 import CreateCategoryPage from "./features/admin/CreateCategoryPage.jsx";
 import PorfilePage from "./features/admin/PorfilePage.jsx";
 import AdminResetPasswordPage from "./features/admin/AdminResetPasswordPage.jsx";
-import NotificationPage from "./features/profile/NotificationPag.jsx";
+import NotificationPage from "./features/profile/NotificationPage.jsx";
 import AdminNotificationPage from "./features/admin/AdminNotificationPage.jsx";
 
 function App() {
