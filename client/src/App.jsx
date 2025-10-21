@@ -20,9 +20,9 @@ import CreateArticlePage from "./features/admin/CreateArticlePage.jsx";
 import CategoryManagementPage from "./features/admin/CategoryManagementPage.jsx";
 import CreateCategoryPage from "./features/admin/CreateCategoryPage.jsx";
 import PorfilePage from "./features/admin/PorfilePage.jsx";
-import AdminNotificationPage from "./features/admin/AdminNotificationPage.jsx";
 import AdminResetPasswordPage from "./features/admin/AdminResetPasswordPage.jsx";
 import NotificationPage from "./features/profile/Notificationpage.jsx";
+import AdminNotificationPage from "./features/admin/AdminNotificationPage.jsx";
 
 function App() {
   const { isAuthenticated, state } = useAuth();
