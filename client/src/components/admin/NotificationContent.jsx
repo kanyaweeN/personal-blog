@@ -72,7 +72,7 @@ export default function NotificationContent() {
                         Notifications
                     </h2>
                     {unreadCount > 0 && (
-                        <span className="px-2.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full">
+                        <span className="px-2.5 py-0.5 bg-orange-500 text-white text-xs font-bold rounded-full">
                             {unreadCount}
                         </span>
                     )}
@@ -84,14 +84,14 @@ export default function NotificationContent() {
                         {unreadCount > 0 && (
                             <button
                                 onClick={markAllAsRead}
-                                className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium"
+                                className="px-4 py-2 text-sm text-gray-400 hover:text-gray-600 rounded-lg transition-colors font-medium"
                             >
                                 Mark all as read
                             </button>
                         )}
                         <button
                             onClick={clearAll}
-                            className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
+                            className="px-4 py-2 text-sm text-orange-400 hover:text-orange-600 rounded-lg transition-colors font-medium"
                         >
                             Clear all
                         </button>
