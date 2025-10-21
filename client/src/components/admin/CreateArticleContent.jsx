@@ -10,7 +10,7 @@ import TextArea from "../input/TextArea.jsx";
 import AppSelect from "../input/AppSelect.jsx";
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import { usePosts } from "../../hooks/usePosts.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 import { useAuth } from '../../contexts/authentication.jsx';
 import { PostService } from '../../services/postService.js';
 
@@ -228,7 +228,7 @@ function CreateArticleContent() {
                 </div>
             </header>
             {(isLoading || isLoadingData)
-                ? <LoadingDot />
+                ? <LoadingPage />
                 : <>
                     {/* Thumbnail */}
                     <form className="text-brown-400 space-y-4" >

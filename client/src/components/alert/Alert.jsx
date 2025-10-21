@@ -37,10 +37,8 @@ function Alert(
                             </span>
                             <span className='space-x-3' >
                                 <AppButton
-                                    // onClick={() => navigate("/profile/reset-password")}
                                     onClick={() => {
-                                        onOpenChange(false);   // ปิด popup
-                                        // navigate(-1);          // กลับไปหน้าเดิม
+                                        onOpenChange(false);
                                     }}
                                 >
                                     {cancelText}

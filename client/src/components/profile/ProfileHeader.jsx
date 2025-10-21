@@ -1,4 +1,4 @@
-import Userprofile from "../nav/Userprofile";
+import Userprofile from "../avatar/Userprofile";
 
 function ProfileHeader({ name, menuName }) {
     return (

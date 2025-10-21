@@ -6,7 +6,7 @@ import Alert from "../alert/Alert.jsx";
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import InputField from "../input/InputField.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 import { categoriesService } from "../../services/categoriesService.js";
 
 function CategoryManagement() {
@@ -109,7 +109,7 @@ function CategoryManagement() {
 
             {/* Loading state */}
             {(isLoading || isLoadingCat) ? (
-                <LoadingDot />
+                <LoadingPage />
             ) : (
                 <section className="bg-white rounded-xl shadow p-6">
                     {/* Table */}

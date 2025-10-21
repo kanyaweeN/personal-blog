@@ -4,7 +4,7 @@ import { AppButton } from "../../components/button/AppButton.jsx";
 import InputField from "../../components/input/InputField.jsx";
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import { categoriesService } from "../../services/categoriesService.js";
-import { LoadingDot } from "../../components/loading/LoadingDot.jsx";
+import { LoadingPage } from "../../components/loading/LoadingPage.jsx";
 import AdminLayout from "../../components/admin/AdminLayout.jsx";
 import { useCategoryForm } from "../../hooks/useCategoryForm.js";
 
@@ -22,7 +22,7 @@ function CreateCategoryPage() {
         <AdminLayout>
             {
                 isLoading
-                    ? <LoadingDot />
+                    ? <LoadingPage />
                     : <main className="flex-1 p-10">
                         {/* Header */}
                         <header className="flex justify-between items-center mb-5 border-b pb-5">

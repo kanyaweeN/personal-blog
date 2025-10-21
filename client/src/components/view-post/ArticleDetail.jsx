@@ -7,7 +7,7 @@ import ArticleActions from "./ArticleActions.jsx";
 import CommentSection from "./CommentSection.jsx";
 import AuthorCard from "./AuthorCard.jsx";
 import AlertAuth from "../alert/AlertAuth.jsx";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 function ArticleDetail(props) {
     const { postId } = props;
@@ -59,7 +59,7 @@ function ArticleDetail(props) {
         <div className="md:px-0 px-5">
             {isLoading
                 ? <div className="w-full h-svh flex justify-center items-center">
-                    <LoadingDot sizes="xl" />
+                    <LoadingPage sizes="xl" />
                 </div>
                 : <>
                     <div className="flex flex-col gap-4 py-5">

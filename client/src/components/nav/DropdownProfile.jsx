@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useAuth } from "@/contexts/authentication";
 import { Notifications } from "../button/Notifications";
-import Userprofile from "./Userprofile";
+import Userprofile from "../avatar/Userprofile";
 
 export default function DropdownProfile({
     src,

@@ -1,14 +1,15 @@
-function CategoryTag(poprs) {
+export default function CategoryTag(poprs) {
     const { category } = poprs;
 
     return (
         <>
-            <div >
-                <span className="bg-green-light rounded-full px-3 py-1 text-sm font-semibold text-green mb-2">
-                    {category}
-                </span>
-            </div>
+            {category && (
+                <div >
+                    <span className="bg-green-light rounded-full px-3 py-1 text-sm font-semibold text-green mb-2">
+                        {category}
+                    </span>
+                </div>
+            )}
         </>
     );
 }
-export default CategoryTag;

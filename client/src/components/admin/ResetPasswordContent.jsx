@@ -2,7 +2,7 @@ import { AppButton } from "../button/AppButton.jsx";
 import InputField from "../input/InputField.jsx";
 import Alert from "../alert/Alert.jsx";
 import { useResetPassword } from "../../hooks/useResetPassword.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 export default function ResetPasswordContent() {
     const {
@@ -31,7 +31,7 @@ export default function ResetPasswordContent() {
             </header>
             {
                 isLoading
-                    ? <LoadingDot />
+                    ? <LoadingPage />
                     : (<>
                         {/* Form */}
                         <form className="space-y-5 w-full max-w-[500px]" onSubmit={handleSave}>

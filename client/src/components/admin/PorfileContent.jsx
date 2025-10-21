@@ -1,8 +1,8 @@
 import { AppButton } from '../button/AppButton.jsx';
 import InputField from '../input/InputField.jsx';
 import TextArea from '../input/TextArea.jsx';
-import Userprofile from '../nav/Userprofile.jsx';
-import { LoadingDot } from '../loading/LoadingDot.jsx';
+import Userprofile from '../avatar/Userprofile.jsx';
+import { LoadingPage } from '../loading/LoadingPage.jsx';
 import useProfile from '../../hooks/admin/useProfile.jsx';
 
 export default function ProfileContent() {
@@ -33,7 +33,7 @@ export default function ProfileContent() {
             </header>
 
             {isLoading
-                ? (<LoadingDot />) : (
+                ? (<LoadingPage />) : (
                     <form className="text-brown-400 space-y-4">
                         {/* Profile Picture */}
                         <div className="flex items-center gap-3">

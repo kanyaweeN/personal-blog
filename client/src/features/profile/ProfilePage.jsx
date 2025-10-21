@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { AppButton } from "../../components/button/AppButton.jsx";
 import InputField from "../../components/input/InputField.jsx";
 import { useAppToast } from "../../hooks/useAppToast.jsx";
-import Userprofile from "../../components/nav/Userprofile.jsx";
+import Userprofile from "../../components/avatar/Userprofile.jsx";
 import { NavBar } from "../../components/nav/NavBar.jsx";
 import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
 import ProfileMenu from "../../components/menu/ProfileMenu.jsx";
 import ProfileForm from "../../components/profile/ProfileForm.jsx";
 
-function ProfilePage() {
+export default function ProfilePage() {
     const { state } = useAuth();
     const navigate = useNavigate();
     const { success } = useAppToast();
@@ -56,5 +56,3 @@ function ProfilePage() {
         </div>
     );
 }
-
-export default ProfilePage;

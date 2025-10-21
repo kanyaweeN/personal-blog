@@ -8,7 +8,7 @@ import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
 import ProfileMenu from "../menu/ProfileMenu.jsx";
 import Alert from "../../components/alert/Alert.jsx";
 import { useResetPassword } from "../../hooks/useResetPassword.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 export default function ResetPasswordForm() {
     const {
@@ -28,7 +28,7 @@ export default function ResetPasswordForm() {
             <div className="bg-brown-200 max-w-lg rounded-xl shadow p-8 space-y-6">
                 {
                     isLoading
-                        ? <LoadingDot />
+                        ? <LoadingPage />
                         : (<>
                             {/* Form */}
                             <form onSubmit={handleSave} className="space-y-5 ">

@@ -1,18 +1,15 @@
-import { ChevronDown, Loader2 } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import debounce from 'lodash.debounce'
+import { useEffect } from "react";
 import {
     SelectItem,
 } from "@/components/ui/select";
 
 import BlogCard from "./BlogCard.jsx";
-import { PostService } from "../../services/postService.js";
 import { formatDate } from "../../utils/formatDate.js";
 import InputSearch from "../input/InputSearch.jsx";
 import AppSelect from "../input/AppSelect.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 export function ArticleSection() {
     const {
@@ -150,14 +147,9 @@ export function ArticleSection() {
                                 className="text-brown-600 hover:text-muted-foreground font-medium underline"
                                 disabled={isLoading}
                             >
-                                {isLoading ? (
-                                    <div className="flex flex-col items-center ">
-                                        <Loader2 className="h-10 w-10 animate-spin" />
-                                        Loading...
-                                    </div>
-                                ) : (
-                                    "View more"
-                                )}
+                                {isLoading
+                                    ? (<LoadingPage />)
+                                    : ("View more")}
                             </button>
                         </div>
                     )

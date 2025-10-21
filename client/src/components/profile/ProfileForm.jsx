@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { AppButton } from "../../components/button/AppButton.jsx";
 import InputField from "../../components/input/InputField.jsx";
-import Userprofile from "../../components/nav/Userprofile.jsx";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import Userprofile from "../avatar/Userprofile.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 import useProfile from "../../hooks/admin/useProfile.jsx";
 
 export default function ProfileForm() {
@@ -56,7 +56,7 @@ export default function ProfileForm() {
                 <hr className="border-gray-300" />
 
                 {isLoading
-                    ? (<LoadingDot />)
+                    ? (<LoadingPage />)
                     : (
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <InputField

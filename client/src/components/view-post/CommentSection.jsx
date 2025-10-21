@@ -5,7 +5,7 @@ import AlertAuth from "../alert/AlertAuth.jsx";
 import TextArea from "../input/TextArea.jsx";
 import { useAuth } from "../../contexts/authentication.jsx";
 import { CommentService } from "../../services/commentService.js";
-import { LoadingDot } from "../loading/LoadingDot.jsx";
+import { LoadingPage } from "../loading/LoadingPage.jsx";
 
 function CommentSection(props) {
     const { postId } = props;
@@ -102,10 +102,11 @@ function CommentSection(props) {
             </div >
             {
                 isLoading
-                    ? <LoadingDot />
+                    ? <LoadingPage />
                     : commentData.map((item, index) => (
                         <div key={index}>
                             <CommentCard
+                                name={item.author}
                                 image={item.author_img}
                                 date={item.created_at}
                                 text={item.comment_text}
