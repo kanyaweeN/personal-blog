@@ -2,20 +2,7 @@ import { Router } from "express";
 import { ProfileController } from "../controllers/ProfileController.js";
 import multer from "multer";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-
-// ตั้งค่า multer เก็บไฟล์ในหน่วยความจำ
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
-    fileFilter: (req, file, cb) => {
-        // ตรวจสอบประเภทไฟล์
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only image files are allowed'));
-        }
-    }
-});
+import { upload } from "../middlewares/uploadMiddleware.js";
 
 const profileRouter = Router();
 
