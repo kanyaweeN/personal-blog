@@ -1,7 +1,7 @@
 import SidebarMenu from '../../components/menu/AdminMenu.jsx';
 import NotificationContent from '../../components/admin/NotificationContent.jsx';
 
-function NotificationPage() {
+export default function AdminNotificationPage() {
     return (
         <div >
             <main className="flex justify-center h-screen">
@@ -11,5 +11,3 @@ function NotificationPage() {
         </div>
     );
 }
-
-export default NotificationPage

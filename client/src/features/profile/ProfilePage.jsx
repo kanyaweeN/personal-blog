@@ -44,9 +44,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col md:flex-row gap-6 mt-6 ">
                     {/* Sidebar Menu */}
                     <aside className="w-[200px]">
-                        <ProfileMenu
-                            onClick={() => navigate("/profile/reset-password")}
-                        />
+                        <ProfileMenu />
                     </aside>
 
                     {/* Main Content */}

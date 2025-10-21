@@ -5,8 +5,9 @@ import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
 import ProfileMenu from "../../components/menu/ProfileMenu.jsx";
 import ResetPasswordForm from "../../components/profile/ResetPasswordForm.jsx";
 import { useAuth } from "../../contexts/authentication.jsx";
+import NotificationContent from "../../components/admin/NotificationContent.jsx";
 
-export default function ResetPasswordPage() {
+export default function NotificationPage() {
     const { state } = useAuth();
     const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ export default function ResetPasswordPage() {
                         </aside>
 
                         {/* Main content */}
-                        <ResetPasswordForm />
+                        <NotificationContent />
                     </div>
                 </div>
             </div>

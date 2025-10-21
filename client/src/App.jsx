@@ -20,8 +20,9 @@ import CreateArticlePage from "./features/admin/CreateArticlePage.jsx";
 import CategoryManagementPage from "./features/admin/CategoryManagementPage.jsx";
 import CreateCategoryPage from "./features/admin/CreateCategoryPage.jsx";
 import PorfilePage from "./features/admin/PorfilePage.jsx";
-import NotificationPage from "./features/admin/NotificationPage.jsx";
+import AdminNotificationPage from "./features/admin/AdminNotificationPage.jsx";
 import AdminResetPasswordPage from "./features/admin/AdminResetPasswordPage.jsx";
+import NotificationPage from "./features/profile/Notificationpage.jsx";
 
 function App() {
   const { isAuthenticated, state } = useAuth();
@@ -55,7 +56,16 @@ function App() {
             <PorfilePage />
           </ProtectedRoute>
         } />
-        <Route path="/admin/notification" element={<NotificationPage />} />
+        <Route path="/admin/notification" element={
+          <ProtectedRoute
+            isLoading={state.getUserLoading}
+            isAuthenticated={isAuthenticated}
+            userRole={state.user?.role}
+            requiredRole="admin"
+          >
+            <AdminNotificationPage />
+          </ProtectedRoute>
+        } />
         <Route path="/admin/reset-password" element={<AdminResetPasswordPage />} />
 
         {/* Authentication Section */}
@@ -109,7 +119,16 @@ function App() {
             <ResetPasswordPage />
           </ProtectedRoute>
         } />
-
+        <Route path="/profile/notification" element={
+          <ProtectedRoute
+            isLoading={state.getUserLoading}
+            isAuthenticated={isAuthenticated}
+            userRole={state.user?.role}
+            requiredRole={["user", "admin"]}
+          >
+            <NotificationPage />
+          </ProtectedRoute>
+        } />
       </Routes>
     </>
   );

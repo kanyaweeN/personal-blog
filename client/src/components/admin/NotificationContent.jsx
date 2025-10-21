@@ -1,42 +1,126 @@
+import { useEffect } from "react";
+import { useNotificationActions } from "../../hooks/notifications/useNotificationActions";
+import { useNotifications } from "../../hooks/notifications/useNotifications";
 import { AppButton } from "../button/AppButton";
+import NotificationItem from "../noti/NotificationItem";
+import { Bell } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-function NotificationContent(props) {
-    const { image, date } = props;
+export default function NotificationContent() {
+    // ใช้ hooks ที่มีอยู่แล้ว โดยส่ง isOpen เป็น true เพื่อให้โหลดข้อมูลทันที
+    const navigate = useNavigate();
+
+    const {
+        notifications,
+        setNotifications,
+        loading,
+        unreadCount,
+        setUnreadCount,
+        fetchNotifications
+    } = useNotifications(true);
+
+    const {
+        markAsRead,
+        markAllAsRead,
+        deleteNotification,
+        clearAll
+    } = useNotificationActions(setNotifications, setUnreadCount);
+
+    // Fetch ข้อมูลเมื่อ component mount
+    useEffect(() => {
+        fetchNotifications();
+    }, []);
+
+    const handleView = (notification) => {
+        if (!notification.is_read) {
+            markAsRead(notification.id);
+        }
+        console.log(`handleView ${notification.reference_id}`, notification.type, notification.reference_type, `/view-post/${notification.reference_id}`);
+
+        if (notification.type === "message") {
+            navigate("/messages");
+        } else if (notification.reference_type === "post" && notification.reference_id) {
+            navigate(`/view-post/${notification.reference_id}`);
+            console.log(`Navigating to post: ${notification.reference_id}`);
+
+        } else if (notification.reference_type === "comment" && notification.reference_id) {
+            navigate(`/view-post/${notification.reference_id}#comment-${notification.reference_id}`);
+        }
+
+    };
+
+    const handleDelete = (id) => {
+        deleteNotification(id, notifications);
+    };
+
+    if (loading) {
+        return (
+            <main className="flex-1 p-10">
+                <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className="flex-1 p-10">
             {/* Header */}
             <header className="flex justify-between items-center mb-5 border-b pb-5">
-                <h2 className="text-xl font-bold">
-                    Notification
-                </h2>
+                <div className="flex items-center gap-3">
+                    <h2 className="text-xl font-bold">
+                        Notifications
+                    </h2>
+                    {unreadCount > 0 && (
+                        <span className="px-2.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full">
+                            {unreadCount}
+                        </span>
+                    )}
+                </div>
+
+                {/* Action Buttons */}
+                {notifications.length > 0 && (
+                    <div className="flex gap-3">
+                        {unreadCount > 0 && (
+                            <button
+                                onClick={markAllAsRead}
+                                className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium"
+                            >
+                                Mark all as read
+                            </button>
+                        )}
+                        <button
+                            onClick={clearAll}
+                            className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
+                        >
+                            Clear all
+                        </button>
+                    </div>
+                )}
             </header>
 
-            <div className="flex not-last:border-b items-start justify-start">
-                <img className="w-9 h-9 rounded-full mr-2" src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg" alt="Tomson P." />
-
-                <div className="flex flex-col w-full">
-                    <span
-                        className="font-bold text-brown-500">
-                        Jacob Lash
-                    </span>
-                    <p>
-                        I loved this article! It really explains why my cat is so independent yet loving. The purring section was super interesting.
-                    </p>
-                    <p className="text-xs text-orange">
-                        4 hours ago
-                    </p>
+            {/* Notifications List */}
+            {notifications.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+                    <Bell className="w-16 h-16 mb-4 opacity-30" />
+                    <p className="text-lg">No notifications</p>
+                    <p className="text-sm mt-2">You're all caught up!</p>
                 </div>
-                <a
-                    className="text-xs underline hover:text-brown-300 cursor-pointer"
-                    onClick={() => { }}
-                >
-                    view
-                </a>
-            </div>
-        </main >
-    )
+            ) : (
+                <div className="space-y-0">
+                    {notifications.map((notification) => (
+                        <NotificationItem
+                            key={notification.id}
+                            notification={notification}
+                            onMarkAsRead={markAsRead}
+                            onDelete={handleDelete}
+                            onView={handleView}
+                        />
+                    ))}
+                </div>
+            )}
+        </main>
+    );
 }
-
-export default NotificationContent;
 
 
