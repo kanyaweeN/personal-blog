@@ -1,98 +1,48 @@
-import { useNavigate } from 'react-router-dom';
-import { ImageIcon, X } from "lucide-react";
-import { useEffect, useState } from "react";
 import { AppButton } from '../button/AppButton.jsx';
 import InputField from '../input/InputField.jsx';
 import TextArea from '../input/TextArea.jsx';
-import { useAppToast } from '../../hooks/useAppToast.jsx';
 import Userprofile from '../nav/Userprofile.jsx';
-import { useAuth } from '../../contexts/authentication.jsx';
-import { ProfileService } from '../../services/profileService.js';
+import { useProfile } from '../../hooks/admin/useProfile.jsx';
+import { useMemo } from 'react';
+import { LoaderCircle } from 'lucide-react';
+import { LoadingDot } from '../loading/LoadingDot.jsx';
 
-function PorfileContent() {
-    const { state, fetchUser } = useAuth();
-    const navigate = useNavigate();
-    const { success } = useAppToast();
-    const [isLoading, setLoading] = useState(false);
-    const [porfile, setPorfile] = useState({
-        image: "",
-        name: "",
-        username: "",
-        email: "",
-        bio: "",
-    });
-    const [error, setError] = useState({
-        image: "",
-        name: "",
-        username: "",
-        email: "",
-        bio: "",
-    })
+export default function PorfileContent() {
+    const {
+        success,
+        error,
+        isLoading,
+        isUploading,
+        imageFile,
+        profile,
+        setProfile,
+        previewImage,
+        setPreviewImage,
+        fileInputRef,
+        handleInputChange,
+        handleUploadClick,
+        handleFileChange,
+        handleSave,
+        updateData,
+        fetchUser,
+    } = useProfile();
 
-    const updateData = async () => {
-        setLoading(true);
-
-        let result = {};
-        try {
-            result = await ProfileService.updateById(porfile);
-            fetchUser()
-
-        } catch (err) {
-            setError("โหลดข้อมูลไม่สำเร็จ");
-        } finally {
-            setLoading(false);
+    // ✅ สร้าง preview URL จาก File object โดยตรง
+    const previewUrl = useMemo(() => {
+        if (imageFile && imageFile instanceof File) {
+            return URL.createObjectURL(imageFile);
         }
-        return result;
-    };
+        return null;
+    }, [imageFile]);
 
-    useEffect(() => {
-        if (state?.user) {
-            setPorfile({
-                id: state.user.id,
-                image: state.user.avatar || "",
-                name: state.user.name || "",
-                username: state.user.username || "",
-                email: state.user.email || "",
-                bio: state.user.bio || "",
-            });
-        }
-    }, [state?.user]);
-
-    const handleonChange = (e) => {
-        const { name, value } = e.target;
-        setPorfile((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    }
-    const handleSave = () => {
-        let err = {}
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!porfile.name.trim()) {
-            err.name = "Please enter your name.";
-        }
-
-        if (!porfile.username.trim()) {
-            err.username = "Please enter your username.";
-        }
-
-        if (!porfile.email.trim()) {
-            err.email = "Please enter your email.";
-        } else if (!emailRegex.test(porfile.email)) {
-            err.email = "Email must be a valid email";
-        }
-
-        setError(err);
-
-        if (Object.keys(err).length === 0) {
-            updateData();
-            success(
-                "Saved profile",
-                "Your profile has been successfully updated"
-            );
-        }
-    }
+    // Cleanup object URL เมื่อ component unmount หรือ imageFile เปลี่ยน
+    useMemo(() => {
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [previewUrl]);
 
     return (
         <main className="flex-1 p-10">
@@ -105,6 +55,7 @@ function PorfileContent() {
                     <AppButton
                         onClick={handleSave}
                         style='dark'
+                        disabled={isUploading}
                     >
                         Save
                     </AppButton>
@@ -112,74 +63,96 @@ function PorfileContent() {
             </header>
 
             {/* Thumbnail */}
-            <form className="text-brown-400 space-y-4">
-                <div className="flex items-center gap-3">
-                    <div>
-                        <Userprofile
-                            slyte="w-20 h-20"
-                        />
-                    </div>
-                    <div>
-                        <AppButton>
-                            Upload profile picture
-                        </AppButton>
-                    </div>
-                </div>
+            {isLoading
+                ? <LoadingDot />
+                : <>
+                    <form className="text-brown-400 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div>
+                                <Userprofile
+                                    src={previewUrl || profile.image}
+                                    style="w-20 h-20"
+                                />
+                            </div>
+                            <div>
+                                {/* Hidden file input*/}
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        handleUploadClick();
+                                    }}
+                                    disabled={isUploading}
+                                    className="px-7 py-2 text-sm bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400 rounded-full transition-colors cursor-pointer"
+                                >
+                                    {isUploading ? 'Uploading...' : 'Upload profile picture'}
+                                </button>
+                                {error.image && (
+                                    <p className="text-red-500 text-sm mt-1">{error.image}</p>
+                                )}
+                            </div>
+                        </div>
 
-                <div>
-                    <label htmlFor="name" className="text-sm">name</label>
-                    <InputField
-                        id="name"
-                        name="name"
-                        placeholder="Name"
-                        value={porfile.name}
-                        onChange={handleonChange}
-                        error={error.name}
-                        showErrorText={true}
-                    />
-                </div>
+                        <div>
+                            <label htmlFor="name" className="text-sm">name</label>
+                            <InputField
+                                id="name"
+                                name="name"
+                                placeholder="Name"
+                                value={profile.name}
+                                onChange={handleInputChange}
+                                error={error.name}
+                                showErrorText={true}
+                            />
+                        </div>
 
-                <div>
-                    <label htmlFor="title" className="text-sm">Username</label>
-                    <InputField
-                        id="username"
-                        name="username"
-                        placeholder="Username"
-                        value={porfile.username} // Prefill with the fetched title
-                        onChange={handleonChange}
-                        error={error.username}
-                        showErrorText={true}
-                    />
-                </div>
+                        <div>
+                            <label htmlFor="title" className="text-sm">Username</label>
+                            <InputField
+                                id="username"
+                                name="username"
+                                placeholder="Username"
+                                value={profile.username}
+                                onChange={handleInputChange}
+                                error={error.username}
+                                showErrorText={true}
+                            />
+                        </div>
 
-                <div>
-                    <label htmlFor="email" className="text-sm">Email</label>
-                    <InputField
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        value={porfile.email} // Prefill with the fetched title
-                        onChange={handleonChange}
-                        error={error.email}
-                        showErrorText={true}
-                    />
-                </div>
+                        <div>
+                            <label htmlFor="email" className="text-sm">Email</label>
+                            <InputField
+                                id="email"
+                                name="email"
+                                placeholder="Email"
+                                value={profile.email}
+                                onChange={handleInputChange}
+                                error={error.email}
+                                showErrorText={true}
+                            />
+                        </div>
 
-                <div>
-                    <label htmlFor="bio" className="text-sm">Bio (max 120 letters)</label>
-                    <TextArea
-                        id="bio"
-                        name="bio"
-                        placeholder="Bio"
-                        maxLength={120}
-                        rows={3}
-                        value={porfile.bio} // Prefill with the 
-                        onChange={handleonChange}
-                    />
-                </div>
-            </form>
+                        <div>
+                            <label htmlFor="bio" className="text-sm">Bio (max 120 letters)</label>
+                            <TextArea
+                                id="bio"
+                                name="bio"
+                                placeholder="Bio"
+                                maxLength={120}
+                                rows={3}
+                                value={profile.bio}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                    </form>
+                </>
+            }
         </main>
     );
 }
-
-export default PorfileContent;

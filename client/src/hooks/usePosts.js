@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import debounce from 'lodash.debounce';
 import { PostService } from "../services/postService";
 import { statusService } from "../services/statusService";
 import { categoriesService } from "../services/categoriesService";
@@ -7,7 +6,10 @@ import { categoriesService } from "../services/categoriesService";
 export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
     const [blogPosts, setblogPosts] = useState([]);
     const [statusData, setStatusData] = useState([]);
-    const [categoriesData, setCategoriesData] = useState([]);
+    const [categoriesData, setCategoriesData] = useState([{
+        id: 0,
+        name: "Highlight"
+    },]);
 
     const [isLoading, setLoading] = useState(false);
     const [iserror, setError] = useState("");
@@ -26,7 +28,6 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
             statusid: statusid
         }
 
-        console.log("queries", queries);
         return queries;
     }
 
@@ -36,7 +37,6 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
         let result = {};
         try {
             result = await PostService.getAllPost(setQuery(searchTerm));
-            console.log("result", result);
 
             if (page === 1) {
                 setblogPosts(result.posts);
@@ -132,7 +132,6 @@ export const usePosts = (initialLimit = 6, initialStatusid = 2) => {
     const handleCategory = (category) => {
         setActiveCategory(category);
         setPage(1);
-        console.log("category", category);
     }
 
     const handleLoadMore = () => {

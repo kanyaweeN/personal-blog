@@ -1,3 +1,4 @@
+import { LoaderCircle } from 'lucide-react';
 import React from 'react';
 
 export const LoadingDot = ({
@@ -30,13 +31,14 @@ export const LoadingDot = ({
 
     return (
         <div className={`flex justify-center ${gap} ${className}`} role="status" aria-label="Loading">
-            {[0, 0.1, 0.2].map((delay, i) => (
+            {/* {[0, 0.1, 0.2].map((delay, i) => (
                 <div
                     key={i}
                     className={`${dot} bg-gradient-to-r ${gradient} rounded-full animate-bounce`}
                     style={{ animationDelay: `${delay}s` }}
                 />
-            ))}
+            ))} */}
+            <LoaderCircle />
         </div>
     );
 };

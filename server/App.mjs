@@ -9,6 +9,7 @@ import protectAdmin from "./middlewares/protectAdmin.mjs";
 import commentRouter from "./routes/CommentRouter.mjs";
 import categoriesRouter from "./routes/CategoriesRouter.mjs";
 import statusRouter from "./routes/StatusRouter.mjs";
+import CloudinaryRouter from "./routes/CloudinaryRouter.mjs";
 
 const app = express();
 const port = process.env.PORT || 4001;
@@ -24,12 +25,14 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
     return res.json({ message: "Server API is working", timestamp: new Date().toISOString() });
 });
 
 app.use("/auth", authRouter);
+app.use("/upload", CloudinaryRouter);
 app.use("/profile", profileRouter);
 app.use("/posts", postRouter);
 app.use("/comment", commentRouter);

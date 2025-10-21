@@ -1,4 +1,3 @@
-
 import clsx from "clsx";
 
 export function AppButton({
@@ -11,20 +10,20 @@ export function AppButton({
 }) {
 
     const baseStyles =
-        "rounded-full transition-colors ";
+        "rounded-full transition-colors";
 
     const styles = {
-        transition: "ext-white hover:bg-brown-800 disabled:bg-brown-400",
+        transition: "text-white hover:bg-brown-800 disabled:bg-brown-400",
         icon:
             `flex gap-3 bg-white text-brown-700 border border-brown-400 
             hover:bg-brown-100 
             disabled:border-brown-300 disabled:text-brown-400`,
         icondark:
-            `flex gap-3 bg-brown-600 text-white border order-brown-700
-            hover:bg-brown-600 
+            `flex gap-3 bg-brown-600 text-white border border-brown-700
+            hover:bg-brown-700 
             disabled:border-brown-300 disabled:text-brown-400`,
         underline: "text-black underline hover:text-brown-400 disabled:text-brown-400",
-        dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-600 disabled:bg-brown-200",
+        dark: "bg-brown-600 text-white border border-brown-700 hover:bg-brown-800 disabled:bg-brown-200",
         white: "bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400",
     };
 
@@ -47,5 +46,3 @@ export function AppButton({
         </button>
     )
 }
-
-

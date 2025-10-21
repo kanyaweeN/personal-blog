@@ -14,8 +14,6 @@ import AppSelect from "../input/AppSelect.jsx";
 import { usePosts } from "../../hooks/usePosts.js";
 import { useSearch } from "../../hooks/useSearch.js";
 
-// const categoryData = ["Highlight", "Cat", "Inspiration", "General"];
-
 export function ArticleSection() {
     const {
         blogPosts,

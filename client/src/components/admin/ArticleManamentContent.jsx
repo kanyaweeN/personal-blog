@@ -67,7 +67,6 @@ function ArticleManamentContent() {
 
     const handleOpenDeleteAlert = (item) => {
         setisOpenAlert(true);
-        console.log(item);
 
         setDataDelete(item)
     };

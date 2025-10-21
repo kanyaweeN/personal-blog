@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const url = "http://localhost:4000";
-const url = import.meta.env.VITE_API_URL;
+// Prefer env; fallback to Vite proxy for dev
+const url = import.meta.env.VITE_API_URL || "/api";
 
 export const ProfileService = {
     getAll: async (params) => {
@@ -26,16 +26,25 @@ export const ProfileService = {
             console.error("ProfileService.getById : ", e);
             return [];
         }
-    }, updateById: async (newData) => {
-        try {
-            const result = await axios.put(`${url}/profile/${newData.id}`,
-                newData
-            )
+    }, updateById: async (id, formData) => {
+        console.log("ProfileService.updateById : ", id, formData);
 
+        try {
+            const result = await axios.put(
+                `${url}/profile/${id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log("Update response:", result.data);
             return result.data;
         } catch (e) {
             console.error("ProfileService.updateById : ", e);
-            return [];
+            throw e; // ส่ง error ให้ frontend จัดการ
         }
     }
 }

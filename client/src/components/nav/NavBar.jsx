@@ -6,8 +6,6 @@ import { AppButton } from "../button/AppButton.jsx";
 import { MobileMenu } from "./MobileMenu.jsx";
 import { Logo } from "./Logo.jsx";
 import { useAuth } from "@/contexts/authentication";
-import Userprofile from "./Userprofile.jsx";
-import { Notifications } from "../button/Notifications.jsx";
 import DropdownProfile from "./DropdownProfile.jsx";
 
 export function NavBar() {
@@ -46,7 +44,7 @@ export function NavBar() {
                             <>
                                 <DropdownProfile
                                     isMobileMenuOpen={false}
-                                    slyte="w-10 h-10"
+                                    style="w-10 h-10"
                                 />
                             </>
                         )}
@@ -71,7 +69,7 @@ export function NavBar() {
                 <DropdownProfile
                     isMobile={true}
                     isMobileMenuOpen={isMobileMenuOpen}
-                    slyte="w-10 h-10"
+                    style="w-10 h-10"
                 />
             </>
         </div>

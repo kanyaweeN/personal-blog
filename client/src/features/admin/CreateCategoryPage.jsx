@@ -25,7 +25,6 @@ function CreateCategoryPage() {
         let result = {};
         try {
             result = await categoriesService.getById(id);
-            console.log("result", result);
 
             setData(result);
         } catch (err) {

@@ -4,7 +4,7 @@ function ProfileHeader({ name, menuName }) {
     return (
         <div className="flex md:flex-row items-center justify-start md:gap-6 mb-6">
             <Userprofile
-                slyte="w-10 h-10"
+                style="w-10 h-10"
             />
             <span
                 className="text-2xl border-r pr-3 text-brown-400">
