@@ -5,7 +5,7 @@ import InputField from "../../components/input/InputField.jsx"
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import { NavBar } from "../../components/nav/NavBar.jsx";
 import ProfileHeader from "../../components/profile/ProfileHeader.jsx";
-import ProfileMenu from "../../components/profile/ProfileMenu.jsx";
+import ProfileMenu from "../../components/menu/ProfileMenu.jsx";
 import Alert from "../../components/alert/Alert.jsx";
 import ResetPasswordForm from "../../components/profile/ResetPasswordForm.jsx";
 import { useAuth } from "../../contexts/authentication.jsx";

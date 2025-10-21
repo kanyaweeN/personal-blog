@@ -1,4 +1,4 @@
-import SidebarMenu from '../../components/admin/SidebarMenu.jsx';
+import SidebarMenu from '../../components/menu/SidebarMenu.jsx';
 import CreateArticleContent from '../../components/admin/CreateArticleContent.jsx';
 
 function CreateArticlePage() {

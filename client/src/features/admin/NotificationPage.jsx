@@ -1,4 +1,4 @@
-import SidebarMenu from '../../components/admin/SidebarMenu.jsx';
+import SidebarMenu from '../../components/menu/SidebarMenu.jsx';
 import NotificationContent from '../../components/admin/NotificationContent.jsx';
 
 function NotificationPage() {

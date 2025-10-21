@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppButton } from "../../components/button/AppButton.jsx";
 import InputField from "../../components/input/InputField.jsx";
-import SidebarMenu from "../../components/admin/SidebarMenu.jsx";
+import SidebarMenu from "../../components/menu/SidebarMenu.jsx";
 import { useAppToast } from '../../hooks/useAppToast.jsx';
 import { categoriesService } from "../../services/categoriesService.js";
 import { LoadingDot } from "../../components/loading/LoadingDot.jsx";

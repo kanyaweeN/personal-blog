@@ -8,7 +8,7 @@ import {
     Globe,
 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { Logo } from "../../components/nav/Logo.jsx";
+import { Logo } from "../nav/Logo.jsx";
 import clsx from "clsx";
 
 function SidebarMenu() {

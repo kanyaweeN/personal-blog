@@ -1,5 +1,5 @@
 import ResetPasswordContent from "../../components/admin/ResetPasswordContent";
-import SidebarMenu from "../../components/admin/SidebarMenu";
+import SidebarMenu from "../../components/menu/SidebarMenu";
 
 function AdminResetPasswordPage() {
     return (
