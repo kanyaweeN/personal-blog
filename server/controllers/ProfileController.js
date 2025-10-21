@@ -1,5 +1,4 @@
 import { ProfileService } from "../services/ProfileService.js";
-import cloudinary from "../middlewares/cloudinary.js";
 import bcrypt from "bcryptjs";
 import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
