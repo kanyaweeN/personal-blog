@@ -49,14 +49,13 @@ export default function ProfileContent() {
                                     onChange={handleFileChange}
                                     className="hidden"
                                 />
-                                <button
+                                <AppButton
                                     type="button"
                                     onClick={handleUploadClick}
                                     disabled={isLoading}
-                                    className="px-7 py-2 text-sm bg-white text-brown-700 border border-brown-300 hover:bg-brown-50 hover:border-brown-400 rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     Upload profile picture
-                                </button>
+                                </AppButton>
                                 {error.image && (
                                     <p className="text-red-500 text-sm mt-1">
                                         {error.image}
