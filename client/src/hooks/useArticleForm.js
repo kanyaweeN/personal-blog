@@ -99,9 +99,9 @@ export function useArticleForm() {
             formData.append("content", blogPosts.content);
             formData.append("status_id", status_id);
             formData.append("likes_count", 0);
+            formData.append("image", blogPosts.image)
 
             if (imageFile) formData.append("imageFile", imageFile);
-            else formData.append("image", blogPosts.image);
 
             if (!id || id === 0) await PostService.create(formData);
             else await PostService.updateById(id, formData);

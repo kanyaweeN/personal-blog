@@ -51,7 +51,8 @@ export const ProfileController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
-            const publicUrl = await uploadToCloudinary(req.file, "profile-images", "profile");
+            const { profile_pic } = req.body;
+            const publicUrl = await uploadToCloudinary(req.file, "profile-images", "profile", profile_pic);
 
             const newData = {
                 id,
@@ -118,10 +119,8 @@ export const ProfileController = {
 
             // Verify current password
             const isPasswordValid = await bcrypt.compare(currentPassword, userPassword);
-            console.log("isPasswordValid", isPasswordValid, currentPassword, userPassword);
 
             if (!isPasswordValid) {
-                console.log("isPasswordValid", 400);
                 return res.status(400).json({
                     success: false,
                     message: "Current password is incorrect",
@@ -130,7 +129,6 @@ export const ProfileController = {
 
             // Check if new password is same as current password
             const isSamePassword = await bcrypt.compare(newPassword, userPassword);
-            console.log("isSamePassword", isSamePassword);
 
             if (isSamePassword) {
                 return res.status(400).json({

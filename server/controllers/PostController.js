@@ -102,7 +102,10 @@ export const PostController = {
     async updateById(req, res) {
         try {
             const id = req.params.id;
-            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post");
+            console.log(req.body);
+
+            const { image } = req.body;
+            const publicUrl = await uploadToCloudinary(req.file, cloudinaryFolder, "post", image);
 
             const newPost = {
                 id,
