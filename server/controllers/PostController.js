@@ -1,4 +1,3 @@
-import cloudinary from "../middlewares/cloudinary.js";
 import { PostService } from "../services/PostService.js";
 import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
