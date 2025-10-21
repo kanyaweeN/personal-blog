@@ -1,4 +1,4 @@
-import SidebarMenu from '../../components/menu/SidebarMenu.jsx';
+import SidebarMenu from '../../components/menu/AdminMenu.jsx';
 import PorfileContent from '../../components/admin/PorfileContent.jsx';
 
 function PorfilePage() {

@@ -1,15 +1,11 @@
-import ResetPasswordContent from "../../components/admin/ResetPasswordContent";
-import SidebarMenu from "../../components/menu/SidebarMenu";
 
-function AdminResetPasswordPage() {
+import AdminLayout from '../../components/admin/AdminLayout.jsx';
+import ResetPasswordContent from '../../components/admin/ResetPasswordContent.jsx';
+
+export default function ResetPasswordPage() {
     return (
-        <div >
-            <main className="flex justify-center h-screen">
-                <SidebarMenu />
-                <ResetPasswordContent />
-            </main>
-        </div>
+        <AdminLayout>
+            <ResetPasswordContent />
+        </AdminLayout>
     );
 }
-
-export default AdminResetPasswordPage
